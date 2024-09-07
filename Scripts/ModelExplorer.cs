@@ -15,11 +15,12 @@ public class ModelExplorer : MonoBehaviour
 
     private void Start()
     {
+#if !UNITY_EDITOR
         Debug.Log(Directory.GetCurrentDirectory());
         string currentDir = Directory.GetCurrentDirectory() + "\\models\\";
         ClearWorkingDirectory(currentDir);
         StartCoroutine(WaitForAvailability());
-
+#endif
     }
 
     private void ClearWorkingDirectory(string directory)
