@@ -35,15 +35,15 @@ public struct Quadrant
             {
                 Scale(background.rectTransform, 1.1f, background.rectTransform.localScale.x >= 1 ? 12: 30);
 
-                icon.color = Palette.DarkGrey;
-                background.color = Palette.White;
+                icon.color = Palette.darkGrey;
+                background.color = Palette.white;
             }
             else
             {
                 Scale(background.rectTransform, 1, background.rectTransform.localScale.x >= 1 ? 12 : 30);
 
-                icon.color = Palette.White;
-                background.color = Palette.DarkGrey;
+                icon.color = Palette.white;
+                background.color = Palette.darkGrey;
             }
         }
         else
@@ -100,6 +100,7 @@ public class RadialMenu : MonoBehaviour
 {
     private bool inMenu = false;
 
+    [SerializeField] private FileSelection fileSelection;
     [SerializeField] private RectTransform container;
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_Label;
@@ -127,19 +128,43 @@ public class RadialMenu : MonoBehaviour
 
     private string pageFormat = "{0} / {1}";
 
-    public bool InMenu { get => inMenu; private set => inMenu = value; }
+    public bool InMenu { get => inMenu; }
 
     void Start()
     {
         // =========================================================================================================================
         // DEFINE MENUS HERE
 
+        string[][] files = new string[][]
+        {
+            new string[] { "Tree", "models/tree.gltf" },
+            new string[] { "Rock", "models/rock.gltf" },
+            new string[] { "Car", "models/car.gltf" },
+            new string[] { "Tree", "models/tree.gltf" },
+            new string[] { "Rock", "models/rock.gltf" },
+            new string[] { "Car", "models/car.gltf" },
+            new string[] { "Tree", "models/tree.gltf" },
+            new string[] { "Rock", "models/rock.gltf" },
+            new string[] { "Car", "models/car.gltf" },
+            new string[] { "Tree", "models/tree.gltf" },
+            new string[] { "Rock", "models/rock.gltf" },
+            new string[] { "Car", "models/car.gltf" },
+            new string[] { "Tree", "models/tree.gltf" },
+            new string[] { "Rock", "models/rock.gltf" },
+            new string[] { "Car", "models/car.gltf" },
+            new string[] { "Tree", "models/tree.gltf" },
+            new string[] { "Rock", "models/rock.gltf" },
+            new string[] { "Car", "models/car.gltf" },
+        };
+        FileStructure fileStructure = new FileStructure("Select a file", files, (string file) => { Debug.Log(file); });
+        FileStructure fileStructure2 = new FileStructure("Select an environment", files, (string file) => { Debug.Log(file); });
+
         CreateMenu(
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
             { 
                 new RadialQuadrantData("Models", modelIcon, () => { GoToMenu(Menu.Environments); }),
                 new RadialQuadrantData("Environemnt", environmentIcon, () => { Debug.Log("Environment"); }),
-                new RadialQuadrantData("Options", optionsIcon, () => { Debug.Log("Options"); }),
+                new RadialQuadrantData("Options", optionsIcon, () => { fileSelection.GenerateFileSelection(fileStructure); }),
                 new RadialQuadrantData("Record", recordIcon, () => { Debug.Log("Record"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
@@ -152,7 +177,7 @@ public class RadialMenu : MonoBehaviour
         CreateMenu(
             Menu.Environments, Menu.Main, "Environment", new RadialQuadrantData[]
             {
-                new RadialQuadrantData("Environemnt1", environmentIcon, () => { Debug.Log("Environment1"); }),
+                new RadialQuadrantData("Environemnt1", environmentIcon, () => { fileSelection.GenerateFileSelection(fileStructure2); }),
                 new RadialQuadrantData("Environemnt2", environmentIcon, () => { Debug.Log("Environment2"); }),
                 new RadialQuadrantData("Environemnt3", environmentIcon, () => { Debug.Log("Environment3"); }),
                 new RadialQuadrantData("Environemnt4", environmentIcon, () => { Debug.Log("Environment4"); }),
@@ -169,57 +194,66 @@ public class RadialMenu : MonoBehaviour
     {
         if (inMenu)
         {
-            // Try to select a quadrant
-            int index = SelectionIndex();
-            if (index != -1)
+            // Only run logic if not in a file selection menu
+            if (!fileSelection.InMenu)
             {
-                selectionIndex = index;
-                topLeft.TryToSelect(index == 0);
-                topRight.TryToSelect(index == 1);
-                bottomRight.TryToSelect(index == 2);
-                bottomLeft.TryToSelect(index == 3);
-            }
-
-            // Selected quadrant logic
-            if (selectionIndex < quadrantPageCount)
-            {
-                RadialQuadrantData data = pageQuadrants[selectionIndex];
-
-                t_Label.SetText(data.label);
-
-                // Run select quadrants action
-                if (getReal3D.Input.GetButtonDown(Inputs.a))
+                // Try to select a quadrant
+                int index = SelectionIndex();
+                if (index != -1)
                 {
-                    data.action?.Invoke();
+                    selectionIndex = index;
+                    topLeft.TryToSelect(index == 0);
+                    topRight.TryToSelect(index == 1);
+                    bottomRight.TryToSelect(index == 2);
+                    bottomLeft.TryToSelect(index == 3);
                 }
+
+                // Selected quadrant logic
+                if (selectionIndex < quadrantPageCount)
+                {
+                    RadialQuadrantData data = pageQuadrants[selectionIndex];
+
+                    t_Label.SetText(data.label);
+
+                    // Run select quadrants action
+                    if (getReal3D.Input.GetButtonDown(Inputs.a))
+                    {
+                        data.action?.Invoke();
+                    }
+                }
+                else
+                {
+                    SelectFirstQuadrant();
+                }
+
+                if (getReal3D.Input.GetButtonDown(Inputs.b)) // Go back
+                {
+                    if (currentMenu != Menu.Main)
+                    {
+                        GoToMenu(menus[currentMenu].previousMenu);
+                    }
+                    else // Close radial menu if in main menu
+                    {
+                        inMenu = false;
+                    }
+                }
+                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder)) // Previous page
+                {
+                    IncrementPage(-1);
+                }
+                else if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder)) // Next page
+                {
+                    IncrementPage(1);
+                }
+
+                // Show radial menu
+                container.localScale = Vector3.Lerp(container.localScale, Vector3.one, 30 * getReal3D.Cluster.deltaTime);
             }
             else
             {
-                SelectFirstQuadrant();
+                // Hide radial menu
+                container.localScale = Vector3.Lerp(container.localScale, Vector3.zero, 30 * getReal3D.Cluster.deltaTime);
             }
-
-            if (getReal3D.Input.GetButtonDown(Inputs.b)) // Go back
-            {
-                if (currentMenu != Menu.Main)
-                {
-                    GoToMenu(menus[currentMenu].previousMenu);
-                }
-                else // Close radial menu if in main menu
-                {
-                    inMenu = false;
-                }
-            }
-            else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder)) // Previous page
-            {
-                IncrementPage(-1);
-            }
-            else if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder)) // Next page
-            {
-                IncrementPage(1);
-            }
-
-            // Show radial menu
-            container.localScale = Vector3.Lerp(container.localScale, Vector3.one, 30 * getReal3D.Cluster.deltaTime);
         }
         else
         {
@@ -234,7 +268,7 @@ public class RadialMenu : MonoBehaviour
             }
 
             // Hide radial menu
-            container.localScale = Vector3.Lerp(container.localScale, Vector3.zero, 30 * getReal3D.Cluster.deltaTime);
+            container.localScale = Vector3.Lerp(container.localScale, Vector3.zero, Data.menuScaleSpeed * getReal3D.Cluster.deltaTime);
         }
 
         // Update the appearance of each quadrant
