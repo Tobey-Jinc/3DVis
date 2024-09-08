@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
+/// <summary>
+/// Define a quadrant in the radial menu
+/// </summary>
 public class RadialQuadrantData
 {
     public string label;
     public Sprite icon;
-    public UnityAction action;
+    public UnityAction action; // The action to run when the quadrant is selected and pressed
 
     public RadialQuadrantData(string label, Sprite icon, UnityAction action)
     {
