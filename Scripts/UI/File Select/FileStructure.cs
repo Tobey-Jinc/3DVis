@@ -19,4 +19,10 @@ public struct FileStructure
 
         fileCount = files.GetLength(0);
     }
+
+    public void SetFiles(string[][] files)
+    {
+        this.files = files;
+        fileCount = files.GetLength(0);
+    }
 }

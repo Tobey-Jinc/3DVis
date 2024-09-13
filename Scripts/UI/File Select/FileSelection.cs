@@ -18,14 +18,15 @@ public class FileSelection : MonoBehaviour
     [SerializeField] private FileView fileViewPrefab;
 
     private FileStructure fileStructure;
-    private List<FileView> fileViews = new();
-    private List<FileView> pooledFileViews = new();
+    private List<FileView> fileViews = new List<FileView>();
+    private List<FileView> pooledFileViews = new List<FileView>();
 
     private int selectionIndex = 0;
 
     // Input
     private int prolongedInput = 0;
     private bool prolongingInput = false;
+    private bool acceptInput = false;
 
     public bool InMenu { get => inMenu; }
     public int SelectionIndex { get => selectionIndex; }
@@ -63,7 +64,7 @@ public class FileSelection : MonoBehaviour
                 StopAllCoroutines();
             }
 
-            if (getReal3D.Input.GetButtonDown(Inputs.a))
+            if (acceptInput && getReal3D.Input.GetButtonDown(Inputs.a))
             {
                 fileStructure.action?.Invoke(fileStructure.files[selectionIndex][1]);
             }
@@ -100,10 +101,16 @@ public class FileSelection : MonoBehaviour
     {
         if (inMenu)
         {
+            acceptInput = true;
+
             if (getReal3D.Input.GetButtonDown(Inputs.b))
             {
                 inMenu = false;
             }
+        }
+        else
+        {
+            acceptInput = false;
         }
     }
 
@@ -123,6 +130,7 @@ public class FileSelection : MonoBehaviour
             if (pooledFileViews.Count > 0)
             {
                 fileView = pooledFileViews[0];
+
                 pooledFileViews.RemoveAt(0);
 
                 fileView.Setup(i, fileName);

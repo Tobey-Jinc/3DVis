@@ -1,25 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System.IO;
-using GLTFast;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-public class ModelExplorer : MonoBehaviour
+public class ModelCache : MonoBehaviour
 {
-    [SerializeField] private TMP_Text t_Path;
-    [SerializeField] private GltfAsset model;
+    public static bool Loaded = false;
+
+    [SerializeField] private Transform wand;
+    [SerializeField] private ModelParent modelParentPrefab;
+
+    private FileStructure fileStructure;
 
     private void Start()
     {
+        fileStructure = new FileStructure();
+        fileStructure.title = "Select a model";
+        fileStructure.action = (string file) => { InstantiateModel(file); };
+
 #if !UNITY_EDITOR
-        Debug.Log(Directory.GetCurrentDirectory());
-        string currentDir = Directory.GetCurrentDirectory() + "\\models\\";
+        Debug.Log(Application.persistentDataPath);
+        string currentDir = Application.persistentDataPath + "\\models\\";
         ClearWorkingDirectory(currentDir);
         StartCoroutine(WaitForAvailability());
+#endif
+
+#if UNITY_EDITOR
+        GenerateFileStructure(Application.persistentDataPath + "\\models");
 #endif
     }
 
@@ -59,7 +67,7 @@ public class ModelExplorer : MonoBehaviour
 
     private IEnumerator WaitForAvailability()
     {
-        string currentDir = Directory.GetCurrentDirectory() + "\\models\\";
+        string currentDir = Application.persistentDataPath + "\\models\\";
         Debug.Log(currentDir);
         //copy all models from shared network folder to currentdirectory/models
 
@@ -67,7 +75,7 @@ public class ModelExplorer : MonoBehaviour
 
         yield return new WaitUntil(() =>
         {
-            fileCounts = CopyFilesRecursively("\\\\CAVE-HEADNODE\\data\\3dvis", currentDir);
+            fileCounts = CopyFilesRecursively("\\\\CAVE-HEADNODE\\data\\3dvis\\models", currentDir);
 
             return fileCounts.x != -1 && fileCounts.y != -1;
         });
@@ -138,7 +146,44 @@ public class ModelExplorer : MonoBehaviour
             return folderCount == folders && fileCount == files;
         });
 
+        GenerateFileStructure(folder);
 
-        model.Load(folder + "/stylized_rock/scene.gltf");
+        //model.Load(folder + "/stylized_rock/scene.gltf");
+    }
+
+    private void GenerateFileStructure(string folder)
+    {
+        string[] folders = Directory.GetDirectories(Application.persistentDataPath + "\\models");
+        string[][] files = new string[folders.Length][];
+
+        for (int i = 0; i < folders.Length; i++)
+        {
+            Debug.Log(folders[i] + "\\scene.gltf");
+            files[i] = new string[] { $"Model {i}", folders[i] + "\\scene.gltf" };
+        }
+        fileStructure.SetFiles(files);
+        Debug.Log(files.GetLength(0));
+
+        Loaded = true;
+    }
+
+    private void InstantiateModel(string modelPath)
+    {
+        ModelParent modelParent = Instantiate(modelParentPrefab);
+        modelParent.Setup(modelPath);
+
+        if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
+        {
+            modelParent.transform.position = hit.point;
+        }
+        else
+        {
+            modelParent.transform.position = wand.position + (wand.forward * 10);
+        }
+    }
+
+    public FileStructure GetFileStructure()
+    {
+        return fileStructure;
     }
 }

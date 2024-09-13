@@ -115,7 +115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8accf213b8e4a254588c96cfa5bd3e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  t_Path: {fileID: 0}
   model: {fileID: 0}
 --- !u!1 &6240459841575261746
 GameObject:
@@ -2058,6 +2057,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44674568d78465949b5b5ec68e70038e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  modelCache: {fileID: 6240459841559022285}
   fileSelection: {fileID: 8833300253014550361}
   container: {fileID: 6240459843221378953}
   t_Title: {fileID: 6240459842104842091}

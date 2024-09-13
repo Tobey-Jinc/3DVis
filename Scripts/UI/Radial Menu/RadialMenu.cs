@@ -100,6 +100,7 @@ public class RadialMenu : MonoBehaviour
 {
     private bool inMenu = false;
 
+    [SerializeField] private ModelCache modelCache;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private RectTransform container;
     [SerializeField] private TMP_Text t_Title;
@@ -119,7 +120,7 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private Sprite optionsIcon;
 
     private Menu currentMenu = Menu.Main;
-    private Dictionary<Menu, RadialMenuData> menus = new(); // Contains all menus and their data
+    private Dictionary<Menu, RadialMenuData> menus = new Dictionary<Menu, RadialMenuData>(); // Contains all menus and their data
     private int selectionIndex = 0; // The selected quadrant
     private int page = 0;
     private RadialQuadrantData[] pageQuadrants; // The data for each quadrant on the current page
@@ -135,36 +136,12 @@ public class RadialMenu : MonoBehaviour
         // =========================================================================================================================
         // DEFINE MENUS HERE
 
-        string[][] files = new string[][]
-        {
-            new string[] { "Tree", "models/tree.gltf" },
-            new string[] { "Rock", "models/rock.gltf" },
-            new string[] { "Car", "models/car.gltf" },
-            new string[] { "Tree", "models/tree.gltf" },
-            new string[] { "Rock", "models/rock.gltf" },
-            new string[] { "Car", "models/car.gltf" },
-            new string[] { "Tree", "models/tree.gltf" },
-            new string[] { "Rock", "models/rock.gltf" },
-            new string[] { "Car", "models/car.gltf" },
-            new string[] { "Tree", "models/tree.gltf" },
-            new string[] { "Rock", "models/rock.gltf" },
-            new string[] { "Car", "models/car.gltf" },
-            new string[] { "Tree", "models/tree.gltf" },
-            new string[] { "Rock", "models/rock.gltf" },
-            new string[] { "Car", "models/car.gltf" },
-            new string[] { "Tree", "models/tree.gltf" },
-            new string[] { "Rock", "models/rock.gltf" },
-            new string[] { "Car", "models/car.gltf" },
-        };
-        FileStructure fileStructure = new FileStructure("Select a file", files, (string file) => { Debug.Log(file); });
-        FileStructure fileStructure2 = new FileStructure("Select an environment", files, (string file) => { Debug.Log(file); });
-
         CreateMenu(
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
-            { 
-                new RadialQuadrantData("Models", modelIcon, () => { GoToMenu(Menu.Environments); }),
-                new RadialQuadrantData("Environemnt", environmentIcon, () => { Debug.Log("Environment"); }),
-                new RadialQuadrantData("Options", optionsIcon, () => { fileSelection.GenerateFileSelection(fileStructure); }),
+            {
+                new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(); }),
+                new RadialQuadrantData("Environemnt", environmentIcon, () => { GoToMenu(Menu.Environments); }),
+                new RadialQuadrantData("Options", optionsIcon, () => { Debug.Log("ALRIGHT"); }),
                 new RadialQuadrantData("Record", recordIcon, () => { Debug.Log("Record"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
@@ -177,7 +154,7 @@ public class RadialMenu : MonoBehaviour
         CreateMenu(
             Menu.Environments, Menu.Main, "Environment", new RadialQuadrantData[]
             {
-                new RadialQuadrantData("Environemnt1", environmentIcon, () => { fileSelection.GenerateFileSelection(fileStructure2); }),
+                new RadialQuadrantData("Environemnt1", environmentIcon, () => { Debug.Log("Environment"); }),
                 new RadialQuadrantData("Environemnt2", environmentIcon, () => { Debug.Log("Environment2"); }),
                 new RadialQuadrantData("Environemnt3", environmentIcon, () => { Debug.Log("Environment3"); }),
                 new RadialQuadrantData("Environemnt4", environmentIcon, () => { Debug.Log("Environment4"); }),
@@ -415,5 +392,13 @@ public class RadialMenu : MonoBehaviour
         topRight.TryToSelect(false);
         bottomRight.TryToSelect(false);
         bottomLeft.TryToSelect(false);
+    }
+
+    private void CreateModelExplorer()
+    {
+        if (ModelCache.Loaded)
+        {
+            fileSelection.GenerateFileSelection(modelCache.GetFileStructure());
+        }
     }
 }

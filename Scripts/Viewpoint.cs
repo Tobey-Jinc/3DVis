@@ -8,22 +8,22 @@ public class Viewpoint : MonoBehaviour
     [SerializeField] private RadialMenu radialMenu;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Transform cameraSecondTransform;
+    [SerializeField] private Transform wand;
 
     [Header("Speeds")]
     [SerializeField] private float movementSpeed;
     [SerializeField] private float lookSpeed;
 
     private float xRotation = 0;
-    private float yRotation = 0;
 
     void Update()
     {
         if (!radialMenu.InMenu)
         {
             Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
+            float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
 
-            characterController.Move((cameraTransform.right * movementInput.y + cameraTransform.forward * movementInput.x) * movementSpeed * Time.deltaTime);
+            characterController.Move((wand.right * movementInput.y + wand.forward * movementInput.x + wand.up * upDownInput) * movementSpeed * Time.deltaTime);
         }
     }
 
@@ -31,16 +31,9 @@ public class Viewpoint : MonoBehaviour
     {
         if (!radialMenu.InMenu)
         {
-            Vector2 lookInput = new Vector2(getReal3D.Input.GetAxis(Inputs.rightStickY), getReal3D.Input.GetAxis(Inputs.rightStickX));
+            xRotation += getReal3D.Input.GetAxis(Inputs.rightStickX) * lookSpeed;
 
-            xRotation += -lookInput.x * lookSpeed;
-            yRotation += lookInput.y * lookSpeed;
-
-            xRotation = Mathf.Clamp(xRotation, -90, 90);
-
-            cameraTransform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
-            cameraTransform.localPosition = Vector3.zero;
-            cameraSecondTransform.localPosition = Vector3.zero;
+            cameraTransform.rotation = Quaternion.Euler(0, xRotation, 0);
         }
     }
 }

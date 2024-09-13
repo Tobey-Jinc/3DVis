@@ -17,6 +17,14 @@ namespace Vertex
     }
 
     /// <summary>
+    /// Cached layer strings
+    /// </summary>
+    public class Layer
+    {
+        public static string model = "Model";
+    }
+
+    /// <summary>
     /// Cached input strings to minimize garbage collection
     /// </summary>
     public class Inputs
