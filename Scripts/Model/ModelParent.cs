@@ -2,26 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GLTFast;
+using Vertex;
 
 public class ModelParent : MonoBehaviour
 {
     [SerializeField] private GltfAsset asset;
 
-    private int previousChildCount = 0;
+    [Header("Selection")]
+    [SerializeField] private Transform selectionAnchor;
+    [SerializeField] private SpriteRenderer transformIcon;
+    [SerializeField] private Sprite positionIcon;
+    [SerializeField] private Color positionColor;
+    [SerializeField] private Sprite rotationIcon;
+    [SerializeField] private Color rotationColor;
+    [SerializeField] private Sprite scaleIcon;
+    [SerializeField] private Color scaleColor;
 
-    private void LateUpdate()
+    private ModelCursor cursor;
+    private Transform wand;
+    private new Transform camera;
+
+    private int hierachyCount = 0;
+
+    private void Start()
     {
-        if (previousChildCount != transform.hierarchyCount)
-        {
-            Debug.Log((previousChildCount, transform.hierarchyCount));
-            PrepareChildren(transform);
-            previousChildCount = transform.hierarchyCount;
-        }
+        cursor = ModelCursor.Instance;
+        wand = WandTransform.Instance.Transform;
+        camera = wand.parent;
     }
 
-    public void Setup(string path)
+    public async void Setup(string path)
     {
-        asset.Load(path);
+        await asset.Load(path);
     }
 
     private void PrepareChildren(Transform parent)
@@ -47,8 +59,76 @@ public class ModelParent : MonoBehaviour
         }
     }
 
-    public void Select()
+    private void Update()
     {
-        //gizmoManager.Select(this);
+        if (cursor.SelectedObject == transform)
+        {
+            selectionAnchor.gameObject.SetActive(true);
+            selectionAnchor.LookAt(camera);
+
+            switch (cursor.TransformMode)
+            {
+                case TransformMode.None:
+                    transformIcon.color = Color.black;
+
+                    break;
+
+                case TransformMode.Position:
+                    transformIcon.sprite = positionIcon;
+                    transformIcon.color = positionColor;
+
+                    Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
+                    float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
+
+                    transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * 5 * getReal3D.Cluster.deltaTime);
+
+                    break;
+
+                case TransformMode.Rotation:
+                    transformIcon.sprite = rotationIcon;
+                    transformIcon.color = rotationColor;
+
+                    float rotateX = getReal3D.Input.GetAxis(Inputs.rightStickY);
+                    float rotateY = getReal3D.Input.GetAxis(Inputs.leftStickX);
+                    float rotateZ = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder);
+
+                    transform.Rotate(new Vector3(rotateX, 0, 0) * 20 * getReal3D.Cluster.deltaTime, Space.World);
+                    transform.Rotate(new Vector3(0, rotateY, rotateZ) * 20 * getReal3D.Cluster.deltaTime, Space.Self);
+
+                    break;
+
+                case TransformMode.Scale:
+                    transformIcon.sprite = scaleIcon;
+                    transformIcon.color = scaleColor;
+
+                    float scaleInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
+
+                    transform.localScale += Vector3.one * scaleInput * getReal3D.Cluster.deltaTime;
+
+                    break;
+            }
+        }
+        else
+        {
+            selectionAnchor.gameObject.SetActive(false);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (hierachyCount != transform.hierarchyCount)
+        {
+            Debug.Log((hierachyCount, transform.hierarchyCount));
+
+            PrepareChildren(transform);
+
+            hierachyCount = transform.hierarchyCount;
+        }
+    }
+
+    public void Select(Vector3 selectionPoint)
+    {
+        selectionAnchor.position = selectionPoint;
+        cursor.SelectObject(transform);
     }
 }

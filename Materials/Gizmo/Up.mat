@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Line Found Model
+  m_Name: Up
   m_Shader: {fileID: 4800000, guid: aea41a35ed020624796fa11ced84aba2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []

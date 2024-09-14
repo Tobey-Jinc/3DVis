@@ -21,12 +21,11 @@ public class WorldSpaceOverlay : MonoBehaviour
     {
         if (hierachyCount != transform.hierarchyCount)
         {
-            Graphic[] graphics = gameObject.GetComponentsInChildren<Graphic>();
-            TMP_Text[] textObjects = gameObject.GetComponentsInChildren<TMP_Text>();
+            Image[] images = gameObject.GetComponentsInChildren<Image>();
 
-            foreach (Graphic graphic in graphics)
+            foreach (Graphic image in images)
             {
-                Material material = graphic.materialForRendering;
+                Material material = image.materialForRendering;
                 if (material == null)
                 {
                     continue;
@@ -39,27 +38,7 @@ public class WorldSpaceOverlay : MonoBehaviour
                 }
 
                 materialCopy.SetInt(shaderTestMode, (int)desiredUIComparison);
-                graphic.material = materialCopy;
-            }
-
-            foreach (TMP_Text text in textObjects)
-            {
-                Material material = text.fontMaterial;
-                if (material == null)
-                {
-                    continue;
-                }
-
-                if (!materialMappings.TryGetValue(material, out Material materialCopy))
-                {
-                    materialCopy = new Material(material);
-                    materialMappings.Add(material, materialCopy);
-                }
-
-                Debug.Log(materialCopy.HasInt(shaderTestMode), text.gameObject);
-
-                materialCopy.SetInt(shaderTestMode, (int)desiredUIComparison);
-                text.material = materialCopy;
+                image.material = materialCopy;
             }
 
             hierachyCount = transform.hierarchyCount;

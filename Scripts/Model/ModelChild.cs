@@ -10,14 +10,14 @@ public class ModelChild : MonoBehaviour
 
     void Start()
     {
-        
+        ModelCursor.Instance.OnSelect += OnSelect;
     }
 
-    private void OnSelect(Transform selection)
+    private void OnSelect(Transform selection, Vector3 selectionPoint)
     {
         if (selection == transform)
         {
-            parent.Select();
+            parent.Select(selectionPoint);
         }
     }
 }

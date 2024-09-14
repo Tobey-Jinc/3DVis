@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class WandTransform : MonoBehaviour
 {
+    public static WandTransform Instance;
+
     [SerializeField] private Transform point;
 
     private PlayerInputs playerInputs;
 
+    public Transform Transform { get => point; set => point = value; }
+
     void Awake()
     {
+        Instance = this;
+
         playerInputs = GetComponent<PlayerInputs>();
     }
 

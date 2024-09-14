@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Line Found Model
+  m_Name: Right
   m_Shader: {fileID: 4800000, guid: aea41a35ed020624796fa11ced84aba2, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -82,7 +82,7 @@ Material:
     - alphaCutoff: 0.5
     - baseColorTexture_texCoord: 0
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.24062538, a: 1}
+    - _Color: {r: 1, g: 0.0179291, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - baseColorFactor: {r: 0.056410074, g: 1, b: 0, a: 1}
     - baseColorTexture_Rotation: {r: 0, g: 0, b: 0, a: 0}

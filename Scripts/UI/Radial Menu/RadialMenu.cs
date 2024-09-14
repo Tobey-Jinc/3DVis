@@ -101,6 +101,7 @@ public class RadialMenu : MonoBehaviour
     private bool inMenu = false;
 
     [SerializeField] private ModelCache modelCache;
+    [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private RectTransform container;
     [SerializeField] private TMP_Text t_Title;
@@ -235,7 +236,7 @@ public class RadialMenu : MonoBehaviour
         else
         {
             // Activate radial menu
-            if (getReal3D.Input.GetButtonDown(Inputs.b))
+            if (modelCursor.SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.b))
             {
                 currentMenu = Menu.Main;
                 GoToMenu(currentMenu);
