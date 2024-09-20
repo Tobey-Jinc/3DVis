@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.30395204, g: 0.3457104, b: 0.39074534, a: 1}
+  m_IndirectSpecularColor: {r: 0.3038717, g: 0.3456254, b: 0.39067236, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -539,6 +539,7 @@ MonoBehaviour:
     nodeNameMethod: 0
     animationMethod: 1
     generateMipMaps: 0
+    texturesReadable: 0
     defaultMinFilterMode: 9729
     defaultMagFilterMode: 9729
     anisotropicFilterLevel: 1
@@ -1654,7 +1655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -850
+      value: -848.06146
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841919804584, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchorMax.x

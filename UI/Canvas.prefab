@@ -199,7 +199,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_TargetDisplay: 0
 --- !u!114 &6240459841559022258
 MonoBehaviour:
@@ -255,6 +255,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wand: {fileID: 0}
   modelParentPrefab: {fileID: 2978671437878830767, guid: c865886036cafe94e864371c021be913, type: 3}
+  loadingScreen: {fileID: 0}
 --- !u!114 &1860566325917432193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2223,6 +2224,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   modelCache: {fileID: 6240459841559022285}
+  environments: {fileID: 0}
   modelCursor: {fileID: 0}
   fileSelection: {fileID: 8833300253014550361}
   container: {fileID: 6240459843221378953}

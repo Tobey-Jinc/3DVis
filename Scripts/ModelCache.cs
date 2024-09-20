@@ -6,6 +6,7 @@ using System;
 
 public class ModelCache : MonoBehaviour
 {
+    public static ModelCache Instance;
     public static bool Loaded = false;
 
     [SerializeField] private Transform wand;
@@ -15,6 +16,13 @@ public class ModelCache : MonoBehaviour
     [SerializeField] private Canvas loadingScreen;
 
     private FileStructure fileStructure;
+
+    private Dictionary<string, ModelParent> cachedModels = new();
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -185,8 +193,19 @@ public class ModelCache : MonoBehaviour
 
     private void InstantiateModel(string modelPath)
     {
-        ModelParent modelParent = Instantiate(modelParentPrefab);
-        modelParent.Setup(modelPath);
+        ModelParent cachedModel = GetCachedModel(modelPath);
+
+        ModelParent modelParent;
+        if (cachedModel != null)
+        {
+            modelParent = Instantiate(cachedModel, Vector3.zero, Quaternion.identity);
+            modelParent.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            modelParent = Instantiate(modelParentPrefab);
+            modelParent.Setup(modelPath);
+        }
 
         if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
         {
@@ -201,5 +220,23 @@ public class ModelCache : MonoBehaviour
     public FileStructure GetFileStructure()
     {
         return fileStructure;
+    }
+
+    public void CacheModel(string path, ModelParent modelParent)
+    {
+        if (!cachedModels.ContainsKey(path))
+        {
+            cachedModels.Add(path, modelParent);
+        }
+    }
+
+    public ModelParent GetCachedModel(string path)
+    {
+        if (cachedModels.ContainsKey(path))
+        {
+            return cachedModels[path];
+        }
+
+        return null;
     }
 }

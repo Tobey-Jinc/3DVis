@@ -34,6 +34,32 @@ public class ModelParent : MonoBehaviour
     public async void Setup(string path)
     {
         await asset.Load(path);
+
+        GltfImport gltf = new GltfImport();
+
+        // Create a settings object and configure it accordingly
+        ImportSettings settings = new ImportSettings
+        {
+            GenerateMipMaps = true,
+            AnisotropicFilterLevel = 3,
+            NodeNameMethod = NameImportMethod.OriginalUnique
+        };
+        // Load the glTF and pass along the settings
+        bool success = await gltf.Load(path, settings);
+
+        if (success)
+        {
+            transform.name = path;
+            await gltf.InstantiateMainSceneAsync(transform);
+
+            PrepareChildren(transform);
+
+            ModelCache.Instance.CacheModel(path, this);
+        }
+        else
+        {
+            Debug.LogError("Loading glTF failed!");
+        }
     }
 
     private void PrepareChildren(Transform parent)
@@ -124,17 +150,17 @@ public class ModelParent : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        if (hierachyCount != transform.hierarchyCount)
-        {
-            Debug.Log((hierachyCount, transform.hierarchyCount));
+    //private void LateUpdate()
+    //{
+    //    if (hierachyCount != transform.hierarchyCount)
+    //    {
+    //        Debug.Log((hierachyCount, transform.hierarchyCount));
 
-            PrepareChildren(transform);
+    //        PrepareChildren(transform);
 
-            hierachyCount = transform.hierarchyCount;
-        }
-    }
+    //        hierachyCount = transform.hierarchyCount;
+    //    }
+    //}
 
     public void Select(Vector3 selectionPoint)
     {
