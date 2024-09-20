@@ -11,6 +11,9 @@ public class ModelCache : MonoBehaviour
     [SerializeField] private Transform wand;
     [SerializeField] private ModelParent modelParentPrefab;
 
+    [Header("Loading UI")]
+    [SerializeField] private Canvas loadingScreen;
+
     private FileStructure fileStructure;
 
     private void Start()
@@ -158,13 +161,26 @@ public class ModelCache : MonoBehaviour
 
         for (int i = 0; i < folders.Length; i++)
         {
-            Debug.Log(folders[i] + "\\scene.gltf");
-            files[i] = new string[] { $"Model {i}", folders[i] + "\\scene.gltf" };
+            try
+            {
+                string metaDataText = File.ReadAllText(folders[i] + "\\metadata.json");
+                ModelMetaData metaData = JsonUtility.FromJson<ModelMetaData>(metaDataText);
+
+                Debug.Log(metaData.originalModelName);
+                Debug.Log(folders[i] + "\\scene.gltf");
+                files[i] = new string[] { metaData.modelDisplayName, folders[i] + "\\scene.gltf" };
+            }
+            catch (Exception e)
+            {
+                Debug.Log($"An error occurred whilst reading the model... \n{e}");
+            }
         }
         fileStructure.SetFiles(files);
         Debug.Log(files.GetLength(0));
 
         Loaded = true;
+
+        loadingScreen.enabled = false;
     }
 
     private void InstantiateModel(string modelPath)

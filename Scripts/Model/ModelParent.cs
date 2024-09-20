@@ -80,7 +80,7 @@ public class ModelParent : MonoBehaviour
                     Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
                     float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
 
-                    transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * 5 * getReal3D.Cluster.deltaTime);
+                    transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * 5 * getReal3D.Cluster.deltaTime, Space.World);
 
                     break;
 
@@ -88,12 +88,22 @@ public class ModelParent : MonoBehaviour
                     transformIcon.sprite = rotationIcon;
                     transformIcon.color = rotationColor;
 
-                    float rotateX = getReal3D.Input.GetAxis(Inputs.rightStickY);
+                    float rotateX = getReal3D.Input.GetAxis(Inputs.leftStickY);
                     float rotateY = getReal3D.Input.GetAxis(Inputs.leftStickX);
                     float rotateZ = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder);
 
-                    transform.Rotate(new Vector3(rotateX, 0, 0) * 20 * getReal3D.Cluster.deltaTime, Space.World);
-                    transform.Rotate(new Vector3(0, rotateY, rotateZ) * 20 * getReal3D.Cluster.deltaTime, Space.Self);
+                    //transform.Rotate(new Vector3(rotateX, 0, 0) * 20 * getReal3D.Cluster.deltaTime, Space.World);
+                    //transform.Rotate(new Vector3(0, rotateY, rotateZ) * 20 * getReal3D.Cluster.deltaTime, Space.Self);
+
+                    transform.Rotate(new Vector3(0, -rotateY, 0) * 50 * getReal3D.Cluster.deltaTime, Space.World);
+                    //transform.Rotate(new Vector3(rotateX, 0, 0) * 50 * getReal3D.Cluster.deltaTime, Space.Self);
+
+                    transform.RotateAround(transform.position, wand.right, rotateX * 50 * getReal3D.Cluster.deltaTime);
+
+                    if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder))
+                    {
+                        transform.rotation = Quaternion.identity;
+                    }
 
                     break;
 

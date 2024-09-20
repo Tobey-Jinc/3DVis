@@ -101,6 +101,7 @@ public class RadialMenu : MonoBehaviour
     private bool inMenu = false;
 
     [SerializeField] private ModelCache modelCache;
+    [SerializeField] private Environments environments;
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private RectTransform container;
@@ -141,7 +142,7 @@ public class RadialMenu : MonoBehaviour
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
             {
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(); }),
-                new RadialQuadrantData("Environemnt", environmentIcon, () => { GoToMenu(Menu.Environments); }),
+                new RadialQuadrantData("Environemnt", environmentIcon, () => { CreateEnvironmentExplorer(); }),
                 new RadialQuadrantData("Options", optionsIcon, () => { Debug.Log("ALRIGHT"); }),
                 new RadialQuadrantData("Record", recordIcon, () => { Debug.Log("Record"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
@@ -401,5 +402,10 @@ public class RadialMenu : MonoBehaviour
         {
             fileSelection.GenerateFileSelection(modelCache.GetFileStructure());
         }
+    }
+
+    private void CreateEnvironmentExplorer()
+    {
+        fileSelection.GenerateFileSelection(environments.GetFileStructure());
     }
 }
