@@ -13,7 +13,22 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Color_C01
-    second: {fileID: 2100000, guid: 775dd6517f4947d43891284ca1f968b5, type: 2}
+    second: {fileID: 2100000, guid: a2f340f755b683746ac7de853a365cfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_M00
+    second: {fileID: 2100000, guid: c94b7494cdfd5db46a328a19195211e8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_M08
+    second: {fileID: 2100000, guid: ab3b3b008c9713949a5f6e644e0c5e7c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_M09
+    second: {fileID: 2100000, guid: 7efd1e92fa917564d9eabc03eea17729, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -39,6 +54,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Mirror_01
     second: {fileID: 2100000, guid: 8049e8eaaae21b849a23512fc4da130c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Polished_Concrete_New
+    second: {fileID: 2100000, guid: dd6a0409f0023004c8d6e83760f19e3e, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
