@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.3038717, g: 0.3456254, b: 0.39067236, a: 1}
+  m_IndirectSpecularColor: {r: 0.30395204, g: 0.3457104, b: 0.39074534, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -158,7 +158,7 @@ MonoBehaviour:
     prefab: {fileID: 4478463814949476315, guid: 30aec474a1ad705449634bdb0b758ad7, type: 3}
   - id: House
     displayName: House
-    prefab: {fileID: 2571550361705289049, guid: 04c9e5e1c6ed1e54697412b4aac084c7, type: 3}
+    prefab: {fileID: 3324608730402181599, guid: 04c9e5e1c6ed1e54697412b4aac084c7, type: 3}
   - id: Warehouse
     displayName: Warehouse
     prefab: {fileID: 1747854626286860059, guid: 81640fcde882bed4dada3ef497b5ec20, type: 3}
@@ -506,6 +506,42 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1225615557
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default UI Material
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1304548644
 GameObject:
   m_ObjectHideFlags: 0
@@ -539,7 +575,6 @@ MonoBehaviour:
     nodeNameMethod: 0
     animationMethod: 1
     generateMipMaps: 0
-    texturesReadable: 0
     defaultMinFilterMode: 9729
     defaultMagFilterMode: 9729
     anisotropicFilterLevel: 1
@@ -1655,7 +1690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -848.06146
+      value: -850.00006
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841919804584, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchorMax.x
