@@ -3,7 +3,52 @@ guid: 7d9eeb06342381a4c9e1f58e9351b536
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BackColor
+    second: {fileID: 2100000, guid: 8f97693d048b8b84ba8dac1b7ae64119, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Color_M06
+    second: {fileID: 2100000, guid: d6e34678b8e0b4542bffd0ae7647e7a0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Formica_Laminate_Dark
+    second: {fileID: 2100000, guid: 9973b55b561b821428d1d902af4c4a06, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrontColor
+    second: {fileID: 2100000, guid: 1d85f6ef3f892bc4ca71acdb32c251d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Silver
+    second: {fileID: 2100000, guid: 63ef14be1042678439575b3926e3cc6b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Metal_Steel_Textured_White
+    second: {fileID: 2100000, guid: 7d58f58c83cc8d640a63eeb5de4b9dae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mirror_01
+    second: {fileID: 2100000, guid: a5ce6fc15c6c5a8489fa8f65972f27da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Polished_Concrete_Old
+    second: {fileID: 2100000, guid: fcd30e3c6f14c2640a283c99f3407630, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: _Metal_Steel_Textured_White_1
+    second: {fileID: 2100000, guid: 06652b43a544eef4aa0754cf6969a73a, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

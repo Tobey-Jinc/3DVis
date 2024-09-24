@@ -3,7 +3,22 @@ guid: 8c42a55d1d6cb4c4fbda3f5e9d8bcbf6
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BackColor
+    second: {fileID: 2100000, guid: 8f97693d048b8b84ba8dac1b7ae64119, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrontColor
+    second: {fileID: 2100000, guid: 1d85f6ef3f892bc4ca71acdb32c251d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_Floor_Light
+    second: {fileID: 2100000, guid: 54aef20385c542a458c5abfd7702a4c2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
