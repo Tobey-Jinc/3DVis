@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   environments:
-  - id: City
-    displayName: City
+  - id: CityCarPark
+    displayName: CityCarPark
     prefab: {fileID: 4478463814949476315, guid: 30aec474a1ad705449634bdb0b758ad7, type: 3}
   - id: House
     displayName: House
@@ -165,6 +165,9 @@ MonoBehaviour:
   - id: Trees
     displayName: Trees
     prefab: {fileID: 6145376986625317903, guid: 072d4b0bf3aa55c469adf698f062f72f, type: 3}
+  - id: GroceryStore
+    displayName: GroceryStore
+    prefab: {fileID: 5206743782920186741, guid: d97d9b95441c3c04db7f79c56aa7ea73, type: 3}
   - id: Empty
     displayName: Empty
     prefab: {fileID: 1132933274}
@@ -183,7 +186,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &673280988
+--- !u!21 &173414663
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
