@@ -191,29 +191,37 @@ public class ModelCache : MonoBehaviour
         loadingScreen.enabled = false;
     }
 
-    private void InstantiateModel(string modelPath)
+    private async void InstantiateModel(string modelPath)
     {
         ModelParent cachedModel = GetCachedModel(modelPath);
-
-        ModelParent modelParent;
-        if (cachedModel != null)
+        if (cachedModel == null)
         {
-            modelParent = Instantiate(cachedModel, Vector3.zero, Quaternion.identity);
-            modelParent.transform.localScale = Vector3.one;
+            Debug.Log("Model has not been cached. Importing model and trying again...");
+
+            ModelParent importedModel = Instantiate(modelParentPrefab, transform);
+
+            await importedModel.Setup(modelPath);
+
+            importedModel.gameObject.SetActive(false);
+            CacheModel(modelPath, importedModel);
+
+            InstantiateModel(modelPath);
         }
         else
         {
-            modelParent = Instantiate(modelParentPrefab);
-            modelParent.Setup(modelPath);
-        }
+            ModelParent model = Instantiate(cachedModel);
+            model.CachedSetup(modelPath);
 
-        if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
-        {
-            modelParent.transform.position = hit.point;
-        }
-        else
-        {
-            modelParent.transform.position = wand.position + (wand.forward * 10);
+            if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
+            {
+                model.transform.position = hit.point;
+            }
+            else
+            {
+                model.transform.position = wand.position + (wand.forward * 10);
+            }
+
+            model.gameObject.SetActive(true);
         }
     }
 

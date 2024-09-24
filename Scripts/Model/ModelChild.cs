@@ -20,4 +20,9 @@ public class ModelChild : MonoBehaviour
             parent.Select(selectionPoint);
         }
     }
+
+    private void OnDestroy()
+    {
+        ModelCursor.Instance.OnSelect -= OnSelect;
+    }
 }

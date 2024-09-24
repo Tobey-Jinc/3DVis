@@ -88,6 +88,11 @@ public class ModelCursor : MonoBehaviour
                 {
                     selectedObject = null;
                 }
+                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder))
+                {
+                    Destroy(selectedObject.gameObject);
+                    selectedObject = null;
+                }
             }
         }
     }

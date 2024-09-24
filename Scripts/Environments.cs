@@ -17,6 +17,9 @@ public class Environments : MonoBehaviour
     private FileStructure fileStructure;
 
     private Transform currentEnvironment = null;
+    private string currentEnvironmentID;
+
+    public string CurrentEnvironmentID { get => currentEnvironmentID; }
 
     private void Start()
     {
@@ -47,6 +50,7 @@ public class Environments : MonoBehaviour
             if (environment.id == id)
             {
                 currentEnvironment = Instantiate(environment.prefab);
+                currentEnvironmentID = environment.id;
                 break;
             }
         }

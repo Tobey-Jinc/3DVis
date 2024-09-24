@@ -147,7 +147,6 @@ GameObject:
   - component: {fileID: 6240459841559022259}
   - component: {fileID: 6240459841559022258}
   - component: {fileID: 6240459841559022257}
-  - component: {fileID: 6240459841559022285}
   - component: {fileID: 1860566325917432193}
   - component: {fileID: 385122111817904102}
   m_Layer: 5
@@ -241,21 +240,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &6240459841559022285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6240459841559022256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8accf213b8e4a254588c96cfa5bd3e5a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wand: {fileID: 0}
-  modelParentPrefab: {fileID: 2978671437878830767, guid: c865886036cafe94e864371c021be913, type: 3}
-  loadingScreen: {fileID: 0}
 --- !u!114 &1860566325917432193
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2223,7 +2207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44674568d78465949b5b5ec68e70038e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelCache: {fileID: 6240459841559022285}
+  modelCache: {fileID: 0}
   environments: {fileID: 0}
   modelCursor: {fileID: 0}
   fileSelection: {fileID: 8833300253014550361}

@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using GLTFast;
 using Vertex;
+using System.Threading.Tasks;
 
 public class ModelParent : MonoBehaviour
 {
-    [SerializeField] private GltfAsset asset;
-
     [Header("Selection")]
     [SerializeField] private Transform selectionAnchor;
     [SerializeField] private SpriteRenderer transformIcon;
@@ -18,11 +17,13 @@ public class ModelParent : MonoBehaviour
     [SerializeField] private Sprite scaleIcon;
     [SerializeField] private Color scaleColor;
 
+    private string path;
+
     private ModelCursor cursor;
     private Transform wand;
     private new Transform camera;
 
-    private int hierachyCount = 0;
+    public string Path { get => path; }
 
     private void Start()
     {
@@ -31,10 +32,8 @@ public class ModelParent : MonoBehaviour
         camera = wand.parent;
     }
 
-    public async void Setup(string path)
+    public async Task Setup(string path)
     {
-        await asset.Load(path);
-
         GltfImport gltf = new GltfImport();
 
         // Create a settings object and configure it accordingly
@@ -52,14 +51,19 @@ public class ModelParent : MonoBehaviour
             transform.name = path;
             await gltf.InstantiateMainSceneAsync(transform);
 
-            PrepareChildren(transform);
-
             ModelCache.Instance.CacheModel(path, this);
         }
         else
         {
             Debug.LogError("Loading glTF failed!");
         }
+    }
+
+    public void CachedSetup(string path)
+    {
+        this.path = path;
+
+        PrepareChildren(transform);
     }
 
     private void PrepareChildren(Transform parent)
@@ -116,17 +120,12 @@ public class ModelParent : MonoBehaviour
 
                     float rotateX = getReal3D.Input.GetAxis(Inputs.leftStickY);
                     float rotateY = getReal3D.Input.GetAxis(Inputs.leftStickX);
-                    float rotateZ = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder);
-
-                    //transform.Rotate(new Vector3(rotateX, 0, 0) * 20 * getReal3D.Cluster.deltaTime, Space.World);
-                    //transform.Rotate(new Vector3(0, rotateY, rotateZ) * 20 * getReal3D.Cluster.deltaTime, Space.Self);
 
                     transform.Rotate(new Vector3(0, -rotateY, 0) * 50 * getReal3D.Cluster.deltaTime, Space.World);
-                    //transform.Rotate(new Vector3(rotateX, 0, 0) * 50 * getReal3D.Cluster.deltaTime, Space.Self);
 
                     transform.RotateAround(transform.position, wand.right, rotateX * 50 * getReal3D.Cluster.deltaTime);
 
-                    if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder))
+                    if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {
                         transform.rotation = Quaternion.identity;
                     }
@@ -149,18 +148,6 @@ public class ModelParent : MonoBehaviour
             selectionAnchor.gameObject.SetActive(false);
         }
     }
-
-    //private void LateUpdate()
-    //{
-    //    if (hierachyCount != transform.hierarchyCount)
-    //    {
-    //        Debug.Log((hierachyCount, transform.hierarchyCount));
-
-    //        PrepareChildren(transform);
-
-    //        hierachyCount = transform.hierarchyCount;
-    //    }
-    //}
 
     public void Select(Vector3 selectionPoint)
     {

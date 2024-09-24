@@ -37,6 +37,9 @@ namespace Vertex
         public static string leftShoulder = "LeftShoulder";
         public static string rightShoulder = "RightShoulder";
 
+        public static string leftTrigger = "LeftTrigger";
+        public static string rightTrigger = "RightTrigger";
+
         public static string dpadUp = "DpadUp";
         public static string dpadDown = "DpadDown";
         public static string dpadLeft = "DpadLeft";

@@ -101,6 +101,7 @@ public class RadialMenu : MonoBehaviour
     private bool inMenu = false;
 
     [SerializeField] private ModelCache modelCache;
+    [SerializeField] private SceneDescriptionManager sceneDescriptionManager;
     [SerializeField] private Environments environments;
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
@@ -144,7 +145,7 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(); }),
                 new RadialQuadrantData("Environemnt", environmentIcon, () => { CreateEnvironmentExplorer(); }),
                 new RadialQuadrantData("Options", optionsIcon, () => { Debug.Log("ALRIGHT"); }),
-                new RadialQuadrantData("Record", recordIcon, () => { Debug.Log("Record"); }),
+                new RadialQuadrantData("Save", recordIcon, () => { sceneDescriptionManager.GenerateSceneDescription(); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
