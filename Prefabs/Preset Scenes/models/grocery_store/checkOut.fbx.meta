@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color_M04
+    second: {fileID: 2100000, guid: 8b5b4d1f6ce89014fb6f517a08a33dd2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Color_M06
     second: {fileID: 2100000, guid: d6e34678b8e0b4542bffd0ae7647e7a0, type: 2}
   - first:
@@ -43,7 +48,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Polished_Concrete_Old
-    second: {fileID: 2100000, guid: fcd30e3c6f14c2640a283c99f3407630, type: 2}
+    second: {fileID: 2100000, guid: 6af1420e3bb399348af166181dbd515f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

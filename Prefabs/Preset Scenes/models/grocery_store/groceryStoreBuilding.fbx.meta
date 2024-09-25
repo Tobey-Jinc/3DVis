@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Color_H04
+    second: {fileID: 2100000, guid: 7ae19471f4428fe4cbd555e39193979f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: FrontColor
     second: {fileID: 2100000, guid: 1d85f6ef3f892bc4ca71acdb32c251d0, type: 2}
   - first:
