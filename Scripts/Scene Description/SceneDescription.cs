@@ -15,7 +15,7 @@ public class SceneDescription
 [System.Serializable]
 public struct SDModel
 {
-    public string path;
+    public string id;
 
     public Vector3 position;
     public Quaternion rotation;

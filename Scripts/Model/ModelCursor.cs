@@ -113,4 +113,9 @@ public class ModelCursor : MonoBehaviour
     {
         selectedObject = selection;
     }
+
+    public void DeselectObject()
+    {
+        selectedObject = null;
+    }
 }

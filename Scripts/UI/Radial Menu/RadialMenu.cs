@@ -144,7 +144,7 @@ public class RadialMenu : MonoBehaviour
             {
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(); }),
                 new RadialQuadrantData("Environemnt", environmentIcon, () => { CreateEnvironmentExplorer(); }),
-                new RadialQuadrantData("Options", optionsIcon, () => { Debug.Log("ALRIGHT"); }),
+                new RadialQuadrantData("Options", optionsIcon, () => { sceneDescriptionManager.LoadSceneDescription(); }),
                 new RadialQuadrantData("Save", recordIcon, () => { sceneDescriptionManager.GenerateSceneDescription(); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),

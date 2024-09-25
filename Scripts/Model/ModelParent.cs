@@ -17,13 +17,13 @@ public class ModelParent : MonoBehaviour
     [SerializeField] private Sprite scaleIcon;
     [SerializeField] private Color scaleColor;
 
-    private string path;
+    private string folderName;
 
     private ModelCursor cursor;
     private Transform wand;
     private new Transform camera;
 
-    public string Path { get => path; }
+    public string FolderName { get => folderName; }
 
     private void Start()
     {
@@ -32,7 +32,7 @@ public class ModelParent : MonoBehaviour
         camera = wand.parent;
     }
 
-    public async Task Setup(string path)
+    public async Task Setup(string folder)
     {
         GltfImport gltf = new GltfImport();
 
@@ -44,14 +44,14 @@ public class ModelParent : MonoBehaviour
             NodeNameMethod = NameImportMethod.OriginalUnique
         };
         // Load the glTF and pass along the settings
-        bool success = await gltf.Load(path, settings);
+        bool success = await gltf.Load(Paths.GetModelFolder() + folder + "\\scene.gltf", settings);
 
         if (success)
         {
-            transform.name = path;
+            transform.name = folder;
             await gltf.InstantiateMainSceneAsync(transform);
 
-            ModelCache.Instance.CacheModel(path, this);
+            ModelCache.Instance.CacheModel(folder, this);
         }
         else
         {
@@ -59,9 +59,9 @@ public class ModelParent : MonoBehaviour
         }
     }
 
-    public void CachedSetup(string path)
+    public void CachedSetup(string folderName)
     {
-        this.path = path;
+        this.folderName = folderName;
 
         PrepareChildren(transform);
     }

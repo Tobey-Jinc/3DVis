@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Vertex;
 
 public class ModelCache : MonoBehaviour
 {
@@ -164,19 +167,21 @@ public class ModelCache : MonoBehaviour
 
     private void GenerateFileStructure(string folder)
     {
-        string[] folders = Directory.GetDirectories(Application.persistentDataPath + "\\models");
+        string[] folders = Directory.GetDirectories(Application.persistentDataPath + "\\models").Select(Path.GetFileName).ToArray();
         string[][] files = new string[folders.Length][];
 
         for (int i = 0; i < folders.Length; i++)
         {
             try
             {
-                string metaDataText = File.ReadAllText(folders[i] + "\\metadata.json");
+                Debug.Log(folders[i]);
+                string metaDataText = File.ReadAllText(Paths.GetModelFolder() + folders[i] + "\\metadata.json");
                 ModelMetaData metaData = JsonUtility.FromJson<ModelMetaData>(metaDataText);
 
                 Debug.Log(metaData.originalModelName);
                 Debug.Log(folders[i] + "\\scene.gltf");
-                files[i] = new string[] { metaData.modelDisplayName, folders[i] + "\\scene.gltf" };
+
+                files[i] = new string[] { metaData.modelDisplayName, folders[i] };
             }
             catch (Exception e)
             {
@@ -191,7 +196,7 @@ public class ModelCache : MonoBehaviour
         loadingScreen.enabled = false;
     }
 
-    private async void InstantiateModel(string modelPath)
+    private async Task<Transform> InstantiateModel(string modelPath)
     {
         ModelParent cachedModel = GetCachedModel(modelPath);
         if (cachedModel == null)
@@ -205,11 +210,11 @@ public class ModelCache : MonoBehaviour
             importedModel.gameObject.SetActive(false);
             CacheModel(modelPath, importedModel);
 
-            InstantiateModel(modelPath);
+            return await InstantiateModel(modelPath);
         }
         else
         {
-            ModelParent model = Instantiate(cachedModel);
+            ModelParent model = Instantiate(cachedModel, SceneDescriptionManager.Scene);
             model.CachedSetup(modelPath);
 
             if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
@@ -222,7 +227,18 @@ public class ModelCache : MonoBehaviour
             }
 
             model.gameObject.SetActive(true);
+
+            return model.transform;
         }
+    }
+
+    public async Task InstantiateModelFromSceneDescription(SDModel sdModel)
+    {
+        Transform model = await InstantiateModel(sdModel.id);
+
+        model.position = sdModel.position;
+        model.rotation = sdModel.rotation;
+        model.localScale = sdModel.scale;
     }
 
     public FileStructure GetFileStructure()

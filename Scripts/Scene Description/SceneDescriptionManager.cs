@@ -5,7 +5,18 @@ using System.IO;
 
 public class SceneDescriptionManager : MonoBehaviour
 {
+    public static Transform Scene;
+
+    [SerializeField] private Transform scene;
+
     [SerializeField] private Environments environments;
+    [SerializeField] private ModelCursor modelCursor;
+    [SerializeField] private ModelCache modelCache;
+
+    private void Awake()
+    {
+        Scene = scene;
+    }
 
     public void GenerateSceneDescription()
     {
@@ -22,7 +33,7 @@ public class SceneDescriptionManager : MonoBehaviour
             ModelParent modelParent = modelParents[i];
             SDModel model = new SDModel();
 
-            model.path = modelParent.Path;
+            model.id = modelParent.FolderName;
 
             model.position = modelParent.transform.position;
             model.rotation = modelParent.transform.localRotation;
@@ -41,5 +52,25 @@ public class SceneDescriptionManager : MonoBehaviour
         }
 
         File.WriteAllText(Application.persistentDataPath + "/Scenes/Save.json", sceneJSON);
+    }
+
+    public async void LoadSceneDescription()
+    {
+        modelCursor.DeselectObject();
+
+        foreach (Transform child in scene)
+        {
+            Destroy(child.gameObject);
+        }
+
+        string sceneJSON = File.ReadAllText(Application.persistentDataPath + "/Scenes/Save.json");
+        SceneDescription sceneDescription = JsonUtility.FromJson<SceneDescription>(sceneJSON);
+
+        environments.SetEnvironment(sceneDescription.environmentPresetID);
+
+        foreach (SDModel model in sceneDescription.models)
+        {
+            await modelCache.InstantiateModelFromSceneDescription(model);
+        }
     }
 }

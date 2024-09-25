@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace Vertex
 {
+    public class Paths
+    {
+        public static string GetModelFolder()
+        {
+            return Application.persistentDataPath + "/models/";
+        }
+    }
+
     /// <summary>
     /// Defines the colour palette for the 3DVis app
     /// </summary>

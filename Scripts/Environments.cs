@@ -37,7 +37,7 @@ public class Environments : MonoBehaviour
         SetEnvironment(environments[0].id);
     }
 
-    private void SetEnvironment(string id)
+    public void SetEnvironment(string id)
     {
         if (currentEnvironment != null)
         {
