@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5418094824596297068}
   - component: {fileID: 2978671437878830767}
-  - component: {fileID: 5771047179820919799}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -46,7 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 365481c70c43f1c4181c5c2a3f944033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asset: {fileID: 5771047179820919799}
   selectionAnchor: {fileID: 7779001679298955275}
   transformIcon: {fileID: 4966134296013680260}
   positionIcon: {fileID: 21300000, guid: 0cdab948e0966ce4ea9fca46dad5ec8a, type: 3}
@@ -55,37 +53,6 @@ MonoBehaviour:
   rotationColor: {r: 1, g: 0.55620337, b: 0, a: 1}
   scaleIcon: {fileID: 21300000, guid: 893d3bfda397d4d40bd66f84f113696d, type: 3}
   scaleColor: {r: 1, g: 0, b: 0.35794687, a: 1}
---- !u!114 &5771047179820919799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2220613907368479722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b781fe673a5534e91b1e802df4b9362e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  importSettings:
-    nodeNameMethod: 0
-    animationMethod: 1
-    generateMipMaps: 0
-    texturesReadable: 0
-    defaultMinFilterMode: 9729
-    defaultMagFilterMode: 9729
-    anisotropicFilterLevel: 1
-  url: 
-  loadOnStartup: 0
-  sceneId: -1
-  playAutomatically: 1
-  streamingAsset: 0
-  instantiationSettings:
-    mask: -1
-    layer: 0
-    skinUpdateWhenOffscreen: 1
-    lightIntensityFactor: 1
-    sceneObjectCreation: 2
 --- !u!1 &3749014760740547295
 GameObject:
   m_ObjectHideFlags: 0
