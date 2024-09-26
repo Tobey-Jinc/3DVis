@@ -105,6 +105,7 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private Environments environments;
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
+    [SerializeField] private KeyboardInput keyboardInput;
     [SerializeField] private RectTransform container;
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_Label;
@@ -144,8 +145,16 @@ public class RadialMenu : MonoBehaviour
             {
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(); }),
                 new RadialQuadrantData("Environemnt", environmentIcon, () => { CreateEnvironmentExplorer(); }),
-                new RadialQuadrantData("Options", optionsIcon, () => { sceneDescriptionManager.LoadSceneDescription(); }),
-                new RadialQuadrantData("Save", recordIcon, () => { sceneDescriptionManager.GenerateSceneDescription(); }),
+                new RadialQuadrantData("Options", optionsIcon, () => { CreateSceneExplorer(); }),
+                new RadialQuadrantData("Save", recordIcon, () => { 
+                    keyboardInput.Open("Name your scene", (string fileName) => 
+                        { 
+                            sceneDescriptionManager.SaveScene(fileName); 
+                        }, (string text) =>
+                        { 
+                            return sceneDescriptionManager.ValidateSceneName(text);
+                        }, "Scene name is already taken!"); 
+                }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
@@ -153,6 +162,8 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
             }
         );
+
+
 
         CreateMenu(
             Menu.Environments, Menu.Main, "Environment", new RadialQuadrantData[]
@@ -175,7 +186,7 @@ public class RadialMenu : MonoBehaviour
         if (inMenu)
         {
             // Only run logic if not in a file selection menu
-            if (!fileSelection.InMenu)
+            if (!fileSelection.InMenu && !keyboardInput.InMenu)
             {
                 // Try to select a quadrant
                 int index = SelectionIndex();
@@ -408,5 +419,13 @@ public class RadialMenu : MonoBehaviour
     private void CreateEnvironmentExplorer()
     {
         fileSelection.GenerateFileSelection(environments.GetFileStructure());
+    }
+
+    private void CreateSceneExplorer()
+    {
+        if (ModelCache.Loaded)
+        {
+            fileSelection.GenerateFileSelection(sceneDescriptionManager.GetFileStructure());
+        }
     }
 }

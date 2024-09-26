@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Vertex;
 
 public class SceneDescriptionManager : MonoBehaviour
 {
@@ -13,15 +14,35 @@ public class SceneDescriptionManager : MonoBehaviour
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private ModelCache modelCache;
 
+    private FileStructure fileStructure;
+
+    private List<string> takenNames = new List<string>();
+
     private void Awake()
     {
         Scene = scene;
     }
 
-    public void GenerateSceneDescription()
+    private void Start()
+    {
+        fileStructure = new FileStructure();
+        fileStructure.title = "Select a scene";
+        fileStructure.action = (string sceneName) => 
+        { 
+            LoadScene(sceneName); 
+        };
+
+        string[] scenes = Directory.GetFiles(Paths.GetSceneFolder());
+        foreach (string scene in scenes)
+        {
+            takenNames.Add(Path.GetFileNameWithoutExtension(scene));
+        }
+    }
+
+    public void SaveScene(string sceneName)
     {
         SceneDescription sd = new SceneDescription();
-        sd.name = "My Cool Scene";
+
         sd.environmentPresetID = environments.CurrentEnvironmentID;
 
         // Save Models
@@ -45,16 +66,18 @@ public class SceneDescriptionManager : MonoBehaviour
         sd.models = models;
 
         string sceneJSON = JsonUtility.ToJson(sd, true);
-
-        if (!Directory.Exists(Application.persistentDataPath + "/Scenes"))
+        
+        if (!Directory.Exists(Paths.GetSceneFolder()))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/Scenes");
+            Directory.CreateDirectory(Paths.GetSceneFolder());
         }
 
-        File.WriteAllText(Application.persistentDataPath + "/Scenes/Save.json", sceneJSON);
+        File.WriteAllText(Paths.GetSceneFolder() + sceneName + ".json", sceneJSON);
+
+        takenNames.Add(sceneName);
     }
 
-    public async void LoadSceneDescription()
+    private async void LoadScene(string sceneName)
     {
         modelCursor.DeselectObject();
 
@@ -63,7 +86,7 @@ public class SceneDescriptionManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        string sceneJSON = File.ReadAllText(Application.persistentDataPath + "/Scenes/Save.json");
+        string sceneJSON = File.ReadAllText(Paths.GetSceneFolder() + sceneName + ".json");
         SceneDescription sceneDescription = JsonUtility.FromJson<SceneDescription>(sceneJSON);
 
         environments.SetEnvironment(sceneDescription.environmentPresetID);
@@ -72,5 +95,26 @@ public class SceneDescriptionManager : MonoBehaviour
         {
             await modelCache.InstantiateModelFromSceneDescription(model);
         }
+    }
+
+    public FileStructure GetFileStructure()
+    {
+        string[] sceneFiles = Directory.GetFiles(Paths.GetSceneFolder());
+        string[][] scenes = new string[sceneFiles.Length][];
+
+        for (int i = 0; i < sceneFiles.Length; i++)
+        {
+            string sceneName = Path.GetFileNameWithoutExtension(sceneFiles[i]);
+            scenes[i] = new string[] { sceneName, sceneName };
+        }
+
+        fileStructure.SetFiles(scenes);
+
+        return fileStructure;
+    }
+
+    public bool ValidateSceneName(string sceneName)
+    {
+        return !takenNames.Contains(sceneName);
     }
 }

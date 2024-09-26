@@ -10,6 +10,11 @@ namespace Vertex
         {
             return Application.persistentDataPath + "/models/";
         }
+
+        public static string GetSceneFolder()
+        {
+            return Application.persistentDataPath + "/scenes/";
+        }
     }
 
     /// <summary>

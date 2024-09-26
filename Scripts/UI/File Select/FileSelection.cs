@@ -142,6 +142,7 @@ public class FileSelection : MonoBehaviour
                 fileView.Setup(this, i, fileName);
             }
 
+            fileView.transform.SetAsLastSibling();
             fileViews.Add(fileView);
         }
 

@@ -18,6 +18,8 @@ public class FileView : MonoBehaviour
 
     public void Setup(int index, string fileName)
     {
+        gameObject.SetActive(true);
+
         this.index = index;
         t_File.SetText(fileName);
     }
@@ -36,6 +38,8 @@ public class FileView : MonoBehaviour
         t_File.color = Palette.white;
 
         rectTransform.localScale = Vector3.one;
+
+        gameObject.SetActive(false);
     }
 
     private void Update()
