@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.3038717, g: 0.3456254, b: 0.39067236, a: 1}
+  m_IndirectSpecularColor: {r: 0.30395204, g: 0.3457104, b: 0.39074534, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -186,42 +186,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &375243411
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Default UI Material
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,6 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 813393805}
   - component: {fileID: 813393804}
+  - component: {fileID: 813393806}
   m_Layer: 0
   m_Name: Model Cache
   m_TagString: Untagged
@@ -345,8 +310,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8accf213b8e4a254588c96cfa5bd3e5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkFolderDownloader: {fileID: 813393806}
   wand: {fileID: 1072295604}
   modelParentPrefab: {fileID: 2978671437878830767, guid: c865886036cafe94e864371c021be913, type: 3}
+  viewpoint: {fileID: 959666172205233061}
   loadingScreen: {fileID: 3049501425882908649}
 --- !u!4 &813393805
 Transform:
@@ -363,6 +330,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &813393806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 813393803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89c7f4816f4e5c4d88fb56b13344a54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &869446976 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6240459841559022284, guid: a0fef0e68948c644598b6a974faba092, type: 3}
@@ -630,7 +609,6 @@ MonoBehaviour:
     nodeNameMethod: 0
     animationMethod: 1
     generateMipMaps: 0
-    texturesReadable: 0
     defaultMinFilterMode: 9729
     defaultMagFilterMode: 9729
     anisotropicFilterLevel: 1
@@ -970,6 +948,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1888028573}
   - component: {fileID: 1888028574}
+  - component: {fileID: 1888028575}
   m_Layer: 0
   m_Name: Scene Description
   m_TagString: Untagged
@@ -1005,9 +984,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scene: {fileID: 1973436778}
+  networkFolderDownloader: {fileID: 1888028575}
   environments: {fileID: 129981201}
   modelCursor: {fileID: 1332706886}
   modelCache: {fileID: 813393804}
+--- !u!114 &1888028575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1888028572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c89c7f4816f4e5c4d88fb56b13344a54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1973436777
 GameObject:
   m_ObjectHideFlags: 0
@@ -1175,7 +1167,7 @@ GameObject:
   - component: {fileID: 959666172205233062}
   - component: {fileID: 959666172205233063}
   - component: {fileID: 959666172205233064}
-  m_Layer: 29
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1955,11 +1947,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -842527.7
+      value: -1216050.8
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -853989.25
+      value: -1257687.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841919804584, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1997,6 +1989,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
+      propertyPath: viewpoint
+      value: 
+      objectReference: {fileID: 959666172205233061}
     - target: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: modelCache
       value: 

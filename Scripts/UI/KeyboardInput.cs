@@ -15,6 +15,7 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_ValidationFailed;
     [SerializeField] private RectTransform attention;
+    [SerializeField] private GameObject windowNotFocusedWarning;
 
     private string text;
     private string previousText;
@@ -23,6 +24,8 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
     private string validationFailedText;
 
     private string setTextMethod = "SetText";
+    private string submitMethod = "Submit";
+    private string cancelMethod = "Cancel";
 
     public bool InMenu { get => inMenu; }
 
@@ -32,6 +35,8 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         {
             if (getReal3D.Cluster.isMaster)
             {
+                windowNotFocusedWarning.SetActive(!Application.isFocused);
+
                 if (Input.GetKeyDown(KeyCode.Backspace))
                 {
                     if (text.Length > 0)
@@ -44,6 +49,8 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
                     if (validationMethod == null || validationMethod.Invoke(text))
                     {
                         action?.Invoke(text);
+                        CallRpc(submitMethod, text);
+
                         inMenu = false;
                     }
                     else
@@ -91,6 +98,7 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         {
             if (Input.GetKeyDown(KeyCode.Escape) || getReal3D.Input.GetButtonDown(Inputs.b))
             {
+                CallRpc(cancelMethod);
                 inMenu = false;
             }
         }
@@ -102,6 +110,25 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         if (!getReal3D.Cluster.isMaster)
         {
             this.text = text;
+        }
+    }
+
+    [getReal3D.RPC]
+    void Submit(string text)
+    {
+        if (!getReal3D.Cluster.isMaster)
+        {
+            action?.Invoke(text);
+            inMenu = false;
+        }
+    }
+
+    [getReal3D.RPC]
+    void Cancel()
+    {
+        if (!getReal3D.Cluster.isMaster)
+        {
+            inMenu = false;
         }
     }
 

@@ -10,6 +10,7 @@ public class SceneDescriptionManager : MonoBehaviour
 
     [SerializeField] private Transform scene;
 
+    [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
     [SerializeField] private Environments environments;
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private ModelCache modelCache;
@@ -32,6 +33,16 @@ public class SceneDescriptionManager : MonoBehaviour
             LoadScene(sceneName); 
         };
 
+        if (!Directory.Exists(Paths.GetSceneFolder()))
+        {
+            Directory.CreateDirectory(Paths.GetSceneFolder());
+        }
+
+        networkFolderDownloader.Download("scenes", () => { StoreTakenNames(); });
+    }
+
+    public void StoreTakenNames()
+    {
         string[] scenes = Directory.GetFiles(Paths.GetSceneFolder());
         foreach (string scene in scenes)
         {
@@ -41,40 +52,48 @@ public class SceneDescriptionManager : MonoBehaviour
 
     public void SaveScene(string sceneName)
     {
-        SceneDescription sd = new SceneDescription();
-
-        sd.environmentPresetID = environments.CurrentEnvironmentID;
-
-        // Save Models
-        ModelParent[] modelParents = FindObjectsOfType<ModelParent>();
-        SDModel[] models = new SDModel[modelParents.Length];
-
-        for (int i = 0; i < modelParents.Length; i++)
+        try
         {
-            ModelParent modelParent = modelParents[i];
-            SDModel model = new SDModel();
+            SceneDescription sd = new SceneDescription();
 
-            model.id = modelParent.FolderName;
+            sd.environmentPresetID = environments.CurrentEnvironmentID;
 
-            model.position = modelParent.transform.position;
-            model.rotation = modelParent.transform.localRotation;
-            model.scale = modelParent.transform.localScale;
+            // Save Models
+            ModelParent[] modelParents = FindObjectsOfType<ModelParent>();
+            SDModel[] models = new SDModel[modelParents.Length];
 
-            models[i] = model;
+            for (int i = 0; i < modelParents.Length; i++)
+            {
+                ModelParent modelParent = modelParents[i];
+                SDModel model = new SDModel();
+
+                model.id = modelParent.FolderName;
+
+                model.position = modelParent.transform.position;
+                model.rotation = modelParent.transform.localRotation;
+                model.scale = modelParent.transform.localScale;
+
+                models[i] = model;
+            }
+
+            sd.models = models;
+
+            string sceneJSON = JsonUtility.ToJson(sd, true);
+
+            File.WriteAllText(Paths.GetSceneFolder() + sceneName + ".json", sceneJSON);
+
+            if (getReal3D.Cluster.isMaster)
+            {
+                File.WriteAllText("\\\\CAVE-HEADNODE\\data\\3dvis\\scenes\\" + sceneName + ".json", sceneJSON);
+            }
+
+            takenNames.Add(sceneName);
         }
-
-        sd.models = models;
-
-        string sceneJSON = JsonUtility.ToJson(sd, true);
-        
-        if (!Directory.Exists(Paths.GetSceneFolder()))
+        catch (System.Exception e)
         {
-            Directory.CreateDirectory(Paths.GetSceneFolder());
+            Debug.Log("ERROR OCCURRED WHILE SAVING SCENE");
+            Debug.Log(e);
         }
-
-        File.WriteAllText(Paths.GetSceneFolder() + sceneName + ".json", sceneJSON);
-
-        takenNames.Add(sceneName);
     }
 
     private async void LoadScene(string sceneName)

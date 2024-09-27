@@ -7,20 +7,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Vertex;
 
-public class ModelCache : MonoBehaviour
+public class ModelCache : getReal3D.MonoBehaviourWithRpc
 {
     public static ModelCache Instance;
     public static bool Loaded = false;
 
+    [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
     [SerializeField] private Transform wand;
     [SerializeField] private ModelParent modelParentPrefab;
+    [SerializeField] private Viewpoint viewpoint;
 
     [Header("Loading UI")]
     [SerializeField] private Canvas loadingScreen;
 
     private FileStructure fileStructure;
 
-    private Dictionary<string, ModelParent> cachedModels = new();
+    private Dictionary<string, ModelParent> cachedModels = new Dictionary<string, ModelParent>();
+
+    private string instantiateModelSyncedMethod = "InstantiateModelSynced";
 
     private void Awake()
     {
@@ -31,142 +35,14 @@ public class ModelCache : MonoBehaviour
     {
         fileStructure = new FileStructure();
         fileStructure.title = "Select a model";
-        fileStructure.action = (string file) => { InstantiateModel(file); };
+        fileStructure.action = (string file) => { InstantiateModelSetup(file); };
 
-#if !UNITY_EDITOR
-        Debug.Log(Application.persistentDataPath);
-        string currentDir = Application.persistentDataPath + "\\models\\";
-        ClearWorkingDirectory(currentDir);
-        StartCoroutine(WaitForAvailability());
-#endif
-
-#if UNITY_EDITOR
-        GenerateFileStructure(Application.persistentDataPath + "\\models");
-#endif
+        networkFolderDownloader.Download("models", () => { GenerateFileStructure(); });
     }
 
-    private void ClearWorkingDirectory(string directory)
+    private void GenerateFileStructure()
     {
-        if (Directory.Exists(directory))
-        {
-            DirectoryInfo di = new DirectoryInfo(directory);
-
-            foreach (FileInfo file in di.GetFiles())
-            {
-                try
-                {
-                    file.Delete();
-                    Debug.Log("deleted file " + file.Name);
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("file: it failed sad " + file.Name + " " + e);
-                }
-            }
-            foreach (DirectoryInfo dir in di.GetDirectories())
-            {
-                try
-                {
-                    dir.Delete(true);
-                    Debug.Log("deleted directory " + dir.Name);
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("directory: it failed sad " + dir.Name + " " + e);
-                }
-            }
-        }
-        
-    }
-
-    private IEnumerator WaitForAvailability()
-    {
-        string currentDir = Application.persistentDataPath + "\\models\\";
-        Debug.Log(currentDir);
-        //copy all models from shared network folder to currentdirectory/models
-
-        Vector2Int fileCounts = Vector2Int.zero;
-
-        yield return new WaitUntil(() =>
-        {
-            fileCounts = CopyFilesRecursively("\\\\CAVE-HEADNODE\\data\\3dvis\\models", currentDir);
-
-            return fileCounts.x != -1 && fileCounts.y != -1;
-        });
-
-        StartCoroutine(WaitForFile(currentDir, fileCounts.x, fileCounts.y));
-    }
-
-    private Vector2Int CopyFilesRecursively(string sourcePath, string targetPath)
-    {
-        Vector2Int files = Vector2Int.zero;
-
-        try
-        {
-            //Now Create all of the directories
-            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
-            {
-                files.x++;
-                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
-            }
-
-            //Copy all the files & Replaces any files with the same name
-            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-            {
-                files.y++;
-                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
-                Debug.Log(sourcePath);
-                Debug.Log(newPath);
-                Debug.Log(targetPath);
-
-            }
-            Debug.Log("complete");
-        }
-        catch (Exception e)
-        {
-            Debug.Log(e);
-
-            files = new Vector2Int(-1, -1);
-        }
-
-        return files;
-    }
-
-    private IEnumerator WaitForFile(string folder, int folderCount, int fileCount)
-    {
-        yield return new WaitUntil(() =>
-        {
-            int folders = 0;
-            int files = 0;
-            try
-            {
-                //Now Create all of the directories
-                foreach (string dirPath in Directory.GetDirectories(folder, "*", SearchOption.AllDirectories))
-                {
-                    folders++;
-                }
-
-                //Copy all the files & Replaces any files with the same name
-                foreach (string newPath in Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories))
-                {
-                    files++;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }
-            Debug.Log((folderCount, fileCount, folders, files));
-            return folderCount == folders && fileCount == files;
-        });
-
-        GenerateFileStructure(folder);
-
-        //model.Load(folder + "/stylized_rock/scene.gltf");
-    }
-
-    private void GenerateFileStructure(string folder)
-    {
+        string folder = Application.persistentDataPath + "\\models";
         string[] folders = Directory.GetDirectories(Application.persistentDataPath + "\\models").Select(Path.GetFileName).ToArray();
         string[][] files = new string[folders.Length][];
 
@@ -196,7 +72,35 @@ public class ModelCache : MonoBehaviour
         loadingScreen.enabled = false;
     }
 
-    private async Task<Transform> InstantiateModel(string modelPath)
+    private void InstantiateModelSetup(string modelPath)
+    {
+        if (getReal3D.Cluster.isMaster)
+        {
+            Vector3 spawnPosition;
+            if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
+            {
+                spawnPosition = hit.point;
+            }
+            else
+            {
+                spawnPosition = wand.position + (wand.forward * 10);
+            }
+
+            CallRpc(instantiateModelSyncedMethod, modelPath, spawnPosition);
+            InstantiateModel(modelPath, spawnPosition);
+        }
+    }
+
+    [getReal3D.RPC]
+    private void InstantiateModelSynced(string modelPath, Vector3 spawnPosition)
+    {
+        if (!getReal3D.Cluster.isMaster)
+        {
+            InstantiateModel(modelPath, spawnPosition);
+        }
+    }
+
+    private async Task<Transform> InstantiateModel(string modelPath, Vector3 spawnPosition)
     {
         ModelParent cachedModel = GetCachedModel(modelPath);
         if (cachedModel == null)
@@ -210,23 +114,18 @@ public class ModelCache : MonoBehaviour
             importedModel.gameObject.SetActive(false);
             CacheModel(modelPath, importedModel);
 
-            return await InstantiateModel(modelPath);
+            return await InstantiateModel(modelPath, spawnPosition);
         }
         else
         {
             ModelParent model = Instantiate(cachedModel, SceneDescriptionManager.Scene);
             model.CachedSetup(modelPath);
 
-            if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
-            {
-                model.transform.position = hit.point;
-            }
-            else
-            {
-                model.transform.position = wand.position + (wand.forward * 10);
-            }
+            model.transform.position = spawnPosition;
 
             model.gameObject.SetActive(true);
+
+            viewpoint.SyncTransformWithHeadnode();
 
             return model.transform;
         }
@@ -234,9 +133,8 @@ public class ModelCache : MonoBehaviour
 
     public async Task InstantiateModelFromSceneDescription(SDModel sdModel)
     {
-        Transform model = await InstantiateModel(sdModel.id);
+        Transform model = await InstantiateModel(sdModel.id, sdModel.position);
 
-        model.position = sdModel.position;
         model.rotation = sdModel.rotation;
         model.localScale = sdModel.scale;
     }

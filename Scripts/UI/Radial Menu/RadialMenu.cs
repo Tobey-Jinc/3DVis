@@ -106,10 +106,12 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private KeyboardInput keyboardInput;
+    [SerializeField] private Viewpoint viewpoint;
     [SerializeField] private RectTransform container;
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_Label;
     [SerializeField] private TMP_Text t_Page;
+    [SerializeField] private TMP_Text t_LT;
 
     [Header("Quadrants")]
     [SerializeField] private Quadrant topLeft;
@@ -155,7 +157,7 @@ public class RadialMenu : MonoBehaviour
                             return sceneDescriptionManager.ValidateSceneName(text);
                         }, "Scene name is already taken!"); 
                 }),
-                new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
+                new RadialQuadrantData("Sync", recordIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
@@ -183,6 +185,8 @@ public class RadialMenu : MonoBehaviour
 
     void Update()
     {
+        t_LT.SetText(getReal3D.Input.GetButton(Inputs.leftTrigger).ToString());
+
         if (inMenu)
         {
             // Only run logic if not in a file selection menu
@@ -249,7 +253,7 @@ public class RadialMenu : MonoBehaviour
         else
         {
             // Activate radial menu
-            if (modelCursor.SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.b))
+            if (modelCursor.SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.a) && !modelCursor.Active)
             {
                 currentMenu = Menu.Main;
                 GoToMenu(currentMenu);

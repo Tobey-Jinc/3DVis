@@ -22,11 +22,9 @@ public class ModelCursor : MonoBehaviour
     [SerializeField] private Material foundModelMaterial;
     [SerializeField] private Material didNotModelMaterial;
 
-    private TransformMode transformMode = TransformMode.Position;
-    private Transform selectedObject = null;
-
-    public TransformMode TransformMode { get => transformMode; }
-    public Transform SelectedObject { get => selectedObject; }
+    public TransformMode TransformMode { get; private set; } = TransformMode.Position;
+    public Transform SelectedObject { get; private set; } = null;
+    public bool Active { get; private set; } = false;
 
     public delegate void SelectEvent(Transform selection, Vector3 selectionPoint);
     public event SelectEvent OnSelect;
@@ -38,8 +36,10 @@ public class ModelCursor : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!radialMenu.InMenu && selectedObject == null && getReal3D.Input.GetButton(Inputs.rightShoulder))
+        if (!radialMenu.InMenu && SelectedObject == null && getReal3D.Input.GetButton(Inputs.rightShoulder))
         {
+            Active = true;
+
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(0, wand.position);
 
@@ -67,10 +67,12 @@ public class ModelCursor : MonoBehaviour
         }
         else
         {
+            Active = false;
+
             lineRenderer.enabled = false;
             cursor.gameObject.SetActive(false);
 
-            if (selectedObject != null)
+            if (SelectedObject != null)
             {
                 if (getReal3D.Input.GetButtonDown(Inputs.a))
                 {
@@ -86,12 +88,12 @@ public class ModelCursor : MonoBehaviour
                 }
                 else if (getReal3D.Input.GetButtonDown(Inputs.b))
                 {
-                    selectedObject = null;
+                    SelectedObject = null;
                 }
                 else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder))
                 {
-                    Destroy(selectedObject.gameObject);
-                    selectedObject = null;
+                    Destroy(SelectedObject.gameObject);
+                    SelectedObject = null;
                 }
             }
         }
@@ -99,23 +101,23 @@ public class ModelCursor : MonoBehaviour
 
     private void SetTransformMode(TransformMode desiredMode)
     {
-        if (transformMode != desiredMode)
+        if (TransformMode != desiredMode)
         {
-            transformMode = desiredMode;
+            TransformMode = desiredMode;
         }
         else
         {
-            transformMode = TransformMode.None;
+            TransformMode = TransformMode.None;
         }
     }
 
     public void SelectObject(Transform selection)
     {
-        selectedObject = selection;
+        SelectedObject = selection;
     }
 
     public void DeselectObject()
     {
-        selectedObject = null;
+        SelectedObject = null;
     }
 }

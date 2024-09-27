@@ -42,9 +42,9 @@ namespace Vertex
     /// </summary>
     public class Inputs
     {
-        public static string a = "A";
-        public static string b = "B";
-        public static string x = "X";
+        public static string a = "B";
+        public static string b = "X";
+        public static string x = "A";
         public static string y = "Y";
 
         public static string leftShoulder = "LeftShoulder";

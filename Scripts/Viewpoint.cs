@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vertex;
 
-public class Viewpoint : MonoBehaviour
+public class Viewpoint : getReal3D.MonoBehaviourWithRpc
 {
     [SerializeField] private ModelCursor modelCursor;
     [SerializeField] private RadialMenu radialMenu;
@@ -16,6 +16,8 @@ public class Viewpoint : MonoBehaviour
     [SerializeField] private float lookSpeed;
 
     private float xRotation = 0;
+
+    private string syncTransformMethod = "SyncTransform";
 
     void Update()
     {
@@ -41,5 +43,25 @@ public class Viewpoint : MonoBehaviour
     private bool CanMove()
     {
         return !radialMenu.InMenu && (modelCursor.SelectedObject == null || modelCursor.TransformMode == TransformMode.None);
+    }
+
+    public void SyncTransformWithHeadnode()
+    {
+        if (getReal3D.Cluster.isMaster)
+        {
+            CallRpc(syncTransformMethod, transform.position, xRotation);
+        }
+    }
+
+    [getReal3D.RPC]
+    private void SyncTransform(Vector3 position, float xRotation)
+    {
+        if (!getReal3D.Cluster.isMaster)
+        {
+            transform.position = position;
+
+            this.xRotation = xRotation;
+            cameraTransform.rotation = Quaternion.Euler(0, xRotation, 0);
+        }
     }
 }
