@@ -103,7 +103,7 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private ModelCache modelCache;
     [SerializeField] private SceneDescriptionManager sceneDescriptionManager;
     [SerializeField] private Environments environments;
-    [SerializeField] private ModelCursor modelCursor;
+    [SerializeField] private ObjectCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private KeyboardInput keyboardInput;
     [SerializeField] private Viewpoint viewpoint;
@@ -158,7 +158,7 @@ public class RadialMenu : MonoBehaviour
                         }, "Scene name is already taken!"); 
                 }),
                 new RadialQuadrantData("Sync", recordIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
-                new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
+                new RadialQuadrantData("Record2", recordIcon, () => { modelCache.InstantiateTextObject(); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
                 new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),

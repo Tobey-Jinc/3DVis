@@ -14,8 +14,11 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
     [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
     [SerializeField] private Transform wand;
-    [SerializeField] private ModelParent modelParentPrefab;
     [SerializeField] private Viewpoint viewpoint;
+
+    [Header("Prefabs")]
+    [SerializeField] private ModelParent modelParentPrefab;
+    [SerializeField] private TextObject textObjectPrefab;
 
     [Header("Loading UI")]
     [SerializeField] private Canvas loadingScreen;
@@ -72,19 +75,21 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
         loadingScreen.enabled = false;
     }
 
+    private Vector3 GetSpawnPosition()
+    {
+        if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
+        {
+            return hit.point;
+        }
+        
+        return wand.position + (wand.forward * 10);
+    }
+
     private void InstantiateModelSetup(string modelPath)
     {
         if (getReal3D.Cluster.isMaster)
         {
-            Vector3 spawnPosition;
-            if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
-            {
-                spawnPosition = hit.point;
-            }
-            else
-            {
-                spawnPosition = wand.position + (wand.forward * 10);
-            }
+            Vector3 spawnPosition = GetSpawnPosition();
 
             CallRpc(instantiateModelSyncedMethod, modelPath, spawnPosition);
             InstantiateModel(modelPath, spawnPosition);
@@ -137,6 +142,15 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
         model.rotation = sdModel.rotation;
         model.localScale = sdModel.scale;
+    }
+
+    public void InstantiateTextObject()
+    {
+        TextObject textObject = Instantiate(textObjectPrefab, SceneDescriptionManager.Scene);
+
+        textObject.transform.position = GetSpawnPosition();
+        textObject.transform.LookAt(wand.position);
+        textObject.transform.rotation = Quaternion.Euler(0, -textObject.transform.eulerAngles.y, 0);
     }
 
     public FileStructure GetFileStructure()

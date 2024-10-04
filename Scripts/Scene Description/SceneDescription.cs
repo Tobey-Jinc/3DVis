@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class SceneDescription
 {
+    public string category;
+
     public string environmentPresetID;
 
     public SDModel[] models;

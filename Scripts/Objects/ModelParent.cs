@@ -7,29 +7,21 @@ using System.Threading.Tasks;
 
 public class ModelParent : MonoBehaviour
 {
-    [Header("Selection")]
-    [SerializeField] private Transform selectionAnchor;
-    [SerializeField] private SpriteRenderer transformIcon;
-    [SerializeField] private Sprite positionIcon;
-    [SerializeField] private Color positionColor;
-    [SerializeField] private Sprite rotationIcon;
-    [SerializeField] private Color rotationColor;
-    [SerializeField] private Sprite scaleIcon;
-    [SerializeField] private Color scaleColor;
-
     private string folderName;
 
-    private ModelCursor cursor;
-    private Transform wand;
-    private new Transform camera;
+    [SerializeField] private Transform selectionAnchor;
+
+    private ObjectCursor cursor;
+
+    private TransformMode[] transformModes;
 
     public string FolderName { get => folderName; }
 
     private void Start()
     {
-        cursor = ModelCursor.Instance;
-        wand = WandTransform.Instance.Transform;
-        camera = wand.parent;
+        cursor = ObjectCursor.Instance;
+
+        transformModes = new[] { TransformMode.Position, TransformMode.Rotation, TransformMode.Scale };
     }
 
     public async Task Setup(string folder)
@@ -93,49 +85,19 @@ public class ModelParent : MonoBehaviour
     {
         if (cursor.SelectedObject == transform)
         {
-            selectionAnchor.gameObject.SetActive(true);
-            selectionAnchor.LookAt(camera);
-
-            switch (cursor.TransformMode)
+            switch (cursor.CursorTransformMode)
             {
-                case TransformMode.None:
-                    transformIcon.color = Color.black;
-
-                    break;
-
                 case TransformMode.Position:
-                    transformIcon.sprite = positionIcon;
-                    transformIcon.color = positionColor;
-
-                    Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
-                    float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
-
-                    transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * 5 * getReal3D.Cluster.deltaTime, Space.World);
+                    cursor.Position(transform);
 
                     break;
 
                 case TransformMode.Rotation:
-                    transformIcon.sprite = rotationIcon;
-                    transformIcon.color = rotationColor;
-
-                    float rotateX = getReal3D.Input.GetAxis(Inputs.leftStickY);
-                    float rotateY = getReal3D.Input.GetAxis(Inputs.leftStickX);
-
-                    transform.Rotate(new Vector3(0, -rotateY, 0) * 50 * getReal3D.Cluster.deltaTime, Space.World);
-
-                    transform.RotateAround(transform.position, wand.right, rotateX * 50 * getReal3D.Cluster.deltaTime);
-
-                    if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
-                    {
-                        transform.rotation = Quaternion.identity;
-                    }
+                    cursor.Rotate(transform);
 
                     break;
 
                 case TransformMode.Scale:
-                    transformIcon.sprite = scaleIcon;
-                    transformIcon.color = scaleColor;
-
                     float scaleInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
                     transform.localScale += Vector3.one * scaleInput * getReal3D.Cluster.deltaTime;
@@ -143,15 +105,11 @@ public class ModelParent : MonoBehaviour
                     break;
             }
         }
-        else
-        {
-            selectionAnchor.gameObject.SetActive(false);
-        }
     }
 
     public void Select(Vector3 selectionPoint)
     {
         selectionAnchor.position = selectionPoint;
-        cursor.SelectObject(transform);
+        cursor.SelectObject(transform, transformModes, selectionAnchor);
     }
 }

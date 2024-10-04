@@ -8,6 +8,8 @@ using System.IO;
 
 public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
 {
+    public static KeyboardInput Instance;
+
     private bool inMenu = false;
 
     [SerializeField] private Canvas canvas;
@@ -28,6 +30,11 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
     private string cancelMethod = "Cancel";
 
     public bool InMenu { get => inMenu; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Update()
     {
@@ -132,14 +139,14 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         }
     }
 
-    public void Open(string title, UnityAction<string> action, System.Func<string, bool> validationMethod = null, string validationFailedText = "") 
+    public void Open(string title, UnityAction<string> action, System.Func<string, bool> validationMethod = null, string validationFailedText = "", string startText = "") 
     {
         this.action = action;
         this.validationMethod = validationMethod;
         this.validationFailedText = validationFailedText;
 
-        text = string.Empty;
-        previousText = string.Empty;
+        text = startText;
+        previousText = startText;
 
         t_InputField.SetText(text);
         t_Title.SetText(title);

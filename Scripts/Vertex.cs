@@ -58,6 +58,9 @@ namespace Vertex
         public static string dpadLeft = "DpadLeft";
         public static string dpadRight = "DpadRight";
 
+        public static string dpadUpDown = "UpDown";
+        public static string dpadLeftRight = "LeftRight";
+
         public static string leftStickX = "Yaw";
         public static string leftStickY = "Forward";
 

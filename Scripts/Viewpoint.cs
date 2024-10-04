@@ -5,7 +5,7 @@ using Vertex;
 
 public class Viewpoint : getReal3D.MonoBehaviourWithRpc
 {
-    [SerializeField] private ModelCursor modelCursor;
+    [SerializeField] private ObjectCursor modelCursor;
     [SerializeField] private RadialMenu radialMenu;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private Transform cameraTransform;
@@ -42,7 +42,7 @@ public class Viewpoint : getReal3D.MonoBehaviourWithRpc
 
     private bool CanMove()
     {
-        return !radialMenu.InMenu && (modelCursor.SelectedObject == null || modelCursor.TransformMode == TransformMode.None);
+        return !radialMenu.InMenu && (modelCursor.SelectedObject == null || modelCursor.CursorTransformMode == TransformMode.None);
     }
 
     public void SyncTransformWithHeadnode()

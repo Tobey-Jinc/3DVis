@@ -12,7 +12,7 @@ public class SceneDescriptionManager : MonoBehaviour
 
     [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
     [SerializeField] private Environments environments;
-    [SerializeField] private ModelCursor modelCursor;
+    [SerializeField] private ObjectCursor modelCursor;
     [SerializeField] private ModelCache modelCache;
 
     private FileStructure fileStructure;

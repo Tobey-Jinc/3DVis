@@ -10,7 +10,7 @@ public class ModelChild : MonoBehaviour
 
     void Start()
     {
-        ModelCursor.Instance.OnSelect += OnSelect;
+        ObjectCursor.Instance.OnSelect += OnSelect;
     }
 
     private void OnSelect(Transform selection, Vector3 selectionPoint)
@@ -23,6 +23,6 @@ public class ModelChild : MonoBehaviour
 
     private void OnDestroy()
     {
-        ModelCursor.Instance.OnSelect -= OnSelect;
+        ObjectCursor.Instance.OnSelect -= OnSelect;
     }
 }
