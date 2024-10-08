@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.30395204, g: 0.3457104, b: 0.39074534, a: 1}
+  m_IndirectSpecularColor: {r: 0.3038717, g: 0.3456254, b: 0.39067236, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -189,7 +189,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &552443898
+--- !u!21 &289592826
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -438,6 +438,8 @@ MonoBehaviour:
   viewpoint: {fileID: 959666172205233061}
   modelParentPrefab: {fileID: 2978671437878830767, guid: c865886036cafe94e864371c021be913, type: 3}
   textObjectPrefab: {fileID: 2008912516190639547, guid: 82a7ad52ed84853468893b6e0c7d37c4, type: 3}
+  lightObjectPrefab: {fileID: 4067333700910176444, guid: c84f8c420cba74c4b93b062930187c5b, type: 3}
+  audioObjectPrefab: {fileID: 4536888784785387890, guid: 40647649b9347fd4994552154a8c8bbf, type: 3}
   loadingScreen: {fileID: 3049501425882908649}
 --- !u!4 &813393805
 Transform:
@@ -733,6 +735,7 @@ MonoBehaviour:
     nodeNameMethod: 0
     animationMethod: 1
     generateMipMaps: 0
+    texturesReadable: 0
     defaultMinFilterMode: 9729
     defaultMagFilterMode: 9729
     anisotropicFilterLevel: 1
@@ -956,6 +959,55 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!1 &1371836662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1371836663}
+  - component: {fileID: 1371836664}
+  m_Layer: 0
+  m_Name: Audio Library
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1371836663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371836662}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1371836664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371836662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f053cd82d6b614458eb43c744470914, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - id: Super Market
+    displayName: Super Market
+    audioClip: {fileID: 8300000, guid: 6f8faf403dd5fe4438ea96b66ba0ecc3, type: 3}
+  modelCache: {fileID: 813393804}
 --- !u!114 &1453926406 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
@@ -1072,6 +1124,55 @@ Material:
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_BuildTextureStacks: []
+--- !u!1 &1681452661
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1681452662}
+  - component: {fileID: 1681452663}
+  m_Layer: 0
+  m_Name: Model Library
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1681452662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681452661}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1681452663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1681452661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9c8fc68a05fef648be6791e3e68d090, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  models:
+  - id: Arrow
+    displayName: Arrow
+    prefab: {fileID: 4349961232569173657, guid: 6f2c840d2b1a4564b9e8fb5fbdd3b30f, type: 3}
+  modelCache: {fileID: 813393804}
 --- !u!1 &1888028572
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,11 +2214,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -2843871.5
+      value: -4655355.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -2923334.2
+      value: -4747568.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841919804584, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchorMax.x
@@ -2168,9 +2269,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1332706886}
     - target: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
+      propertyPath: audioLibrary
+      value: 
+      objectReference: {fileID: 1371836664}
+    - target: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: environments
       value: 
       objectReference: {fileID: 129981201}
+    - target: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
+      propertyPath: modelLibrary
+      value: 
+      objectReference: {fileID: 1681452663}
     - target: {fileID: 6240459843221378954, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: keyboardInput
       value: 

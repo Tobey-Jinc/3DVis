@@ -16,6 +16,9 @@ public class TextObject : MonoBehaviour
 
     private TransformMode[] transformModes;
 
+    public TMP_Text Text { get => t_Text; }
+    public RectTransform RectTransform { get => rectTransform; }
+
     void Start()
     {
         cursor = ObjectCursor.Instance;
@@ -82,9 +85,14 @@ public class TextObject : MonoBehaviour
             {
                 keyboardInput.Open("Set Text", (string text) => { t_Text.SetText(text); }, startText: t_Text.text);
             }
-
-            boxCollider.center = Vector3.zero;
-            boxCollider.size = new Vector3(t_Text.bounds.size.x + padding.x, t_Text.bounds.size.y + padding.y, 1);
         }
+
+        UpdateCollider();
+    }
+
+    private void UpdateCollider()
+    {
+        boxCollider.size = t_Text.bounds.size;
+        boxCollider.center = t_Text.bounds.center;
     }
 }

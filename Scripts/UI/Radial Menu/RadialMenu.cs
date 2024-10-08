@@ -103,6 +103,8 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private ModelCache modelCache;
     [SerializeField] private SceneDescriptionManager sceneDescriptionManager;
     [SerializeField] private Environments environments;
+    [SerializeField] private ModelLibrary modelLibrary;
+    [SerializeField] private AudioLibrary audioLibrary;
     [SerializeField] private ObjectCursor modelCursor;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private KeyboardInput keyboardInput;
@@ -158,10 +160,10 @@ public class RadialMenu : MonoBehaviour
                         }, "Scene name is already taken!"); 
                 }),
                 new RadialQuadrantData("Sync", recordIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
-                new RadialQuadrantData("Record2", recordIcon, () => { modelCache.InstantiateTextObject(); }),
-                new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
-                new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
-                new RadialQuadrantData("Record2", recordIcon, () => { Debug.Log("Record2"); }),
+                new RadialQuadrantData("Text", recordIcon, () => { modelCache.InstantiateTextObject(); }),
+                new RadialQuadrantData("Light", recordIcon, () => { modelCache.InstantiateLightObject(); }),
+                new RadialQuadrantData("Audio", recordIcon, () => { CreateAudioLibraryExplorer(); }),
+                new RadialQuadrantData("Model Library", recordIcon, () => { CreateModelLibraryExplorer(); }),
             }
         );
 
@@ -185,8 +187,6 @@ public class RadialMenu : MonoBehaviour
 
     void Update()
     {
-        t_LT.SetText(getReal3D.Input.GetButton(Inputs.leftTrigger).ToString());
-
         if (inMenu)
         {
             // Only run logic if not in a file selection menu
@@ -431,5 +431,15 @@ public class RadialMenu : MonoBehaviour
         {
             fileSelection.GenerateFileSelection(sceneDescriptionManager.GetFileStructure());
         }
+    }
+
+    private void CreateAudioLibraryExplorer()
+    {
+        fileSelection.GenerateFileSelection(audioLibrary.GetFileStructure());
+    }
+
+    private void CreateModelLibraryExplorer()
+    {
+        fileSelection.GenerateFileSelection(modelLibrary.GetFileStructure());
     }
 }

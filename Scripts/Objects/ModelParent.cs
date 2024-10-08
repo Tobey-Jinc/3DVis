@@ -10,12 +10,14 @@ public class ModelParent : MonoBehaviour
     private string folderName;
 
     [SerializeField] private Transform selectionAnchor;
+    [SerializeField] private bool libraryModel;
 
     private ObjectCursor cursor;
 
     private TransformMode[] transformModes;
 
-    public string FolderName { get => folderName; }
+    public string FolderName { get => folderName; set => folderName = value; }
+    public bool LibraryModel { get => libraryModel; }
 
     private void Start()
     {

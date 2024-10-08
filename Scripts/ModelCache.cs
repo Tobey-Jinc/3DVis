@@ -19,6 +19,8 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
     [Header("Prefabs")]
     [SerializeField] private ModelParent modelParentPrefab;
     [SerializeField] private TextObject textObjectPrefab;
+    [SerializeField] private LightObject lightObjectPrefab;
+    [SerializeField] private AudioObject audioObjectPrefab;
 
     [Header("Loading UI")]
     [SerializeField] private Canvas loadingScreen;
@@ -144,6 +146,14 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
         model.localScale = sdModel.scale;
     }
 
+    public void InstantiateModelFromLibrary(Model model)
+    {
+        ModelParent modelParent = Instantiate(model.prefab, SceneDescriptionManager.Scene);
+        modelParent.FolderName = model.id;
+
+        modelParent.transform.position = GetSpawnPosition();
+    }
+
     public void InstantiateTextObject()
     {
         TextObject textObject = Instantiate(textObjectPrefab, SceneDescriptionManager.Scene);
@@ -151,6 +161,22 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
         textObject.transform.position = GetSpawnPosition();
         textObject.transform.LookAt(wand.position);
         textObject.transform.rotation = Quaternion.Euler(0, -textObject.transform.eulerAngles.y, 0);
+    }
+
+    public void InstantiateLightObject()
+    {
+        LightObject lightObject = Instantiate(lightObjectPrefab, SceneDescriptionManager.Scene);
+
+        lightObject.transform.position = GetSpawnPosition();
+    }
+
+    public void InstantiateAudioObject(Audio audio)
+    {
+        AudioObject audioObject = Instantiate(audioObjectPrefab, SceneDescriptionManager.Scene);
+
+        audioObject.transform.position = GetSpawnPosition();
+
+        audioObject.Setup(audio);
     }
 
     public FileStructure GetFileStructure()

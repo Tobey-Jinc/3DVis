@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ModelChild : MonoBehaviour
 {
-    private ModelParent parent;
+    [SerializeField] private ModelParent parent;
 
     public ModelParent Parent { get => parent; set => parent = value; }
 
