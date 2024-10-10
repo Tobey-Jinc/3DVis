@@ -14,6 +14,7 @@ public class FileSelection : MonoBehaviour
     [SerializeField] private float inputDelay = 0.25f;
     [SerializeField] private RectTransform container;
     [SerializeField] private ScrollRect scrollRect;
+    [SerializeField] private GameObject noFilesFoundWarning;
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_Category;
     [SerializeField] private TMP_Text t_PreviousCategory;
@@ -49,70 +50,79 @@ public class FileSelection : MonoBehaviour
     {
         if (inMenu)
         {
-            int dpadInput = Inputs.Composite(Inputs.dpadDown, Inputs.dpadUp);
-            int stickInput = Inputs.AxisToInt(Inputs.leftStickY) * -1;
-            int input = Mathf.Clamp(dpadInput + stickInput, -1, 1);
-
-            if (input != 0)
+            if (fileStructure.files.Count > 0)
             {
-                if (!prolongingInput)
+                noFilesFoundWarning.SetActive(false);
+
+                int dpadInput = Inputs.Composite(Inputs.dpadDown, Inputs.dpadUp);
+                int stickInput = Inputs.AxisToInt(Inputs.leftStickY) * -1;
+                int input = Mathf.Clamp(dpadInput + stickInput, -1, 1);
+
+                if (input != 0)
                 {
-                    prolongingInput = true;
-                    prolongedInput = input;
-                    StartCoroutine(ProlongInput());
+                    if (!prolongingInput)
+                    {
+                        prolongingInput = true;
+                        prolongedInput = input;
+                        StartCoroutine(ProlongInput());
+                    }
+                    else if (input != prolongedInput)
+                    {
+                        prolongingInput = false;
+                        StopAllCoroutines();
+                    }
                 }
-                else if (input != prolongedInput)
+                else
                 {
                     prolongingInput = false;
                     StopAllCoroutines();
                 }
-            }
-            else
-            {
-                prolongingInput = false;
-                StopAllCoroutines();
-            }
 
-            if (scrollRect.verticalScrollbar.gameObject.activeInHierarchy)
-            {
-                scrollRect.content.pivot = new Vector2(0, 0);
-            }
-            else
-            {
-                scrollRect.content.pivot = new Vector2(0, 1);
-            }
-
-            Canvas.ForceUpdateCanvases();
-
-            Vector2 pos = (Vector2)scrollRect.transform.InverseTransformPoint(scrollRect.content.position)
-                           - (Vector2)scrollRect.transform.InverseTransformPoint(fileViews[selectionIndex].transform.position);
-
-            Vector2 scrollPos = new Vector2(scrollRect.content.anchoredPosition.x, pos.y - scrollOffset);
-            scrollRect.content.anchoredPosition = Vector2.Lerp(scrollRect.content.anchoredPosition, scrollPos, 10 * getReal3D.Cluster.deltaTime);
-
-            scrollRect.verticalNormalizedPosition = Mathf.Clamp(scrollRect.verticalNormalizedPosition, 0, 1);
-            scrollRect.horizontalNormalizedPosition = Mathf.Clamp(scrollRect.horizontalNormalizedPosition, 0, 1);
-
-            container.localScale = Vector3.Lerp(container.localScale, Vector3.one, Data.menuScaleSpeed * getReal3D.Cluster.deltaTime);
-
-            if (fileStructure.categories.Length > 1)
-            {
-                int categoryScroll = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder, false);
-                if (categoryScroll != 0)
+                if (scrollRect.verticalScrollbar.gameObject.activeInHierarchy)
                 {
-                    categoryIndex += categoryScroll;
-                    if (categoryIndex < 0)
-                    {
-                        categoryIndex = fileStructure.categories.Length - 1;
-                    }
-                    else if (categoryIndex > fileStructure.categories.Length - 1)
-                    {
-                        categoryIndex = 0;
-                    }
+                    scrollRect.content.pivot = new Vector2(0, 0);
+                }
+                else
+                {
+                    scrollRect.content.pivot = new Vector2(0, 1);
+                }
 
-                    GenerateFileSelection(fileStructure, fileStructure.categories[categoryIndex]);
+                Canvas.ForceUpdateCanvases();
+
+                Vector2 pos = (Vector2)scrollRect.transform.InverseTransformPoint(scrollRect.content.position)
+                               - (Vector2)scrollRect.transform.InverseTransformPoint(fileViews[selectionIndex].transform.position);
+
+                Vector2 scrollPos = new Vector2(scrollRect.content.anchoredPosition.x, pos.y - scrollOffset);
+                scrollRect.content.anchoredPosition = Vector2.Lerp(scrollRect.content.anchoredPosition, scrollPos, 10 * getReal3D.Cluster.deltaTime);
+
+                scrollRect.verticalNormalizedPosition = Mathf.Clamp(scrollRect.verticalNormalizedPosition, 0, 1);
+                scrollRect.horizontalNormalizedPosition = Mathf.Clamp(scrollRect.horizontalNormalizedPosition, 0, 1);
+
+                if (fileStructure.categories.Length > 1)
+                {
+                    int categoryScroll = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder, false);
+                    if (categoryScroll != 0)
+                    {
+                        categoryIndex += categoryScroll;
+                        if (categoryIndex < 0)
+                        {
+                            categoryIndex = fileStructure.categories.Length - 1;
+                        }
+                        else if (categoryIndex > fileStructure.categories.Length - 1)
+                        {
+                            categoryIndex = 0;
+                        }
+
+                        GenerateFileSelection(fileStructure, fileStructure.categories[categoryIndex]);
+                    }
                 }
             }
+            else
+            {
+                noFilesFoundWarning.SetActive(true);
+            }
+
+            container.localScale = Vector3.Lerp(container.localScale, Vector3.one, Data.menuScaleSpeed * getReal3D.Cluster.deltaTime);
         }
         else
         {
@@ -159,7 +169,15 @@ public class FileSelection : MonoBehaviour
 
         this.fileStructure = fileStructure;
         this.category = category;
-        fileCount = fileStructure.files[category].Count;
+
+        if (fileStructure.files.Count > 0)
+        {
+            fileCount = fileStructure.files[category].Count;
+        }
+        else
+        {
+            fileCount = 0;
+        }
 
         t_Title.SetText(fileStructure.title);
 

@@ -15,7 +15,7 @@ public class AudioObject : MonoBehaviour
     private ObjectCursor cursor;
     private KeyboardInput keyboardInput;
 
-    private TransformMode[] transformModes;
+    private TransformModeAndControls[] transformModes;
 
     public Audio MyAudio { get; private set; }
 
@@ -29,7 +29,13 @@ public class AudioObject : MonoBehaviour
         cursor.OnSelect += Cursor_OnSelect;
         cursor.OnCopy += Cursor_OnCopy;
 
-        transformModes = new[] { TransformMode.Position, TransformMode.Scale, TransformMode.Volume };
+        transformModes = new TransformModeAndControls[] {
+            new(TransformMode.Position, $"{Data.switchControl}Move <sprite=6>    Up / Down <sprite=9>"),
+            new(TransformMode.Scale, $"{Data.switchControl}Max Range <sprite=8>    Min Range <sprite=8>"),
+            new(TransformMode.Volume, $"{Data.switchControl}Volume <sprite=8>")
+        };
+
+        cursor.SelectObject(transform, transformModes, transform);
     }
 
     public void Setup(Audio audio)

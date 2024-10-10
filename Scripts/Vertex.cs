@@ -116,5 +116,7 @@ namespace Vertex
         public static float menuScaleSpeed = 30f;
 
         public const string allCategory = "All";
+
+        public const string switchControl = "Switch <sprite=0>    ";
     }
 }

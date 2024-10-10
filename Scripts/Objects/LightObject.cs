@@ -15,7 +15,7 @@ public class LightObject : MonoBehaviour
     private ObjectCursor cursor;
     private KeyboardInput keyboardInput;
 
-    private TransformMode[] transformModes;
+    private TransformModeAndControls[] transformModes;
 
     private int colorIndex;
 
@@ -30,7 +30,13 @@ public class LightObject : MonoBehaviour
         cursor.OnSelect += Cursor_OnSelect;
         cursor.OnCopy += Cursor_OnCopy;
 
-        transformModes = new[] { TransformMode.Position, TransformMode.Scale, TransformMode.Brightness };
+        transformModes = new TransformModeAndControls[] {
+            new(TransformMode.Position, $"{Data.switchControl}Colour <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>"),
+            new(TransformMode.Scale, $"{Data.switchControl}Colour <sprite=3>    Range <sprite=8>"),
+            new(TransformMode.Brightness, $"{Data.switchControl}Colour <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>")
+        };
+
+        cursor.SelectObject(transform, transformModes, transform);
     }
 
     public void Setup(SDLight sdLight)

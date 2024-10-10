@@ -14,7 +14,7 @@ public class ModelParent : MonoBehaviour
 
     private ObjectCursor cursor;
 
-    private TransformMode[] transformModes;
+    private TransformModeAndControls[] transformModes;
 
     public string FolderName { get => folderName; set => folderName = value; }
     public bool LibraryModel { get => libraryModel; }
@@ -23,7 +23,13 @@ public class ModelParent : MonoBehaviour
     {
         cursor = ObjectCursor.Instance;
 
-        transformModes = new[] { TransformMode.Position, TransformMode.Rotation, TransformMode.Scale };
+        transformModes = new TransformModeAndControls[] { 
+            new(TransformMode.Position, $"{Data.switchControl}Move <sprite=6>    Up / Down <sprite=9>"),
+            new(TransformMode.Rotation, $"{Data.switchControl}Rotate <sprite=6>    Reset <sprite=5>"),
+            new(TransformMode.Scale, $"{Data.switchControl}Scale <sprite=6>")
+        };
+
+        cursor.SelectObject(transform, transformModes, selectionAnchor);
     }
 
     public async Task Setup(string folder)

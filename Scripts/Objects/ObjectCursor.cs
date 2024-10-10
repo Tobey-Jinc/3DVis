@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 using Vertex;
+using TMPro;
 
 public enum TransformMode
 {
@@ -13,6 +14,18 @@ public enum TransformMode
     TextSize,
     Volume,
     Brightness
+}
+
+public struct TransformModeAndControls
+{
+    public TransformMode transformMode;
+    public string controls;
+
+    public TransformModeAndControls(TransformMode transformMode, string controls)
+    {
+        this.transformMode = transformMode;
+        this.controls = controls;
+    }
 }
 
 public class ObjectCursor : MonoBehaviour
@@ -29,6 +42,8 @@ public class ObjectCursor : MonoBehaviour
     [SerializeField] private Material foundModelMaterial;
     [SerializeField] private Material didNotFindModelMaterial;
     [SerializeField] private Material quickPlaceMaterial;
+    [SerializeField] private RectTransform controls;
+    [SerializeField] private TMP_Text t_Controls;
 
     [Header("Selection")]
     [SerializeField] private Transform cameraTransform;
@@ -42,8 +57,11 @@ public class ObjectCursor : MonoBehaviour
     [SerializeField] private Color scaleColor;
     private Transform selectionAnchor;
 
-    private TransformMode[] transformModes;
+    private TransformModeAndControls[] transformModes;
     private int transformModeIndex = 0;
+
+    private string paintControls = "Create <sprite=0>    Copy <sprite=3>    Paste <sprite=2>";
+    private string selectionControls = "Select <sprite=0>";
 
     public TransformMode CursorTransformMode { get; private set; } = TransformMode.Position;
     public Transform SelectedObject { get; private set; } = null;
@@ -62,7 +80,7 @@ public class ObjectCursor : MonoBehaviour
 
     private void Update()
     {
-        if (SelectedObject != null)
+        if (!radialMenu.InMenu && SelectedObject != null)
         {
             transformIcon.LookAt(cameraTransform);
             transformIcon.position = selectionAnchor.position;
@@ -103,10 +121,28 @@ public class ObjectCursor : MonoBehaviour
                     transformIconSprite.color = scaleColor;
                     break;
             }
+
+            t_Controls.SetText(transformModes[transformModeIndex].controls);
+            controls.localScale = Vector3.one;
+        }
+        else if (Active)
+        {
+            if (getReal3D.Input.GetButton(Inputs.leftShoulder))
+            {
+                t_Controls.SetText(paintControls);
+            }
+            else
+            {
+                t_Controls.SetText(selectionControls);
+            }
+
+            controls.localScale = Vector3.one;
         }
         else
         {
             transformIcon.gameObject.SetActive(false);
+
+            controls.localScale = Vector3.zero;
         }
     }
 
@@ -177,7 +213,7 @@ public class ObjectCursor : MonoBehaviour
                 }
             }
         }
-        else
+        else if (!radialMenu.InMenu)
         {
             Active = false;
 
@@ -194,13 +230,13 @@ public class ObjectCursor : MonoBehaviour
                         transformModeIndex = 0;
                     }
 
-                    CursorTransformMode = transformModes[transformModeIndex];
+                    CursorTransformMode = transformModes[transformModeIndex].transformMode;
                 }
                 else if (getReal3D.Input.GetButtonDown(Inputs.x))
                 {
                     if (CursorTransformMode == TransformMode.None)
                     {
-                        CursorTransformMode = transformModes[transformModeIndex];
+                        CursorTransformMode = transformModes[transformModeIndex].transformMode;
                     }
                     else
                     {
@@ -228,12 +264,12 @@ public class ObjectCursor : MonoBehaviour
         lineRenderer.SetPosition(1, hit.point + (hit.normal * 0.1f));
     }
 
-    public void SelectObject(Transform selection, TransformMode[] transformModes, Transform selectionAnchor)
+    public void SelectObject(Transform selection, TransformModeAndControls[] transformModes, Transform selectionAnchor)
     {
         this.transformModes = transformModes;
         transformModeIndex = 0;
 
-        CursorTransformMode = transformModes[transformModeIndex];
+        CursorTransformMode = transformModes[transformModeIndex].transformMode;
 
         this.selectionAnchor = selectionAnchor;
 

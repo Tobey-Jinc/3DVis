@@ -15,7 +15,7 @@ public class TextObject : MonoBehaviour
     private ObjectCursor cursor;
     private KeyboardInput keyboardInput;
 
-    private TransformMode[] transformModes;
+    private TransformModeAndControls[] transformModes;
 
     private int colorIndex;
 
@@ -31,9 +31,15 @@ public class TextObject : MonoBehaviour
         cursor.OnSelect += Cursor_OnSelect;
         cursor.OnCopy += Cursor_OnCopy;
 
-        transformModes = new[] { TransformMode.Position, TransformMode.Rotation, TransformMode.TextSize };
+        transformModes = new TransformModeAndControls[] {
+            new(TransformMode.Position, $"{Data.switchControl}Set Text <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=9>"),
+            new(TransformMode.Rotation, $"{Data.switchControl}Set Text <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
+            new(TransformMode.TextSize, $"{Data.switchControl}Set Text <sprite=3>    Font Size <sprite=8>    Width <sprite=9>")
+        };
 
         t_Text.alignment = TextAlignmentOptions.Left;
+
+        cursor.SelectObject(transform, transformModes, transform);
     }
 
     public void Setup(SDText sdText)
