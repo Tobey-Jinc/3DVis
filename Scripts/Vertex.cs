@@ -67,10 +67,20 @@ namespace Vertex
         public static string rightStickX = "Strafe";
         public static string rightStickY = "Pitch";
 
-        public static int Composite(string positiveInput, string negativeInput)
+        public static int Composite(string positiveInput, string negativeInput, bool hold = true)
         {
-            bool positive = getReal3D.Input.GetButton(positiveInput);
-            bool negative = getReal3D.Input.GetButton(negativeInput);
+            bool positive, negative;
+
+            if (hold)
+            {
+                positive = getReal3D.Input.GetButton(positiveInput);
+                negative = getReal3D.Input.GetButton(negativeInput);
+            }
+            else
+            {
+                positive = getReal3D.Input.GetButtonDown(positiveInput);
+                negative = getReal3D.Input.GetButtonDown(negativeInput);
+            }
 
             if (positive && !negative)
             {
@@ -104,5 +114,7 @@ namespace Vertex
     public class Data
     {
         public static float menuScaleSpeed = 30f;
+
+        public const string allCategory = "All";
     }
 }

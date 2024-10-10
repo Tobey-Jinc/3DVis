@@ -28,13 +28,37 @@ public class LightObject : MonoBehaviour
         keyboardInput = KeyboardInput.Instance;
 
         cursor.OnSelect += Cursor_OnSelect;
+        cursor.OnCopy += Cursor_OnCopy;
 
         transformModes = new[] { TransformMode.Position, TransformMode.Scale, TransformMode.Brightness };
     }
 
+    public void Setup(SDLight sdLight)
+    {
+        transform.position = sdLight.position;
+
+        SetColor(sdLight.colorIndex);
+        colorIndex = sdLight.colorIndex;
+
+        lightSource.range = sdLight.range;
+        lightSource.intensity = sdLight.intensity;
+        lightSource.shadows = sdLight.shadows;
+    }
+
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
-        cursor.SelectObject(transform, transformModes, transform);
+        if (selection == transform)
+        {
+            cursor.SelectObject(transform, transformModes, transform);
+        }
+    }
+
+    private void Cursor_OnCopy(Transform selection)
+    {
+        if (selection == transform)
+        {
+            ModelCache.Instance.Copy(transform);
+        }
     }
 
     void Update()
@@ -105,5 +129,11 @@ public class LightObject : MonoBehaviour
         meshRenderer.material = material;
 
         lightSource.color = color;
+    }
+
+    private void OnDestroy()
+    {
+        cursor.OnSelect -= Cursor_OnSelect;
+        cursor.OnCopy -= Cursor_OnCopy;
     }
 }

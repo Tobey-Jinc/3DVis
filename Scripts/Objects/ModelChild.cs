@@ -10,10 +10,11 @@ public class ModelChild : MonoBehaviour
 
     void Start()
     {
-        ObjectCursor.Instance.OnSelect += OnSelect;
+        ObjectCursor.Instance.OnSelect += Cursor_OnSelect;
+        ObjectCursor.Instance.OnCopy += Cursor_OnCopy;
     }
 
-    private void OnSelect(Transform selection, Vector3 selectionPoint)
+    private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
         if (selection == transform)
         {
@@ -21,8 +22,17 @@ public class ModelChild : MonoBehaviour
         }
     }
 
+    private void Cursor_OnCopy(Transform selection)
+    {
+        if (selection == transform)
+        {
+            ModelCache.Instance.Copy(transform);
+        }
+    }
+
     private void OnDestroy()
     {
-        ObjectCursor.Instance.OnSelect -= OnSelect;
+        ObjectCursor.Instance.OnSelect -= Cursor_OnSelect;
+        ObjectCursor.Instance.OnCopy -= Cursor_OnCopy;
     }
 }

@@ -1,28 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
-public struct FileStructure
+public class FileStructure
 {
     public string title;
-    public string[][] files;
+    public Dictionary<string, List<string[]>> files;
     public UnityAction<string> action;
+    public bool closeOnSelect;
+    public string[] categories;
+    
+    public FileStructure() { }
 
-    public int fileCount;
-
-    public FileStructure(string title, string[][] files, UnityAction<string> action)
+    public FileStructure(string title, Dictionary<string, List<string[]>> files, UnityAction<string> action)
     {
         this.title = title;
-        this.files = files;
         this.action = action;
 
-        fileCount = files.GetLength(0);
+        SetFiles(files);
+
+        closeOnSelect = false;
     }
 
-    public void SetFiles(string[][] files)
+    public FileStructure(string title, Dictionary<string, List<string[]>> files)
+    {
+        this.title = title;
+
+        SetFiles(files);
+
+        action = null;
+        closeOnSelect = false;
+    }
+
+    public void SetFiles(Dictionary<string, List<string[]>> files)
     {
         this.files = files;
-        fileCount = files.GetLength(0);
+
+        categories = files.Keys.ToArray();
     }
 }

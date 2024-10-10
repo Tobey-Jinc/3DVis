@@ -12,7 +12,8 @@ public enum Menu
 {
     None,
     Main,
-    Environments
+    Environments,
+    QuickPlace
 }
 
 /// <summary>
@@ -105,7 +106,7 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private Environments environments;
     [SerializeField] private ModelLibrary modelLibrary;
     [SerializeField] private AudioLibrary audioLibrary;
-    [SerializeField] private ObjectCursor modelCursor;
+    [SerializeField] private ObjectCursor cursor;
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private KeyboardInput keyboardInput;
     [SerializeField] private Viewpoint viewpoint;
@@ -147,7 +148,7 @@ public class RadialMenu : MonoBehaviour
         CreateMenu(
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
             {
-                new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(); }),
+                new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(false); }),
                 new RadialQuadrantData("Environemnt", environmentIcon, () => { CreateEnvironmentExplorer(); }),
                 new RadialQuadrantData("Options", optionsIcon, () => { CreateSceneExplorer(); }),
                 new RadialQuadrantData("Save", recordIcon, () => { 
@@ -162,8 +163,8 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Sync", recordIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
                 new RadialQuadrantData("Text", recordIcon, () => { modelCache.InstantiateTextObject(); }),
                 new RadialQuadrantData("Light", recordIcon, () => { modelCache.InstantiateLightObject(); }),
-                new RadialQuadrantData("Audio", recordIcon, () => { CreateAudioLibraryExplorer(); }),
-                new RadialQuadrantData("Model Library", recordIcon, () => { CreateModelLibraryExplorer(); }),
+                new RadialQuadrantData("Audio", recordIcon, () => { CreateAudioLibraryExplorer(false); }),
+                new RadialQuadrantData("Model Library", recordIcon, () => { CreateModelLibraryExplorer(false); }),
             }
         );
 
@@ -177,6 +178,19 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Environemnt3", environmentIcon, () => { Debug.Log("Environment3"); }),
                 new RadialQuadrantData("Environemnt4", environmentIcon, () => { Debug.Log("Environment4"); }),
                 new RadialQuadrantData("Environemnt5", environmentIcon, () => { Debug.Log("Environment5"); }),
+            }
+        );
+
+
+
+        CreateMenu(
+            Menu.QuickPlace, Menu.None, "Quick Place", new RadialQuadrantData[]
+            {
+                new RadialQuadrantData("Model", modelIcon, () => { CreateModelExplorer(true); }),
+                new RadialQuadrantData("Text", modelIcon, () => { modelCache.InstantiateTextObject(cursor.GetCursorPosition(), true); Close(); }),
+                new RadialQuadrantData("Light", modelIcon, () => { modelCache.InstantiateLightObject(cursor.GetCursorPosition(), true); Close(); }),
+                new RadialQuadrantData("Audio", modelIcon, () => { CreateAudioLibraryExplorer(true); }),
+                new RadialQuadrantData("Model Library", modelIcon, () => { CreateModelLibraryExplorer(true); }),
             }
         );
 
@@ -223,13 +237,13 @@ public class RadialMenu : MonoBehaviour
 
                 if (getReal3D.Input.GetButtonDown(Inputs.b)) // Go back
                 {
-                    if (currentMenu != Menu.Main)
+                    if (menus[currentMenu].previousMenu != Menu.None)
                     {
                         GoToMenu(menus[currentMenu].previousMenu);
                     }
                     else // Close radial menu if in main menu
                     {
-                        inMenu = false;
+                        Close();
                     }
                 }
                 else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder)) // Previous page
@@ -253,13 +267,16 @@ public class RadialMenu : MonoBehaviour
         else
         {
             // Activate radial menu
-            if (modelCursor.SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.a) && !modelCursor.Active)
+            if (cursor.SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.a))
             {
-                currentMenu = Menu.Main;
-                GoToMenu(currentMenu);
-                inMenu = true;
-
-                SelectFirstQuadrant();
+                if (!cursor.Active)
+                {
+                    Open(Menu.Main);
+                }
+                else if (getReal3D.Input.GetButton(Inputs.leftShoulder))
+                {
+                    Open(Menu.QuickPlace);
+                }
             }
 
             // Hide radial menu
@@ -334,6 +351,15 @@ public class RadialMenu : MonoBehaviour
     private void CreateMenu(Menu menu, Menu previousMenu, string title, RadialQuadrantData[] quadrants)
     {
         menus.Add(menu, new RadialMenuData(title, quadrants, previousMenu));
+    }
+
+    private void Open(Menu startMenu)
+    {
+        currentMenu = startMenu;
+        GoToMenu(currentMenu);
+        inMenu = true;
+
+        SelectFirstQuadrant();
     }
 
     /// <summary>
@@ -412,11 +438,11 @@ public class RadialMenu : MonoBehaviour
         bottomLeft.TryToSelect(false);
     }
 
-    private void CreateModelExplorer()
+    private void CreateModelExplorer(bool quickPlace)
     {
         if (ModelCache.Loaded)
         {
-            fileSelection.GenerateFileSelection(modelCache.GetFileStructure());
+            fileSelection.GenerateFileSelection(modelCache.GetFileStructure(quickPlace));
         }
     }
 
@@ -433,13 +459,18 @@ public class RadialMenu : MonoBehaviour
         }
     }
 
-    private void CreateAudioLibraryExplorer()
+    private void CreateAudioLibraryExplorer(bool quickPlace)
     {
-        fileSelection.GenerateFileSelection(audioLibrary.GetFileStructure());
+        fileSelection.GenerateFileSelection(audioLibrary.GetFileStructure(quickPlace));
     }
 
-    private void CreateModelLibraryExplorer()
+    private void CreateModelLibraryExplorer(bool quickPlace)
     {
-        fileSelection.GenerateFileSelection(modelLibrary.GetFileStructure());
+        fileSelection.GenerateFileSelection(modelLibrary.GetFileStructure(quickPlace));
+    }
+
+    public void Close()
+    {
+        inMenu = false;
     }
 }

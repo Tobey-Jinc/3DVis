@@ -10,14 +10,18 @@ public class TextObject : MonoBehaviour
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private Vector2 padding;
+    [SerializeField] private Color[] colors;
 
     private ObjectCursor cursor;
     private KeyboardInput keyboardInput;
 
     private TransformMode[] transformModes;
 
+    private int colorIndex;
+
     public TMP_Text Text { get => t_Text; }
     public RectTransform RectTransform { get => rectTransform; }
+    public int ColorIndex { get => colorIndex; }
 
     void Start()
     {
@@ -25,15 +29,42 @@ public class TextObject : MonoBehaviour
         keyboardInput = KeyboardInput.Instance;
 
         cursor.OnSelect += Cursor_OnSelect;
+        cursor.OnCopy += Cursor_OnCopy;
 
         transformModes = new[] { TransformMode.Position, TransformMode.Rotation, TransformMode.TextSize };
 
         t_Text.alignment = TextAlignmentOptions.Left;
     }
 
+    public void Setup(SDText sdText)
+    {
+        t_Text.SetText(sdText.text);
+
+        transform.position = sdText.position;
+        transform.rotation = sdText.rotation;
+
+        SetColor(sdText.colorIndex);
+        colorIndex = sdText.colorIndex;
+
+        t_Text.fontSize = sdText.fontSize;
+
+        rectTransform.sizeDelta = new Vector2(sdText.width, rectTransform.sizeDelta.y);
+    }
+
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
-        cursor.SelectObject(transform, transformModes, transform);
+        if (selection == boxCollider.transform)
+        {
+            cursor.SelectObject(transform, transformModes, transform);
+        }
+    }
+
+    private void Cursor_OnCopy(Transform selection)
+    {
+        if (selection == transform)
+        {
+            ModelCache.Instance.Copy(transform);
+        }
     }
 
     void Update()
@@ -44,6 +75,17 @@ public class TextObject : MonoBehaviour
             {
                 case TransformMode.Position:
                     cursor.Position(transform);
+
+                    if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
+                    {
+                        colorIndex++;
+                        if (colorIndex >= colors.Length)
+                        {
+                            colorIndex = 0;
+                        }
+
+                        SetColor(colorIndex);
+                    }
 
                     break;
 
@@ -94,5 +136,18 @@ public class TextObject : MonoBehaviour
     {
         boxCollider.size = t_Text.bounds.size;
         boxCollider.center = t_Text.bounds.center;
+    }
+
+    private void SetColor(int index)
+    {
+        Color color = colors[index];
+
+        t_Text.color = colors[index];   
+    }
+
+    private void OnDestroy()
+    {
+        cursor.OnSelect -= Cursor_OnSelect;
+        cursor.OnCopy -= Cursor_OnCopy;
     }
 }

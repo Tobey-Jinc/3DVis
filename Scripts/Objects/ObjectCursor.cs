@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using Vertex;
 
@@ -18,13 +19,16 @@ public class ObjectCursor : MonoBehaviour
 {
     public static ObjectCursor Instance;
 
+    [SerializeField] private ModelCache modelCache;
     [SerializeField] private RadialMenu radialMenu;
     [SerializeField] private KeyboardInput keyboardInput;
     [SerializeField] private Transform wand;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Transform cursor;
+    [SerializeField] private SpriteRenderer cursorRenderer;
     [SerializeField] private Material foundModelMaterial;
-    [SerializeField] private Material didNotModelMaterial;
+    [SerializeField] private Material didNotFindModelMaterial;
+    [SerializeField] private Material quickPlaceMaterial;
 
     [Header("Selection")]
     [SerializeField] private Transform cameraTransform;
@@ -47,6 +51,9 @@ public class ObjectCursor : MonoBehaviour
 
     public delegate void SelectEvent(Transform selection, Vector3 selectionPoint);
     public event SelectEvent OnSelect;
+
+    public delegate void CopyEvent(Transform selection);
+    public event CopyEvent OnCopy;
 
     private void Awake()
     {
@@ -88,8 +95,7 @@ public class ObjectCursor : MonoBehaviour
                     break;
 
                 case TransformMode.Volume:
-                    transformIconSprite.sprite = scaleIcon;
-                    transformIconSprite.color = scaleColor;
+                    transformIconSprite.sprite = null;
                     break;
 
                 case TransformMode.Brightness:
@@ -106,33 +112,69 @@ public class ObjectCursor : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!radialMenu.InMenu && !keyboardInput.InMenu && SelectedObject == null && getReal3D.Input.GetButton(Inputs.rightShoulder))
+        bool leftShoulder = getReal3D.Input.GetButton(Inputs.leftShoulder);
+        bool rightShoulder = getReal3D.Input.GetButton(Inputs.rightShoulder);
+
+        if (!radialMenu.InMenu && !keyboardInput.InMenu && SelectedObject == null && (leftShoulder || rightShoulder))
         {
             Active = true;
 
             lineRenderer.enabled = true;
             lineRenderer.SetPosition(0, wand.position);
 
-            if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(Layer.model), QueryTriggerInteraction.Collide))
+            if (leftShoulder)
             {
-                cursor.position = hit.point + (hit.normal * 0.1f);
-                cursor.forward = -hit.normal;
-                cursor.gameObject.SetActive(true);
+                lineRenderer.material = quickPlaceMaterial;
+                cursorRenderer.material = quickPlaceMaterial;
 
-                lineRenderer.SetPosition(1, hit.point + (hit.normal * 0.1f));
-                lineRenderer.material = foundModelMaterial;
-
-                if (getReal3D.Input.GetButtonDown(Inputs.a))
+                if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 15))
                 {
-                    OnSelect?.Invoke(hit.transform, hit.point);
+                    ShowCursorAtHit(hit);
+
+                    if (getReal3D.Input.GetButtonDown(Inputs.y))
+                    {
+                        OnCopy?.Invoke(hit.transform);
+                    }
                 }
+                else
+                {
+                    Vector3 placementPosition = wand.position + (wand.forward * 15);
+
+                    cursor.forward = wand.forward;
+                    cursor.position = placementPosition;
+
+                    lineRenderer.SetPosition(1, placementPosition);
+                }
+
+                if (getReal3D.Input.GetButtonDown(Inputs.x))
+                {
+                    modelCache.Paste(GetCursorPosition());
+                }
+
+                cursor.gameObject.SetActive(true);
             }
             else
             {
-                cursor.gameObject.SetActive(false);
+                if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(Layer.model), QueryTriggerInteraction.Collide))
+                {
+                    ShowCursorAtHit(hit);
+                    cursorRenderer.material = foundModelMaterial;
+                    cursor.gameObject.SetActive(true);
 
-                lineRenderer.SetPosition(1, wand.position + (wand.forward * 1000));
-                lineRenderer.material = didNotModelMaterial;
+                    lineRenderer.material = foundModelMaterial;
+
+                    if (getReal3D.Input.GetButtonDown(Inputs.a))
+                    {
+                        OnSelect?.Invoke(hit.transform, hit.point);
+                    }
+                }
+                else
+                {
+                    cursor.gameObject.SetActive(false);
+
+                    lineRenderer.SetPosition(1, wand.position + (wand.forward * 1000));
+                    lineRenderer.material = didNotFindModelMaterial;
+                }
             }
         }
         else
@@ -178,6 +220,14 @@ public class ObjectCursor : MonoBehaviour
         }
     }
 
+    private void ShowCursorAtHit(RaycastHit hit)
+    {
+        cursor.position = hit.point + (hit.normal * 0.1f);
+        cursor.forward = -hit.normal;
+
+        lineRenderer.SetPosition(1, hit.point + (hit.normal * 0.1f));
+    }
+
     public void SelectObject(Transform selection, TransformMode[] transformModes, Transform selectionAnchor)
     {
         this.transformModes = transformModes;
@@ -216,5 +266,10 @@ public class ObjectCursor : MonoBehaviour
         {
             transform.rotation = Quaternion.identity;
         }
+    }
+
+    public Vector3 GetCursorPosition()
+    {
+        return cursor.position;
     }
 }

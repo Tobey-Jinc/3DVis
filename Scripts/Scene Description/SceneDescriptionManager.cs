@@ -56,6 +56,8 @@ public class SceneDescriptionManager : MonoBehaviour
         {
             SceneDescription sd = new SceneDescription();
 
+            sd.sceneDisplayName = sceneName;
+
             sd.environmentPresetID = environments.CurrentEnvironmentID;
 
             sd.models = GetModels();
@@ -72,7 +74,11 @@ public class SceneDescriptionManager : MonoBehaviour
 
             if (getReal3D.Cluster.isMaster)
             {
+#if UNITY_EDITOR
+                File.WriteAllText(Application.persistentDataPath + "/" + sceneName + ".json", sceneJSON);
+#else
                 File.WriteAllText("\\\\CAVE-HEADNODE\\data\\3dvis\\scenes\\" + sceneName + ".json", sceneJSON);
+#endif
             }
 
             takenNames.Add(sceneName);
@@ -121,6 +127,7 @@ public class SceneDescriptionManager : MonoBehaviour
 
             sdText.position = textObject.transform.position;
             sdText.rotation = textObject.transform.localRotation;
+            sdText.colorIndex = textObject.ColorIndex;
             sdText.fontSize = textObject.Text.fontSize;
             sdText.width = textObject.RectTransform.sizeDelta.x;
             sdText.textAlignment = textObject.Text.alignment;
@@ -193,22 +200,48 @@ public class SceneDescriptionManager : MonoBehaviour
 
         foreach (SDModel model in sceneDescription.models)
         {
-            await modelCache.InstantiateModelFromSceneDescription(model);
+            await modelCache.InstantiateModelFromSceneDescription(model, model.libraryModel);
+        }
+
+        foreach (SDText text in sceneDescription.text)
+        {
+            modelCache.InstantiateTextFromSceneDescription(text);
+        }
+
+        foreach (SDLight light in sceneDescription.lights)
+        {
+            modelCache.InstantiateLightFromSceneDescription(light);
+        }
+
+        foreach (SDAudio audio in sceneDescription.audio)
+        {
+            modelCache.InstantiateAudioFromSceneDescription(audio);
         }
     }
 
     public FileStructure GetFileStructure()
     {
         string[] sceneFiles = Directory.GetFiles(Paths.GetSceneFolder());
-        string[][] scenes = new string[sceneFiles.Length][];
+        Dictionary<string, List<string[]>> files = new();
 
         for (int i = 0; i < sceneFiles.Length; i++)
         {
-            string sceneName = Path.GetFileNameWithoutExtension(sceneFiles[i]);
-            scenes[i] = new string[] { sceneName, sceneName };
+            string scene = sceneFiles[i];
+
+            string json = File.ReadAllText(scene);
+            SceneDescription sceneDescription = JsonUtility.FromJson<SceneDescription>(json);
+
+            string sceneDisplayName = sceneDescription.sceneDisplayName;
+            string sceneCategory = sceneDescription.sceneCategory;
+            string sceneFileName = Path.GetFileNameWithoutExtension(scene);
+
+            string[] file = new string[] { sceneDisplayName, sceneFileName };
+
+            FileSelection.AddFile(files, Data.allCategory, file);
+            FileSelection.AddFile(files, sceneCategory, file);
         }
 
-        fileStructure.SetFiles(scenes);
+        fileStructure.SetFiles(files);
 
         return fileStructure;
     }

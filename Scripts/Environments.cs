@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vertex;
 
 [System.Serializable]
 public struct EnvironmentPreset
 {
     [SerializeField] public string id;
     [SerializeField] public string displayName;
+    [SerializeField] public string category;
     [SerializeField] public Transform prefab;
 }
 
@@ -23,13 +25,16 @@ public class Environments : MonoBehaviour
 
     private void Start()
     {
-        string[][] files = new string[environments.Length][];
+        Dictionary<string, List<string[]>> files = new();
 
         for (int i = 0; i < environments.Length; i++)
         {
             EnvironmentPreset environment = environments[i];
 
-            files[i] = new string[] { environment.displayName, environment.displayName };
+            string[] file = new string[] { environment.displayName, environment.displayName };
+
+            FileSelection.AddFile(files, Data.allCategory, file);
+            FileSelection.AddFile(files, environment.category, file);
         }
 
         fileStructure = new FileStructure("Select an Environment", files, (string id) => { SetEnvironment(id); });

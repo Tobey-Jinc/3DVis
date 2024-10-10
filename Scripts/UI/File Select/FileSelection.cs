@@ -4,15 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Vertex;
+using Unity.VisualScripting;
 
 public class FileSelection : MonoBehaviour
 {
     private bool inMenu = false;
 
+    [SerializeField] private RadialMenu radialMenu;
     [SerializeField] private float inputDelay = 0.25f;
     [SerializeField] private RectTransform container;
     [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private TMP_Text t_Title;
+    [SerializeField] private TMP_Text t_Category;
+    [SerializeField] private TMP_Text t_PreviousCategory;
+    [SerializeField] private TMP_Text t_NextCategory;
+    [SerializeField] private RectTransform categoryBar;
     [SerializeField] private float scrollOffset;
 
     [SerializeField] private FileView fileViewPrefab;
@@ -21,7 +27,10 @@ public class FileSelection : MonoBehaviour
     private List<FileView> fileViews = new List<FileView>();
     private List<FileView> pooledFileViews = new List<FileView>();
 
-    private int selectionIndex = 0;
+    private string category;
+    private int categoryIndex;
+    private int selectionIndex;
+    private int fileCount;
 
     // Input
     private int prolongedInput = 0;
@@ -64,11 +73,6 @@ public class FileSelection : MonoBehaviour
                 StopAllCoroutines();
             }
 
-            if (acceptInput && getReal3D.Input.GetButtonDown(Inputs.a))
-            {
-                fileStructure.action?.Invoke(fileStructure.files[selectionIndex][1]);
-            }
-
             if (scrollRect.verticalScrollbar.gameObject.activeInHierarchy)
             {
                 scrollRect.content.pivot = new Vector2(0, 0);
@@ -90,6 +94,25 @@ public class FileSelection : MonoBehaviour
             scrollRect.horizontalNormalizedPosition = Mathf.Clamp(scrollRect.horizontalNormalizedPosition, 0, 1);
 
             container.localScale = Vector3.Lerp(container.localScale, Vector3.one, Data.menuScaleSpeed * getReal3D.Cluster.deltaTime);
+
+            if (fileStructure.categories.Length > 1)
+            {
+                int categoryScroll = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder, false);
+                if (categoryScroll != 0)
+                {
+                    categoryIndex += categoryScroll;
+                    if (categoryIndex < 0)
+                    {
+                        categoryIndex = fileStructure.categories.Length - 1;
+                    }
+                    else if (categoryIndex > fileStructure.categories.Length - 1)
+                    {
+                        categoryIndex = 0;
+                    }
+
+                    GenerateFileSelection(fileStructure, fileStructure.categories[categoryIndex]);
+                }
+            }
         }
         else
         {
@@ -101,11 +124,21 @@ public class FileSelection : MonoBehaviour
     {
         if (inMenu)
         {
+            if (acceptInput && getReal3D.Input.GetButtonDown(Inputs.a))
+            {
+                fileStructure.action?.Invoke(fileStructure.files[category][selectionIndex][1]);
+                if (fileStructure.closeOnSelect)
+                {
+                    radialMenu.Close();
+                    Close();
+                }
+            }
+
             acceptInput = true;
 
             if (getReal3D.Input.GetButtonDown(Inputs.b))
             {
-                inMenu = false;
+                Close();
             }
         }
         else
@@ -114,17 +147,27 @@ public class FileSelection : MonoBehaviour
         }
     }
 
-    public void GenerateFileSelection(FileStructure fileStructure)
+    private void Close()
+    {
+        categoryIndex = 0;
+        inMenu = false;
+    }
+
+    public void GenerateFileSelection(FileStructure fileStructure, string category = Data.allCategory)
     {
         ClearFileViews();
 
         this.fileStructure = fileStructure;
+        this.category = category;
+        fileCount = fileStructure.files[category].Count;
 
         t_Title.SetText(fileStructure.title);
 
-        for (int i = 0; i < fileStructure.fileCount; i++)
+        ShowCategories();
+
+        for (int i = 0; i < fileCount; i++)
         {
-            string fileName = fileStructure.files[i][0];
+            string fileName = fileStructure.files[category][i][0];
 
             FileView fileView;
             if (pooledFileViews.Count > 0)
@@ -153,6 +196,36 @@ public class FileSelection : MonoBehaviour
         inMenu = true;
     }
 
+    private void ShowCategories()
+    {
+        int categoryCount = fileStructure.categories.Length - 1;
+        if (categoryCount > 0)
+        {
+            categoryBar.localScale = Vector3.one;
+
+            int previousCategory = categoryIndex - 1;
+            int nextCategory = categoryIndex + 1;
+
+            if (previousCategory < 0)
+            {
+                previousCategory = categoryCount;
+            }
+
+            if (nextCategory > categoryCount)
+            {
+                nextCategory = 0;
+            }
+
+            t_Category.SetText(category);
+            t_PreviousCategory.SetText(fileStructure.categories[previousCategory]);
+            t_NextCategory.SetText(fileStructure.categories[nextCategory]);
+        }
+        else
+        {
+            categoryBar.localScale = Vector3.zero;
+        }
+    }
+
     private void ClearFileViews()
     {
         foreach (FileView fileView in fileViews)
@@ -167,17 +240,32 @@ public class FileSelection : MonoBehaviour
     private IEnumerator ProlongInput()
     {
         selectionIndex += prolongedInput;
-        if (selectionIndex > fileStructure.fileCount - 1)
+        if (selectionIndex > fileCount - 1)
         {
             selectionIndex = 0;
         }
         else if (selectionIndex < 0)
         {
-            selectionIndex = fileStructure.fileCount - 1;
+            selectionIndex = fileCount - 1;
         }
 
         yield return new WaitForSeconds(inputDelay);
 
         StartCoroutine(ProlongInput());
+    }
+
+    public static void AddFile(Dictionary<string, List<string[]>> files, string category, string[] file)
+    {
+        if (category != string.Empty)
+        {
+            if (!files.ContainsKey(category))
+            {
+                files.Add(category, new List<string[]>() { file });
+            }
+            else
+            {
+                files[category].Add(file);
+            }
+        }
     }
 }

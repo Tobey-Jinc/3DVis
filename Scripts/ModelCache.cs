@@ -15,6 +15,10 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
     [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
     [SerializeField] private Transform wand;
     [SerializeField] private Viewpoint viewpoint;
+    [SerializeField] private ObjectCursor cursor;
+    [SerializeField] private ModelLibrary modelLibrary;
+    [SerializeField] private AudioLibrary audioLibrary;
+    [SerializeField] private Transform copyCursor;
 
     [Header("Prefabs")]
     [SerializeField] private ModelParent modelParentPrefab;
@@ -31,6 +35,8 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
     private string instantiateModelSyncedMethod = "InstantiateModelSynced";
 
+    private Transform copiedObject;
+
     private void Awake()
     {
         Instance = this;
@@ -45,69 +51,91 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
         networkFolderDownloader.Download("models", () => { GenerateFileStructure(); });
     }
 
+    private void Update()
+    {
+        if (cursor.Active && getReal3D.Input.GetButton(Inputs.leftShoulder) && copiedObject != null)
+        {
+            copyCursor.position = copiedObject.position;
+            copyCursor.LookAt(wand);
+
+            copyCursor.gameObject.SetActive(true);
+        }
+        else
+        {
+            copyCursor.gameObject.SetActive(false);
+        }
+    }
+
     private void GenerateFileStructure()
     {
         string folder = Application.persistentDataPath + "\\models";
         string[] folders = Directory.GetDirectories(Application.persistentDataPath + "\\models").Select(Path.GetFileName).ToArray();
-        string[][] files = new string[folders.Length][];
+        Dictionary<string, List<string[]>> files = new();
 
         for (int i = 0; i < folders.Length; i++)
         {
             try
             {
-                Debug.Log(folders[i]);
                 string metaDataText = File.ReadAllText(Paths.GetModelFolder() + folders[i] + "\\metadata.json");
                 ModelMetaData metaData = JsonUtility.FromJson<ModelMetaData>(metaDataText);
 
-                Debug.Log(metaData.originalModelName);
-                Debug.Log(folders[i] + "\\scene.gltf");
+                string modelDisplayName = metaData.modelDisplayName;
+                string modelCategory = metaData.modelCategory;
 
-                files[i] = new string[] { metaData.modelDisplayName, folders[i] };
+                string[] file = new string[] { modelDisplayName, folders[i] };
+
+                FileSelection.AddFile(files, Data.allCategory, file);
+                FileSelection.AddFile(files, modelCategory, file);
             }
             catch (Exception e)
             {
                 Debug.Log($"An error occurred whilst reading the model... \n{e}");
             }
         }
+
         fileStructure.SetFiles(files);
-        Debug.Log(files.GetLength(0));
 
         Loaded = true;
 
         loadingScreen.enabled = false;
     }
 
-    private Vector3 GetSpawnPosition()
+    private Vector3 GetSpawnPosition(Vector3? position = null)
     {
-        if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
+        if (position == null)
         {
-            return hit.point;
+            if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 10, 1, QueryTriggerInteraction.Ignore))
+            {
+                return hit.point;
+            }
+
+            return wand.position + (wand.forward * 10);
         }
-        
-        return wand.position + (wand.forward * 10);
+
+        return (Vector3)position;
     }
 
-    private void InstantiateModelSetup(string modelPath)
+    private void InstantiateModelSetup(string modelPath, Vector3? position = null, bool copy = false)
     {
         if (getReal3D.Cluster.isMaster)
         {
             Vector3 spawnPosition = GetSpawnPosition();
 
-            CallRpc(instantiateModelSyncedMethod, modelPath, spawnPosition);
-            InstantiateModel(modelPath, spawnPosition);
+            CallRpc(instantiateModelSyncedMethod, modelPath, spawnPosition, copy);
+            InstantiateModel(modelPath, spawnPosition, copy);
         }
     }
 
     [getReal3D.RPC]
-    private void InstantiateModelSynced(string modelPath, Vector3 spawnPosition)
+    private void InstantiateModelSynced(string modelPath, Vector3 spawnPosition, bool copy = false)
     {
         if (!getReal3D.Cluster.isMaster)
         {
-            InstantiateModel(modelPath, spawnPosition);
+            InstantiateModel(modelPath, spawnPosition, copy);
         }
     }
 
-    private async Task<Transform> InstantiateModel(string modelPath, Vector3 spawnPosition)
+    private async Task<Transform> InstantiateModel(string modelPath, Vector3 spawnPosition, bool copy = false)
     {
         ModelParent cachedModel = GetCachedModel(modelPath);
         if (cachedModel == null)
@@ -120,6 +148,11 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
             importedModel.gameObject.SetActive(false);
             CacheModel(modelPath, importedModel);
+
+            if (copy)
+            {
+                copiedObject = importedModel.transform;
+            }
 
             return await InstantiateModel(modelPath, spawnPosition);
         }
@@ -134,53 +167,141 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
             viewpoint.SyncTransformWithHeadnode();
 
+            if (copy)
+            {
+                copiedObject = model.transform;
+            }
+
             return model.transform;
         }
     }
 
-    public async Task InstantiateModelFromSceneDescription(SDModel sdModel)
+    public void InstantiateModelFromLibrary(Model model, Vector3? position = null, bool copy = false)
     {
-        Transform model = await InstantiateModel(sdModel.id, sdModel.position);
+        ModelParent modelParent = Instantiate(model.prefab, SceneDescriptionManager.Scene);
+        modelParent.FolderName = model.id;
+
+        modelParent.transform.position = GetSpawnPosition(position);
+
+        if (copy)
+        {
+            copiedObject = modelParent.transform;
+        }
+    }
+
+    public void InstantiateTextObject(Vector3? position = null, bool copy = false)
+    {
+        TextObject textObject = Instantiate(textObjectPrefab, SceneDescriptionManager.Scene);
+
+        textObject.transform.position = GetSpawnPosition(position);
+        textObject.transform.LookAt(wand.position);
+
+        textObject.transform.rotation = Quaternion.Euler(0, textObject.transform.eulerAngles.y, 0);
+
+        if (copy)
+        {
+            copiedObject = textObject.transform;
+        }
+    }
+
+    public void InstantiateLightObject(Vector3? position = null, bool copy = false)
+    {
+        LightObject lightObject = Instantiate(lightObjectPrefab, SceneDescriptionManager.Scene);
+
+        lightObject.transform.position = GetSpawnPosition(position);
+
+        if (copy)
+        {
+            copiedObject = lightObject.transform;
+        }
+    }
+
+    public void InstantiateAudioObject(Audio audio, Vector3? position = null, bool copy = false)
+    {
+        AudioObject audioObject = Instantiate(audioObjectPrefab, SceneDescriptionManager.Scene);
+
+        audioObject.transform.position = GetSpawnPosition(position);
+
+        audioObject.Setup(audio);
+
+        if (copy)
+        {
+            copiedObject = audioObject.transform;
+        }
+    }
+
+    public void Copy(Transform copiedObject)
+    {
+        this.copiedObject = copiedObject;
+    }
+
+    public void Paste(Vector3? position)
+    {
+        if (copiedObject != null)
+        {
+            Transform pastedObject = Instantiate(copiedObject, SceneDescriptionManager.Scene);
+            pastedObject.position = GetSpawnPosition(position);
+        }
+    }
+
+    // Scene Description Loading
+    public async Task InstantiateModelFromSceneDescription(SDModel sdModel, bool libraryModel)
+    {
+        Transform model;
+
+        if (!libraryModel)
+        {
+            model = await InstantiateModel(sdModel.id, sdModel.position);
+        }
+        else
+        {
+            Model lModel = modelLibrary.GetModel(sdModel.id);
+            ModelParent modelParent = Instantiate(lModel.prefab, SceneDescriptionManager.Scene);
+            modelParent.FolderName = lModel.id;
+
+            model = modelParent.transform;
+            model.position = sdModel.position;
+        }
 
         model.rotation = sdModel.rotation;
         model.localScale = sdModel.scale;
     }
 
-    public void InstantiateModelFromLibrary(Model model)
-    {
-        ModelParent modelParent = Instantiate(model.prefab, SceneDescriptionManager.Scene);
-        modelParent.FolderName = model.id;
-
-        modelParent.transform.position = GetSpawnPosition();
-    }
-
-    public void InstantiateTextObject()
+    public void InstantiateTextFromSceneDescription(SDText sdText)
     {
         TextObject textObject = Instantiate(textObjectPrefab, SceneDescriptionManager.Scene);
 
-        textObject.transform.position = GetSpawnPosition();
-        textObject.transform.LookAt(wand.position);
-        textObject.transform.rotation = Quaternion.Euler(0, -textObject.transform.eulerAngles.y, 0);
+        textObject.Setup(sdText);   
     }
 
-    public void InstantiateLightObject()
+    public void InstantiateLightFromSceneDescription(SDLight sdLight)
     {
         LightObject lightObject = Instantiate(lightObjectPrefab, SceneDescriptionManager.Scene);
 
-        lightObject.transform.position = GetSpawnPosition();
+        lightObject.Setup(sdLight);
     }
 
-    public void InstantiateAudioObject(Audio audio)
+    public void InstantiateAudioFromSceneDescription(SDAudio sdAudio)
     {
         AudioObject audioObject = Instantiate(audioObjectPrefab, SceneDescriptionManager.Scene);
 
-        audioObject.transform.position = GetSpawnPosition();
-
-        audioObject.Setup(audio);
+        audioObject.Setup(audioLibrary.GetAudio(sdAudio.id), sdAudio);
     }
 
-    public FileStructure GetFileStructure()
+    // Other
+    public FileStructure GetFileStructure(bool quickPlace)
     {
+        fileStructure.closeOnSelect = quickPlace;
+
+        if (quickPlace)
+        {
+            fileStructure.action = (string file) => { InstantiateModelSetup(file, cursor.GetCursorPosition(), true); };
+        }
+        else
+        {
+            fileStructure.action = (string file) => { InstantiateModelSetup(file); };
+        }
+
         return fileStructure;
     }
 

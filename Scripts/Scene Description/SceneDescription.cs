@@ -5,7 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class SceneDescription
 {
-    public string category;
+    public string sceneDisplayName;
+    public string sceneCategory;
 
     public string environmentPresetID;
 
@@ -36,6 +37,7 @@ public struct SDText
 
     public Vector3 position;
     public Quaternion rotation;
+    public int colorIndex;
     public float fontSize;
     public float width;
     public TMPro.TextAlignmentOptions textAlignment;

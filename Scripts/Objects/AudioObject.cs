@@ -27,6 +27,7 @@ public class AudioObject : MonoBehaviour
         keyboardInput = KeyboardInput.Instance;
 
         cursor.OnSelect += Cursor_OnSelect;
+        cursor.OnCopy += Cursor_OnCopy;
 
         transformModes = new[] { TransformMode.Position, TransformMode.Scale, TransformMode.Volume };
     }
@@ -39,9 +40,35 @@ public class AudioObject : MonoBehaviour
         audioSource.Play();
     }
 
+    public void Setup(Audio audio, SDAudio sdAudio)
+    {
+        MyAudio = audio;
+
+        transform.position = sdAudio.position;
+
+        audioSource.volume = sdAudio.volume;
+        audioSource.spatialBlend = sdAudio.spatialBlend;
+        audioSource.minDistance = sdAudio.minDistance;
+        audioSource.maxDistance = sdAudio.maxDistance;
+
+        audioSource.clip = audio.audioClip;
+        audioSource.Play();
+    }
+
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
-        cursor.SelectObject(transform, transformModes, transform);
+        if (selection == transform)
+        {
+            cursor.SelectObject(transform, transformModes, transform);
+        }
+    }
+
+    private void Cursor_OnCopy(Transform selection)
+    {
+        if (selection == transform)
+        {
+            ModelCache.Instance.Copy(transform);
+        }
     }
 
     void Update()
@@ -51,6 +78,7 @@ public class AudioObject : MonoBehaviour
             bool showDistanceVisualizers = cursor.CursorTransformMode == TransformMode.Scale && audioSource.spatialBlend == 1;
             minDistanceVisualizer.gameObject.SetActive(showDistanceVisualizers);
             maxDistanceVisualizer.gameObject.SetActive(showDistanceVisualizers);
+            volumeVisualizer.gameObject.SetActive(cursor.CursorTransformMode == TransformMode.Volume);
 
             switch (cursor.CursorTransformMode)
             {
@@ -97,6 +125,13 @@ public class AudioObject : MonoBehaviour
         {
             minDistanceVisualizer.gameObject.SetActive(false);
             maxDistanceVisualizer.gameObject.SetActive(false);
+            volumeVisualizer.gameObject.SetActive(false);
         }
+    }
+
+    private void OnDestroy()
+    {
+        cursor.OnSelect -= Cursor_OnSelect;
+        cursor.OnCopy -= Cursor_OnCopy;
     }
 }

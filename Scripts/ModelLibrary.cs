@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Vertex;
 
 [System.Serializable]
 public struct Model
 {
     [SerializeField] public string id;
     [SerializeField] public string displayName;
+    [SerializeField] public string category;
     [SerializeField] public ModelParent prefab;
 }
 
@@ -14,24 +16,28 @@ public class ModelLibrary : MonoBehaviour
 {
     [SerializeField] private Model[] models;
     [SerializeField] private ModelCache modelCache;
+    [SerializeField] private ObjectCursor cursor;
 
     private FileStructure fileStructure;
 
     void Start()
     {
-        string[][] files = new string[models.Length][];
+        Dictionary<string, List<string[]>> files = new();
 
         for (int i = 0; i < models.Length; i++)
         {
             Model model = models[i];
 
-            files[i] = new string[] { model.displayName, model.displayName };
+            string[] file = new string[] { model.displayName, model.displayName };
+
+            FileSelection.AddFile(files, Data.allCategory, file);
+            FileSelection.AddFile(files, model.category, file);
         }
 
-        fileStructure = new FileStructure("Select a Model", files, (string id) => { modelCache.InstantiateModelFromLibrary(GetModel(id)); });
+        fileStructure = new FileStructure("Select a Model", files);
     }
 
-    private Model GetModel(string id)
+    public Model GetModel(string id)
     {
         foreach (Model model in models)
         {
@@ -44,8 +50,19 @@ public class ModelLibrary : MonoBehaviour
         return new Model();
     }
 
-    public FileStructure GetFileStructure()
+    public FileStructure GetFileStructure(bool quickPlace)
     {
+        fileStructure.closeOnSelect = quickPlace;
+
+        if (quickPlace)
+        {
+            fileStructure.action = (string id) => { modelCache.InstantiateModelFromLibrary(GetModel(id), cursor.GetCursorPosition(), true); };
+        }
+        else
+        {
+            fileStructure.action = (string id) => { modelCache.InstantiateModelFromLibrary(GetModel(id)); };
+        }
+
         return fileStructure;
     }
 }
