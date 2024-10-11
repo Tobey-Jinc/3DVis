@@ -28,8 +28,6 @@ public class ModelParent : MonoBehaviour
             new(TransformMode.Rotation, $"{Data.switchControl}Rotate <sprite=6>    Reset <sprite=5>"),
             new(TransformMode.Scale, $"{Data.switchControl}Scale <sprite=6>")
         };
-
-        cursor.SelectObject(transform, transformModes, selectionAnchor);
     }
 
     public async Task Setup(string folder)

@@ -149,12 +149,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
             importedModel.gameObject.SetActive(false);
             CacheModel(modelPath, importedModel);
 
-            if (copy)
-            {
-                copiedObject = importedModel.transform;
-            }
-
-            return await InstantiateModel(modelPath, spawnPosition);
+            return await InstantiateModel(modelPath, spawnPosition, copy);
         }
         else
         {

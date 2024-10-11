@@ -35,8 +35,6 @@ public class LightObject : MonoBehaviour
             new(TransformMode.Scale, $"{Data.switchControl}Colour <sprite=3>    Range <sprite=8>"),
             new(TransformMode.Brightness, $"{Data.switchControl}Colour <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>")
         };
-
-        cursor.SelectObject(transform, transformModes, transform);
     }
 
     public void Setup(SDLight sdLight)

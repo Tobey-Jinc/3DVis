@@ -16,6 +16,7 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
     [SerializeField] private TMP_Text t_InputField;
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_ValidationFailed;
+    [SerializeField] private GameObject dots;
     [SerializeField] private RectTransform attention;
     [SerializeField] private GameObject windowNotFocusedWarning;
 
@@ -43,6 +44,7 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
             if (getReal3D.Cluster.isMaster)
             {
                 windowNotFocusedWarning.SetActive(!Application.isFocused);
+                dots.SetActive(text.Length == 0);
 
                 if (Input.GetKeyDown(KeyCode.Backspace))
                 {

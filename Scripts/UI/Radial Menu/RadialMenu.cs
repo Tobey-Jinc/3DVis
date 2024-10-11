@@ -149,7 +149,7 @@ public class RadialMenu : MonoBehaviour
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
             {
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(false); }),
-                new RadialQuadrantData("Environemnt", environmentIcon, () => { CreateEnvironmentExplorer(); }),
+                new RadialQuadrantData("Environments", environmentIcon, () => { CreateEnvironmentExplorer(); }),
                 new RadialQuadrantData("Options", optionsIcon, () => { CreateSceneExplorer(); }),
                 new RadialQuadrantData("Save", recordIcon, () => { 
                     keyboardInput.Open("Name your scene", (string fileName) => 

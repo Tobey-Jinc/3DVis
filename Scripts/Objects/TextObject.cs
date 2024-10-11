@@ -32,14 +32,12 @@ public class TextObject : MonoBehaviour
         cursor.OnCopy += Cursor_OnCopy;
 
         transformModes = new TransformModeAndControls[] {
-            new(TransformMode.Position, $"{Data.switchControl}Set Text <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=9>"),
+            new(TransformMode.Position, $"{Data.switchControl}Set Text <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=5>"),
             new(TransformMode.Rotation, $"{Data.switchControl}Set Text <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
-            new(TransformMode.TextSize, $"{Data.switchControl}Set Text <sprite=3>    Font Size <sprite=8>    Width <sprite=9>")
+            new(TransformMode.TextSize, $"{Data.switchControl}Set Text <sprite=3>    Font Size <sprite=8>    Width <sprite=9>    Alignment <sprite=5>")
         };
 
         t_Text.alignment = TextAlignmentOptions.Left;
-
-        cursor.SelectObject(transform, transformModes, transform);
     }
 
     public void Setup(SDText sdText)
@@ -106,7 +104,7 @@ public class TextObject : MonoBehaviour
                     t_Text.fontSize += 6 * fontSizeInput * getReal3D.Cluster.deltaTime;
                     t_Text.fontSize = Mathf.Max(t_Text.fontSize, 0.1f);
 
-                    float widthInput = 6 * getReal3D.Input.GetAxis(Inputs.rightStickX) * getReal3D.Cluster.deltaTime;
+                    float widthInput = 6 * getReal3D.Input.GetAxis(Inputs.rightStickY) * getReal3D.Cluster.deltaTime;
                     float width = Mathf.Max(rectTransform.sizeDelta.x + widthInput, 0.1f);
                     rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
 

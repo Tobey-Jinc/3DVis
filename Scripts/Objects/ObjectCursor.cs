@@ -125,7 +125,7 @@ public class ObjectCursor : MonoBehaviour
             t_Controls.SetText(transformModes[transformModeIndex].controls);
             controls.localScale = Vector3.one;
         }
-        else if (Active)
+        else if (!radialMenu.InMenu && Active)
         {
             if (getReal3D.Input.GetButton(Inputs.leftShoulder))
             {
@@ -213,14 +213,14 @@ public class ObjectCursor : MonoBehaviour
                 }
             }
         }
-        else if (!radialMenu.InMenu)
+        else
         {
             Active = false;
 
             lineRenderer.enabled = false;
             cursor.gameObject.SetActive(false);
 
-            if (SelectedObject != null)
+            if (!radialMenu.InMenu && SelectedObject != null)
             {
                 if (getReal3D.Input.GetButtonDown(Inputs.a))
                 {

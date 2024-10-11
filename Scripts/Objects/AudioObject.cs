@@ -34,8 +34,6 @@ public class AudioObject : MonoBehaviour
             new(TransformMode.Scale, $"{Data.switchControl}Max Range <sprite=8>    Min Range <sprite=8>"),
             new(TransformMode.Volume, $"{Data.switchControl}Volume <sprite=8>")
         };
-
-        cursor.SelectObject(transform, transformModes, transform);
     }
 
     public void Setup(Audio audio)
