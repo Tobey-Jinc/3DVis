@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.IO;
 using Vertex;
 
 public class SceneDescriptionManager : MonoBehaviour
 {
+    public static bool LoadTempSceneOnLoad;
+
     public static Transform Scene;
 
     [SerializeField] private Transform scene;
@@ -50,7 +53,7 @@ public class SceneDescriptionManager : MonoBehaviour
         }
     }
 
-    public void SaveScene(string sceneName)
+    public void SaveScene(string sceneName, bool saveAsTempScene = false)
     {
         try
         {
@@ -70,15 +73,22 @@ public class SceneDescriptionManager : MonoBehaviour
 
             string sceneJSON = JsonUtility.ToJson(sd, true);
 
-            File.WriteAllText(Paths.GetSceneFolder() + sceneName + ".json", sceneJSON);
-
-            if (getReal3D.Cluster.isMaster)
+            if (!saveAsTempScene)
             {
+                File.WriteAllText(Paths.GetSceneFolder() + sceneName + ".json", sceneJSON);
+
+                if (getReal3D.Cluster.isMaster)
+                {
 #if UNITY_EDITOR
-                File.WriteAllText(Application.persistentDataPath + "/" + sceneName + ".json", sceneJSON);
+                    File.WriteAllText(Application.persistentDataPath + "/" + sceneName + ".json", sceneJSON);
 #else
-                File.WriteAllText("\\\\CAVE-HEADNODE\\data\\3dvis\\scenes\\" + sceneName + ".json", sceneJSON);
+                    File.WriteAllText("\\\\CAVE-HEADNODE\\data\\3dvis\\scenes\\" + sceneName + ".json", sceneJSON);
 #endif
+                }
+            }
+            else
+            {
+                File.WriteAllText(Application.persistentDataPath + "/Temp Scene.json", sceneJSON);
             }
 
             takenNames.Add(sceneName);
@@ -184,7 +194,7 @@ public class SceneDescriptionManager : MonoBehaviour
         return audio;
     }
 
-    private async void LoadScene(string sceneName)
+    private async void LoadScene(string sceneName, bool tempScene = false)
     {
         modelCursor.DeselectObject();
 
@@ -193,7 +203,22 @@ public class SceneDescriptionManager : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        string sceneJSON = File.ReadAllText(Paths.GetSceneFolder() + sceneName + ".json");
+        string sceneJSON;
+        if (!tempScene)
+        {
+            sceneJSON = File.ReadAllText(Paths.GetSceneFolder() + sceneName + ".json");
+        }
+        else
+        {
+            string tempFilePath = Application.persistentDataPath + "/Temp Scene.json";
+            if (!File.Exists(tempFilePath))
+            {
+                return;
+            }
+
+            sceneJSON = File.ReadAllText(Application.persistentDataPath + "/Temp Scene.json");
+        }
+
         SceneDescription sceneDescription = JsonUtility.FromJson<SceneDescription>(sceneJSON);
 
         environments.SetEnvironment(sceneDescription.environmentPresetID);
@@ -249,5 +274,25 @@ public class SceneDescriptionManager : MonoBehaviour
     public bool ValidateSceneName(string sceneName)
     {
         return !takenNames.Contains(sceneName);
+    }
+
+    public void ReloadApp()
+    {
+        SaveScene(string.Empty, true);
+
+        LoadTempSceneOnLoad = true;
+        ModelCache.Loaded = false;
+
+        SceneManager.LoadScene(0);
+    }
+
+    public void LoadTempScene()
+    {
+        if (LoadTempSceneOnLoad)
+        {
+            LoadScene(string.Empty, true);
+        }
+
+        LoadTempSceneOnLoad = false;
     }
 }

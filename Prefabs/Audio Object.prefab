@@ -98,7 +98,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4536888782886759192
 Transform:
   m_ObjectHideFlags: 0
@@ -532,10 +532,6 @@ MonoBehaviour:
   minDistanceVisualizer: {fileID: 4536888784455092213}
   maxDistanceVisualizer: {fileID: 4536888782873341664}
   volumeVisualizer: {fileID: 4536888782886759192}
-  audio:
-    id: 
-    displayName: 
-    audioClip: {fileID: 0}
 --- !u!82 &4536888784785387891
 AudioSource:
   m_ObjectHideFlags: 0

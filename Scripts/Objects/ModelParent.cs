@@ -11,6 +11,7 @@ public class ModelParent : MonoBehaviour
 
     [SerializeField] private Transform selectionAnchor;
     [SerializeField] private bool libraryModel;
+    [SerializeField] private GameObject errorModel;
 
     private ObjectCursor cursor;
 
@@ -54,6 +55,8 @@ public class ModelParent : MonoBehaviour
         else
         {
             Debug.LogError("Loading glTF failed!");
+
+            errorModel.SetActive(true);
         }
     }
 

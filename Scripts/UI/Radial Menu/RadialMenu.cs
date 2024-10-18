@@ -165,6 +165,7 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Light", recordIcon, () => { modelCache.InstantiateLightObject(); }),
                 new RadialQuadrantData("Audio", recordIcon, () => { CreateAudioLibraryExplorer(false); }),
                 new RadialQuadrantData("Model Library", recordIcon, () => { CreateModelLibraryExplorer(false); }),
+                new RadialQuadrantData("Reload App", recordIcon, () => { sceneDescriptionManager.ReloadApp(); }),
             }
         );
 

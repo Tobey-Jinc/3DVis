@@ -13,6 +13,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
     public static bool Loaded = false;
 
     [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
+    [SerializeField] private SceneDescriptionManager sceneDescriptionManager;
     [SerializeField] private Transform wand;
     [SerializeField] private Viewpoint viewpoint;
     [SerializeField] private ObjectCursor cursor;
@@ -98,6 +99,8 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
         Loaded = true;
 
         loadingScreen.enabled = false;
+
+        sceneDescriptionManager.LoadTempScene();
     }
 
     private Vector3 GetSpawnPosition(Vector3? position = null)

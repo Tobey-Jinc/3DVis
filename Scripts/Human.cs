@@ -16,6 +16,6 @@ public class Human : MonoBehaviour
     void Update()
     {
         getReal3D.Sensor headSensor = playerInputs.Wand;
-        uiContainer.localRotation = Quaternion.Euler(0, headSensor.rotation.eulerAngles.y, 0);
+        uiContainer.localRotation = Quaternion.Slerp(uiContainer.localRotation, Quaternion.Euler(0, headSensor.rotation.eulerAngles.y, 0), 10 * getReal3D.Cluster.deltaTime);
     }
 }
