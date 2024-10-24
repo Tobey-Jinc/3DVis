@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.IO;
 using Vertex;
+using System.Security.Cryptography;
 
 public class SceneDescriptionManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class SceneDescriptionManager : MonoBehaviour
     [SerializeField] private Environments environments;
     [SerializeField] private ObjectCursor modelCursor;
     [SerializeField] private ModelCache modelCache;
+    [SerializeField] private SkyObject skyObject;
 
     private FileStructure fileStructure;
 
@@ -63,6 +65,8 @@ public class SceneDescriptionManager : MonoBehaviour
 
             sd.environmentPresetID = environments.CurrentEnvironmentID;
 
+            sd.sky = GetSky();
+
             sd.models = GetModels();
 
             sd.text = GetText();
@@ -98,6 +102,20 @@ public class SceneDescriptionManager : MonoBehaviour
             Debug.Log("ERROR OCCURRED WHILE SAVING SCENE");
             Debug.Log(e);
         }
+    }
+
+    private SDSky GetSky()
+    {
+        SDSky sky = new SDSky();
+
+        sky.position = skyObject.transform.position;
+        sky.rotation = skyObject.transform.rotation;
+        sky.skyboxIndex = skyObject.SkyboxIndex;
+        sky.colorIndex = skyObject.ColorIndex;
+        sky.intensity = skyObject.Sun.intensity;
+        sky.shadows = skyObject.Sun.shadows;
+
+        return sky;
     }
 
     private SDModel[] GetModels()
@@ -222,6 +240,8 @@ public class SceneDescriptionManager : MonoBehaviour
         SceneDescription sceneDescription = JsonUtility.FromJson<SceneDescription>(sceneJSON);
 
         environments.SetEnvironment(sceneDescription.environmentPresetID);
+
+        skyObject.Setup(sceneDescription.sky);
 
         foreach (SDModel model in sceneDescription.models)
         {

@@ -10,6 +10,8 @@ public class SceneDescription
 
     public string environmentPresetID;
 
+    public SDSky sky;
+
     public SDModel[] models;
 
     public SDText[] text;
@@ -17,6 +19,20 @@ public class SceneDescription
     public SDLight[] lights;
 
     public SDAudio[] audio;
+}
+
+[System.Serializable]
+public struct SDSky
+{
+    public string id;
+    public bool libraryModel;
+
+    public Vector3 position;
+    public Quaternion rotation;
+    public int skyboxIndex;
+    public int colorIndex;
+    public float intensity;
+    public LightShadows shadows;
 }
 
 [System.Serializable]

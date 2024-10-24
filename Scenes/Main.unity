@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.30395204, g: 0.3457104, b: 0.39074534, a: 1}
+  m_IndirectSpecularColor: {r: 0.3038717, g: 0.3456254, b: 0.39067236, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -196,6 +196,139 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &269757887
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 269757892}
+  - component: {fileID: 269757888}
+  - component: {fileID: 269757891}
+  - component: {fileID: 269757890}
+  - component: {fileID: 269757889}
+  m_Layer: 6
+  m_Name: Sky
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &269757888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269757887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aa71791f8bf85641910059a1ad2d548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sun: {fileID: 705507994}
+  skyboxes:
+  - {fileID: 2100000, guid: 4f8fd6e023f31a04a9d348221e3f8ab1, type: 2}
+  - {fileID: 2100000, guid: 0590747bbb3df2a4da9bc953f165a294, type: 2}
+  - {fileID: 2100000, guid: 268a7f8e642dbdb4aae99a22d6ec38f6, type: 2}
+  - {fileID: 2100000, guid: 0faaad81e1ba46e46803b4bd9a1774d6, type: 2}
+  - {fileID: 2100000, guid: 506ee1ad7742e25408a4aa96ffc17bbc, type: 2}
+  - {fileID: 2100000, guid: 5e41f3701b4bd2140b0f7d7cd3df0ac3, type: 2}
+  - {fileID: 2100000, guid: 3e0620bb0c3b2a04995b75d68a46275f, type: 2}
+  - {fileID: 2100000, guid: a41ff143ecbfb7946af66ae193f96a30, type: 2}
+  - {fileID: 2100000, guid: cac7131f0874c04408dbac3de695c200, type: 2}
+  - {fileID: 2100000, guid: 91aeaa6903a8b6f43aa3882c1fc2de82, type: 2}
+  - {fileID: 2100000, guid: f6284c29bebbd1c4788275625bbcd9e4, type: 2}
+  colors:
+  - {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  - {r: 1, g: 0.793861, b: 0.41037738, a: 1}
+  - {r: 1, g: 0.54949003, b: 0, a: 1}
+  - {r: 0.5424528, g: 0.944342, b: 1, a: 1}
+  - {r: 0.24056602, g: 0.78406644, b: 1, a: 1}
+  - {r: 0, g: 0.53259915, b: 0.7735849, a: 1}
+  - {r: 0.31011927, g: 0.53399587, b: 0.6509434, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  resetRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+--- !u!135 &269757889
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269757887}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &269757890
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269757887}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: c5e60449984986c47be8fec5a1ef3674, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &269757891
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269757887}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &269757892
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269757887}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.42, z: 8.74}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &688743433
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +424,7 @@ GameObject:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -762,7 +895,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!21 &1291598775
+--- !u!21 &1258771435
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
@@ -1421,6 +1554,7 @@ MonoBehaviour:
   environments: {fileID: 129981201}
   modelCursor: {fileID: 1332706886}
   modelCache: {fileID: 813393804}
+  skyObject: {fileID: 269757888}
 --- !u!114 &1888028575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2444,11 +2578,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1048048.9
+      value: -2001416.9
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1063348.4
+      value: -2024366.4
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841884914474, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_RootOrder

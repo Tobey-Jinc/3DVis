@@ -247,7 +247,7 @@ public class ObjectCursor : MonoBehaviour
                 {
                     SelectedObject = null;
                 }
-                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder))
+                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject == SceneDescriptionManager.Scene)
                 {
                     Destroy(SelectedObject.gameObject);
                     SelectedObject = null;
@@ -289,10 +289,16 @@ public class ObjectCursor : MonoBehaviour
         transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * 5 * getReal3D.Cluster.deltaTime, Space.World);
     }
 
-    public void Rotate(Transform transform)
+    public void Rotate(Transform transform, Quaternion resetRotation, bool inverted = false)
     {
         float rotateX = getReal3D.Input.GetAxis(Inputs.leftStickY);
         float rotateY = getReal3D.Input.GetAxis(Inputs.leftStickX);
+
+        if (inverted)
+        {
+            rotateX *= -1;
+            rotateY *= -1;
+        }
 
         transform.Rotate(new Vector3(0, -rotateY, 0) * 50 * getReal3D.Cluster.deltaTime, Space.World);
 
@@ -300,7 +306,7 @@ public class ObjectCursor : MonoBehaviour
 
         if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
         {
-            transform.rotation = Quaternion.identity;
+            transform.rotation = resetRotation;
         }
     }
 

@@ -94,7 +94,7 @@ public class TextObject : MonoBehaviour
                     break;
 
                 case TransformMode.Rotation:
-                    cursor.Rotate(transform);
+                    cursor.Rotate(transform, Quaternion.identity);
 
                     break;
 

@@ -1799,7 +1799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -31901.373, y: -32751.377}
+  m_AnchoredPosition: {x: -58074.875, y: -59349.875}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &6240459841805494922
@@ -3158,8 +3158,14 @@ MonoBehaviour:
     background: {fileID: 6240459841711426377}
   modelIcon: {fileID: 21300000, guid: 7f0b03a46b4c0f34da6c6a8c9a055292, type: 3}
   environmentIcon: {fileID: 21300000, guid: 2081508c6b5b37540be9f69d15484c72, type: 3}
-  recordIcon: {fileID: 21300000, guid: 3b59132e793affb48b1a401304a4b169, type: 3}
-  optionsIcon: {fileID: 21300000, guid: 3427d890afda67146a454a725ade5da1, type: 3}
+  saveSceneIcon: {fileID: 21300000, guid: e3e1a6d24c4f89a43b49124d7804f042, type: 3}
+  loadSceneIcon: {fileID: 21300000, guid: 5b15b95977de53c498d8c3910f010222, type: 3}
+  audioIcon: {fileID: 21300000, guid: cb2a978952582f54093beb1f0d501870, type: 3}
+  lightIcon: {fileID: 21300000, guid: e30a45a949698d944a082bac2547f38b, type: 3}
+  textIcon: {fileID: 21300000, guid: ae9924279530d224cb5b7a6b997d24c3, type: 3}
+  modelLibraryIcon: {fileID: 21300000, guid: 86f1d7146ba8d184d93ca76448d91468, type: 3}
+  syncIcon: {fileID: 21300000, guid: 38d48aea5671a01499d318d87767597f, type: 3}
+  refreshIcon: {fileID: 21300000, guid: f70af8d6f8477f440ad66eedad017274, type: 3}
 --- !u!1 &7000892493225620303
 GameObject:
   m_ObjectHideFlags: 0

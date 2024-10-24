@@ -125,8 +125,14 @@ public class RadialMenu : MonoBehaviour
     [Header("Icons")]
     [SerializeField] private Sprite modelIcon;
     [SerializeField] private Sprite environmentIcon;
-    [SerializeField] private Sprite recordIcon;
-    [SerializeField] private Sprite optionsIcon;
+    [SerializeField] private Sprite saveSceneIcon;
+    [SerializeField] private Sprite loadSceneIcon;
+    [SerializeField] private Sprite audioIcon;
+    [SerializeField] private Sprite lightIcon;
+    [SerializeField] private Sprite textIcon;
+    [SerializeField] private Sprite modelLibraryIcon;
+    [SerializeField] private Sprite syncIcon;
+    [SerializeField] private Sprite refreshIcon;
 
     private Menu currentMenu = Menu.Main;
     private Dictionary<Menu, RadialMenuData> menus = new Dictionary<Menu, RadialMenuData>(); // Contains all menus and their data
@@ -149,9 +155,9 @@ public class RadialMenu : MonoBehaviour
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
             {
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(false); }),
-                new RadialQuadrantData("Environments", environmentIcon, () => { CreateEnvironmentExplorer(); }),
-                new RadialQuadrantData("Options", optionsIcon, () => { CreateSceneExplorer(); }),
-                new RadialQuadrantData("Save", recordIcon, () => { 
+                new RadialQuadrantData("Light", environmentIcon, () => { CreateEnvironmentExplorer(); }),
+                new RadialQuadrantData("Load Scene", loadSceneIcon, () => { CreateSceneExplorer(); }),
+                new RadialQuadrantData("Save Scene", saveSceneIcon, () => { 
                     keyboardInput.Open("Name your scene", (string fileName) => 
                         { 
                             sceneDescriptionManager.SaveScene(fileName); 
@@ -160,25 +166,11 @@ public class RadialMenu : MonoBehaviour
                             return sceneDescriptionManager.ValidateSceneName(text);
                         }, "Scene name is already taken!"); 
                 }),
-                new RadialQuadrantData("Sync", recordIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
-                new RadialQuadrantData("Text", recordIcon, () => { modelCache.InstantiateTextObject(); }),
-                new RadialQuadrantData("Light", recordIcon, () => { modelCache.InstantiateLightObject(); }),
-                new RadialQuadrantData("Audio", recordIcon, () => { CreateAudioLibraryExplorer(false); }),
-                new RadialQuadrantData("Model Library", recordIcon, () => { CreateModelLibraryExplorer(false); }),
-                new RadialQuadrantData("Reload App", recordIcon, () => { sceneDescriptionManager.ReloadApp(); }),
-            }
-        );
-
-
-
-        CreateMenu(
-            Menu.Environments, Menu.Main, "Environment", new RadialQuadrantData[]
-            {
-                new RadialQuadrantData("Environemnt1", environmentIcon, () => { Debug.Log("Environment"); }),
-                new RadialQuadrantData("Environemnt2", environmentIcon, () => { Debug.Log("Environment2"); }),
-                new RadialQuadrantData("Environemnt3", environmentIcon, () => { Debug.Log("Environment3"); }),
-                new RadialQuadrantData("Environemnt4", environmentIcon, () => { Debug.Log("Environment4"); }),
-                new RadialQuadrantData("Environemnt5", environmentIcon, () => { Debug.Log("Environment5"); }),
+                new RadialQuadrantData("Text", textIcon, () => { modelCache.InstantiateTextObject(); }),
+                new RadialQuadrantData("Audio", audioIcon, () => { CreateAudioLibraryExplorer(false); }),
+                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
+                new RadialQuadrantData("Model Library", modelLibraryIcon, () => { CreateModelLibraryExplorer(false); }),
+                new RadialQuadrantData("Reload App", refreshIcon, () => { sceneDescriptionManager.ReloadApp(); }),
             }
         );
 
@@ -188,10 +180,11 @@ public class RadialMenu : MonoBehaviour
             Menu.QuickPlace, Menu.None, "Quick Place", new RadialQuadrantData[]
             {
                 new RadialQuadrantData("Model", modelIcon, () => { CreateModelExplorer(true); }),
-                new RadialQuadrantData("Text", modelIcon, () => { modelCache.InstantiateTextObject(cursor.GetCursorPosition(), true); Close(); }),
-                new RadialQuadrantData("Light", modelIcon, () => { modelCache.InstantiateLightObject(cursor.GetCursorPosition(), true); Close(); }),
-                new RadialQuadrantData("Audio", modelIcon, () => { CreateAudioLibraryExplorer(true); }),
-                new RadialQuadrantData("Model Library", modelIcon, () => { CreateModelLibraryExplorer(true); }),
+                new RadialQuadrantData("Light", lightIcon, () => { modelCache.InstantiateLightObject(cursor.GetCursorPosition(), true); Close(); }),
+                new RadialQuadrantData("Text", textIcon, () => { modelCache.InstantiateTextObject(cursor.GetCursorPosition(), true); Close(); }),
+                new RadialQuadrantData("Audio", audioIcon, () => { CreateAudioLibraryExplorer(true); }),
+                new RadialQuadrantData("Model Library", modelLibraryIcon, () => { CreateModelLibraryExplorer(true); }),
+                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); })
             }
         );
 
