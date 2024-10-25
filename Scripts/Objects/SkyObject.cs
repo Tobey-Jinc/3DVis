@@ -29,9 +29,9 @@ public class SkyObject : MonoBehaviour
         cursor.OnSelect += Cursor_OnSelect;
 
         transformModes = new TransformModeAndControls[] {
-            new(TransformMode.Rotation, $"{Data.switchControl}Swap Sky <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
-            new(TransformMode.Brightness, $"{Data.switchControl}Swap Sky <sprite=3>    Colour <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>"),
-            new(TransformMode.Position, $"{Data.switchControl}Swap Sky <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=5>"),
+            new(TransformMode.Rotation, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
+            new(TransformMode.Brightness, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Colour <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>"),
+            new(TransformMode.Position, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=5>"),
         };
     }
 
@@ -49,7 +49,9 @@ public class SkyObject : MonoBehaviour
                 case TransformMode.Brightness:
                     float brightnessInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
-                    sun.intensity += brightnessInput * 6 * getReal3D.Cluster.deltaTime;
+                    float brightnessSpeed = 12 * CurrentOptions.options.scaleSpeed;
+
+                    sun.intensity += brightnessInput * brightnessSpeed * getReal3D.Cluster.deltaTime;
 
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {

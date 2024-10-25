@@ -22,6 +22,6 @@ public class WandTransform : MonoBehaviour
     void Update()
     {
         getReal3D.Sensor headSensor = playerInputs.Wand;
-        point.localRotation = Quaternion.Slerp(point.localRotation, headSensor.rotation, 10 * getReal3D.Cluster.deltaTime);
+        point.localRotation = Quaternion.Slerp(point.localRotation, headSensor.rotation, CurrentOptions.options.wandSmoothing * getReal3D.Cluster.deltaTime);
     }
 }

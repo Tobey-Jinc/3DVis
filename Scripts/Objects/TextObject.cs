@@ -100,11 +100,15 @@ public class TextObject : MonoBehaviour
 
                 case TransformMode.TextSize:
                     float fontSizeInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
-                    
-                    t_Text.fontSize += 6 * fontSizeInput * getReal3D.Cluster.deltaTime;
+
+                    float fontSizeSpeed = 12 * CurrentOptions.options.scaleSpeed;
+
+                    t_Text.fontSize += fontSizeSpeed * fontSizeInput * getReal3D.Cluster.deltaTime;
                     t_Text.fontSize = Mathf.Max(t_Text.fontSize, 0.1f);
 
-                    float widthInput = 6 * getReal3D.Input.GetAxis(Inputs.rightStickY) * getReal3D.Cluster.deltaTime;
+                    float widthSpeed = 12 * CurrentOptions.options.scaleSpeed;
+
+                    float widthInput = widthSpeed * getReal3D.Input.GetAxis(Inputs.rightStickY) * getReal3D.Cluster.deltaTime;
                     float width = Mathf.Max(rectTransform.sizeDelta.x + widthInput, 0.1f);
                     rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
 

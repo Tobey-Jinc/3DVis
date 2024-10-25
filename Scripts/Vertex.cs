@@ -117,6 +117,8 @@ namespace Vertex
 
         public const string allCategory = "All";
 
-        public const string switchControl = "Switch <sprite=0>    ";
+        public const string switchControl = "Switch <sprite=0>    Delete <sprite=4>    ";
+
+        public const string switchControlNoDelete = "Switch <sprite=0>    ";
     }
 }

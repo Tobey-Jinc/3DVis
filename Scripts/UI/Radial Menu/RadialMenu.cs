@@ -155,7 +155,7 @@ public class RadialMenu : MonoBehaviour
             Menu.Main, Menu.None, "Main", new RadialQuadrantData[]
             {
                 new RadialQuadrantData("Models", modelIcon, () => { CreateModelExplorer(false); }),
-                new RadialQuadrantData("Light", environmentIcon, () => { CreateEnvironmentExplorer(); }),
+                new RadialQuadrantData("Environments", environmentIcon, () => { CreateEnvironmentExplorer(); }),
                 new RadialQuadrantData("Load Scene", loadSceneIcon, () => { CreateSceneExplorer(); }),
                 new RadialQuadrantData("Save Scene", saveSceneIcon, () => { 
                     keyboardInput.Open("Name your scene", (string fileName) => 
@@ -166,10 +166,11 @@ public class RadialMenu : MonoBehaviour
                             return sceneDescriptionManager.ValidateSceneName(text);
                         }, "Scene name is already taken!"); 
                 }),
+                new RadialQuadrantData("Light", lightIcon, () => { modelCache.InstantiateLightObject(); }),
                 new RadialQuadrantData("Text", textIcon, () => { modelCache.InstantiateTextObject(); }),
                 new RadialQuadrantData("Audio", audioIcon, () => { CreateAudioLibraryExplorer(false); }),
-                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
                 new RadialQuadrantData("Model Library", modelLibraryIcon, () => { CreateModelLibraryExplorer(false); }),
+                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
                 new RadialQuadrantData("Reload App", refreshIcon, () => { sceneDescriptionManager.ReloadApp(); }),
             }
         );

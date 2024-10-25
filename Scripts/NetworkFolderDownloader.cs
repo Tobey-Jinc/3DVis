@@ -10,6 +10,7 @@ using Vertex;
 
 public class NetworkFolderDownloader : MonoBehaviour
 {
+    string networkFolder = "\\\\CAVE-HEADNODE\\data\\3dvis";
     string sourcePath;
     string targetPath;
     private UnityAction action;
@@ -22,6 +23,7 @@ public class NetworkFolderDownloader : MonoBehaviour
         this.action = action;
 
 #if !UNITY_EDITOR
+        CreateNetworkFolders();
         ClearWorkingDirectory();
         StartCoroutine(WaitForAvailability());
 #endif
@@ -29,6 +31,22 @@ public class NetworkFolderDownloader : MonoBehaviour
 #if UNITY_EDITOR
         action.Invoke();
 #endif
+    }
+
+    private void CreateNetworkFolders()
+    {
+        if (getReal3D.Cluster.isMaster)
+        {
+            if (!Directory.Exists(networkFolder))
+            {
+                Directory.CreateDirectory(networkFolder);
+            }
+
+            if (!Directory.Exists(sourcePath))
+            {
+                Directory.CreateDirectory(sourcePath);
+            }
+        }
     }
 
     private void ClearWorkingDirectory()

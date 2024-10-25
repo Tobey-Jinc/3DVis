@@ -109,7 +109,9 @@ public class ModelParent : MonoBehaviour
                 case TransformMode.Scale:
                     float scaleInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
-                    transform.localScale += Vector3.one * scaleInput * getReal3D.Cluster.deltaTime;
+                    float scaleSpeed = 2 * CurrentOptions.options.scaleSpeed;
+
+                    transform.localScale += Vector3.one * scaleSpeed * scaleInput * getReal3D.Cluster.deltaTime;
 
                     break;
             }

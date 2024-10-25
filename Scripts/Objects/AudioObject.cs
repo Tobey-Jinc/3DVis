@@ -95,8 +95,10 @@ public class AudioObject : MonoBehaviour
                     float minDistanceInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
                     float maxDistanceInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
-                    audioSource.minDistance += minDistanceInput * 6 * getReal3D.Cluster.deltaTime;
-                    audioSource.maxDistance += maxDistanceInput * 6 * getReal3D.Cluster.deltaTime;
+                    float scaleSpeed = 12 * CurrentOptions.options.scaleSpeed;
+
+                    audioSource.minDistance += minDistanceInput * scaleSpeed * getReal3D.Cluster.deltaTime;
+                    audioSource.maxDistance += maxDistanceInput * scaleSpeed * getReal3D.Cluster.deltaTime;
 
                     audioSource.maxDistance = Mathf.Max(audioSource.maxDistance, audioSource.minDistance + 0.01f);
 
@@ -113,16 +115,13 @@ public class AudioObject : MonoBehaviour
                 case TransformMode.Volume:
                     float volumeInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
-                    audioSource.volume += volumeInput * 2 * getReal3D.Cluster.deltaTime;
+                    float volumeSpeed = 4 * CurrentOptions.options.scaleSpeed;
+
+                    audioSource.volume += volumeInput * volumeSpeed * getReal3D.Cluster.deltaTime;
 
                     volumeVisualizer.localScale = Vector3.one * audioSource.volume;
 
                     break;
-            }
-
-            if (getReal3D.Input.GetButtonDown(Inputs.y))
-            {
-                
             }
         }
         else

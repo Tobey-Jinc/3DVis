@@ -81,7 +81,9 @@ public class LightObject : MonoBehaviour
                 case TransformMode.Scale:
                     float scaleInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
-                    lightSource.range += scaleInput * 6 * getReal3D.Cluster.deltaTime;
+                    float scaleSpeed = 12 * CurrentOptions.options.scaleSpeed;
+
+                    lightSource.range += scaleInput * scaleSpeed * getReal3D.Cluster.deltaTime;
 
                     rangeVisualizer.localScale = Vector3.one * lightSource.range * 2;
 
@@ -90,7 +92,9 @@ public class LightObject : MonoBehaviour
                 case TransformMode.Brightness:
                     float brightnessInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
-                    lightSource.intensity += brightnessInput * 6 * getReal3D.Cluster.deltaTime;
+                    float brightnessSpeed = 12 * CurrentOptions.options.scaleSpeed;
+
+                    lightSource.intensity += brightnessInput * brightnessSpeed * getReal3D.Cluster.deltaTime;
 
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {

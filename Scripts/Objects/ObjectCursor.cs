@@ -122,10 +122,17 @@ public class ObjectCursor : MonoBehaviour
                     break;
             }
 
-            t_Controls.SetText(transformModes[transformModeIndex].controls);
-            controls.localScale = Vector3.one;
+            if (!CurrentOptions.options.hideControls)
+            {
+                t_Controls.SetText(transformModes[transformModeIndex].controls);
+                controls.localScale = Vector3.one;
+            }
+            else
+            {
+                controls.localScale = Vector3.zero;
+            }
         }
-        else if (!radialMenu.InMenu && Active)
+        else if (!radialMenu.InMenu && Active && !CurrentOptions.options.hideControls)
         {
             if (getReal3D.Input.GetButton(Inputs.leftShoulder))
             {
@@ -247,7 +254,7 @@ public class ObjectCursor : MonoBehaviour
                 {
                     SelectedObject = null;
                 }
-                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject == SceneDescriptionManager.Scene)
+                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject.parent == SceneDescriptionManager.Scene)
                 {
                     Destroy(SelectedObject.gameObject);
                     SelectedObject = null;
@@ -286,7 +293,9 @@ public class ObjectCursor : MonoBehaviour
         Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
         float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
 
-        transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * 5 * getReal3D.Cluster.deltaTime, Space.World);
+        float speed = 10 * CurrentOptions.options.positionSpeed;
+
+        transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * speed * getReal3D.Cluster.deltaTime, Space.World);
     }
 
     public void Rotate(Transform transform, Quaternion resetRotation, bool inverted = false)
@@ -300,9 +309,11 @@ public class ObjectCursor : MonoBehaviour
             rotateY *= -1;
         }
 
-        transform.Rotate(new Vector3(0, -rotateY, 0) * 50 * getReal3D.Cluster.deltaTime, Space.World);
+        float speed = 100 * CurrentOptions.options.rotationSpeed;
 
-        transform.RotateAround(transform.position, wand.right, rotateX * 50 * getReal3D.Cluster.deltaTime);
+        transform.Rotate(new Vector3(0, -rotateY, 0) * speed * getReal3D.Cluster.deltaTime, Space.World);
+
+        transform.RotateAround(transform.position, wand.right, rotateX * speed * getReal3D.Cluster.deltaTime);
 
         if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
         {
