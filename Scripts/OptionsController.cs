@@ -25,7 +25,6 @@ public static class CurrentOptions
 
 public class OptionsController : MonoBehaviour
 {
-    [SerializeField] private NetworkFolderDownloader networkFolderDownloader;
     [SerializeField] private new Camera camera;
 
     private void Start()
