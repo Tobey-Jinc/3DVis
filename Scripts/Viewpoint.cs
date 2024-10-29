@@ -26,7 +26,13 @@ public class Viewpoint : getReal3D.MonoBehaviourWithRpc
             Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
             float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
 
-            characterController.Move((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * movementSpeed * CurrentOptions.options.movementSpeed * getReal3D.Cluster.deltaTime);
+            float speed = CurrentOptions.options.movementSpeed;
+            if (getReal3D.Input.GetButton(Inputs.x))
+            {
+                speed *= 2;
+            }
+
+            characterController.Move((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * movementSpeed * speed * getReal3D.Cluster.deltaTime);
         }
     }
 

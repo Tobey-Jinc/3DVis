@@ -532,6 +532,7 @@ MonoBehaviour:
   minDistanceVisualizer: {fileID: 4536888784455092213}
   maxDistanceVisualizer: {fileID: 4536888782873341664}
   volumeVisualizer: {fileID: 4536888782886759192}
+  editorRenderer: {fileID: 4536888783177982296}
 --- !u!82 &4536888784785387891
 AudioSource:
   m_ObjectHideFlags: 0

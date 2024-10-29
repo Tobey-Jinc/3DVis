@@ -214,12 +214,7 @@ public class SceneDescriptionManager : MonoBehaviour
 
     private async void LoadScene(string sceneName, bool tempScene = false)
     {
-        modelCursor.DeselectObject();
-
-        foreach (Transform child in scene)
-        {
-            Destroy(child.gameObject);
-        }
+        ClearScene();
 
         string sceneJSON;
         if (!tempScene)
@@ -314,5 +309,15 @@ public class SceneDescriptionManager : MonoBehaviour
         }
 
         LoadTempSceneOnLoad = false;
+    }
+
+    public void ClearScene()
+    {
+        modelCursor.DeselectObject();
+
+        foreach (Transform child in scene)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }

@@ -26,7 +26,7 @@ public class ModelChild : MonoBehaviour
     {
         if (selection == transform)
         {
-            ModelCache.Instance.Copy(parent.transform);
+            ModelCache.Instance.Copy(parent.gameObject);
         }
     }
 

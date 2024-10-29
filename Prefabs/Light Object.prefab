@@ -127,6 +127,7 @@ MonoBehaviour:
   - {r: 0.7677497, g: 0.49411762, b: 1, a: 1}
   - {r: 1, g: 0.45882356, b: 0.6298655, a: 1}
   - {r: 1, g: 0.5348315, b: 0.45882356, a: 1}
+  editorRenderer: {fileID: 4067333700910176447}
 --- !u!1 &4067333701531554512
 GameObject:
   m_ObjectHideFlags: 0

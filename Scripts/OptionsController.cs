@@ -13,7 +13,6 @@ public class Options
     public float scaleSpeed = 0.5f;
     public float wandSmoothing = 20f;
     public int graphicsQuality = 5;
-    public float renderDistance = 5000f;
     public bool invertCameraControls = false;
     public bool hideControls = false;
 }
@@ -25,14 +24,12 @@ public static class CurrentOptions
 
 public class OptionsController : MonoBehaviour
 {
-    [SerializeField] private new Camera camera;
-
     private void Start()
     {
         LoadOptions();
     }
 
-    private void LoadOptions()
+    public void LoadOptions()
     {
         string path = "\\\\CAVE-HEADNODE\\data\\3dvis\\options.json";
 
@@ -60,7 +57,6 @@ public class OptionsController : MonoBehaviour
 
     private void ApplyOptions()
     {
-        camera.farClipPlane = CurrentOptions.options.renderDistance;
         QualitySettings.SetQualityLevel(CurrentOptions.options.graphicsQuality);
     }
 }

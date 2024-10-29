@@ -48,6 +48,7 @@ public class ObjectCursor : MonoBehaviour
     [Header("Selection")]
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform transformIcon;
+    [SerializeField] private float transformIconSizeDampening;
     [SerializeField] private SpriteRenderer transformIconSprite;
     [SerializeField] private Sprite positionIcon;
     [SerializeField] private Color positionColor;
@@ -63,9 +64,12 @@ public class ObjectCursor : MonoBehaviour
     private string paintControls = "Create <sprite=0>    Copy <sprite=3>    Paste <sprite=2>";
     private string selectionControls = "Select <sprite=0>";
 
+    private bool editMode = true;
+
     public TransformMode CursorTransformMode { get; private set; } = TransformMode.Position;
     public Transform SelectedObject { get; private set; } = null;
     public bool Active { get; private set; } = false;
+    public bool EditMode { get => editMode; }
 
     public delegate void SelectEvent(Transform selection, Vector3 selectionPoint);
     public event SelectEvent OnSelect;
@@ -80,186 +84,217 @@ public class ObjectCursor : MonoBehaviour
 
     private void Update()
     {
-        if (!radialMenu.InMenu && SelectedObject != null)
+        if (editMode)
         {
-            transformIcon.LookAt(cameraTransform);
-            transformIcon.position = selectionAnchor.position;
-            transformIcon.gameObject.SetActive(true);
-
-            switch (CursorTransformMode)
+            if (!radialMenu.InMenu && SelectedObject != null)
             {
-                case TransformMode.None:
-                    transformIconSprite.color = Color.black;
-                    break;
+                transformIcon.LookAt(cameraTransform);
+                transformIcon.position = selectionAnchor.position;
+                transformIcon.gameObject.SetActive(true);
 
-                case TransformMode.Position:
-                    transformIconSprite.sprite = positionIcon;
-                    transformIconSprite.color = positionColor;
-                    break;
+                float distanceFromCamera = Vector3.Distance(transformIcon.position, cameraTransform.position);
+                float transformIconScale = distanceFromCamera / transformIconSizeDampening;
+                transformIconScale = Mathf.Clamp(transformIconScale, 0, 0.5f);
+                transformIcon.localScale = Vector3.one * transformIconScale;
 
-                case TransformMode.Rotation:
-                    transformIconSprite.sprite = rotationIcon;
-                    transformIconSprite.color = rotationColor;
-                    break;
+                switch (CursorTransformMode)
+                {
+                    case TransformMode.None:
+                        transformIconSprite.color = Color.black;
+                        break;
 
-                case TransformMode.Scale:
-                    transformIconSprite.sprite = scaleIcon;
-                    transformIconSprite.color = scaleColor;
-                    break;
+                    case TransformMode.Position:
+                        transformIconSprite.sprite = positionIcon;
+                        transformIconSprite.color = positionColor;
+                        break;
 
-                case TransformMode.TextSize:
-                    transformIconSprite.sprite = scaleIcon;
-                    transformIconSprite.color = scaleColor;
-                    break;
+                    case TransformMode.Rotation:
+                        transformIconSprite.sprite = rotationIcon;
+                        transformIconSprite.color = rotationColor;
+                        break;
 
-                case TransformMode.Volume:
-                    transformIconSprite.sprite = null;
-                    break;
+                    case TransformMode.Scale:
+                        transformIconSprite.sprite = scaleIcon;
+                        transformIconSprite.color = scaleColor;
+                        break;
 
-                case TransformMode.Brightness:
-                    transformIconSprite.sprite = scaleIcon;
-                    transformIconSprite.color = scaleColor;
-                    break;
+                    case TransformMode.TextSize:
+                        transformIconSprite.sprite = scaleIcon;
+                        transformIconSprite.color = scaleColor;
+                        break;
+
+                    case TransformMode.Volume:
+                        transformIconSprite.sprite = null;
+                        break;
+
+                    case TransformMode.Brightness:
+                        transformIconSprite.sprite = scaleIcon;
+                        transformIconSprite.color = scaleColor;
+                        break;
+                }
+
+                if (!CurrentOptions.options.hideControls)
+                {
+                    t_Controls.SetText(transformModes[transformModeIndex].controls);
+                    controls.localScale = Vector3.one;
+                }
+                else
+                {
+                    controls.localScale = Vector3.zero;
+                }
             }
-
-            if (!CurrentOptions.options.hideControls)
+            else if (!radialMenu.InMenu && Active && !CurrentOptions.options.hideControls)
             {
-                t_Controls.SetText(transformModes[transformModeIndex].controls);
+                if (getReal3D.Input.GetButton(Inputs.leftShoulder))
+                {
+                    t_Controls.SetText(paintControls);
+                }
+                else
+                {
+                    t_Controls.SetText(selectionControls);
+                }
+
                 controls.localScale = Vector3.one;
             }
             else
             {
+                transformIcon.gameObject.SetActive(false);
+
                 controls.localScale = Vector3.zero;
             }
         }
-        else if (!radialMenu.InMenu && Active && !CurrentOptions.options.hideControls)
-        {
-            if (getReal3D.Input.GetButton(Inputs.leftShoulder))
-            {
-                t_Controls.SetText(paintControls);
-            }
-            else
-            {
-                t_Controls.SetText(selectionControls);
-            }
 
-            controls.localScale = Vector3.one;
-        }
-        else
+        if (SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.y))
         {
-            transformIcon.gameObject.SetActive(false);
+            bool leftShoulder = getReal3D.Input.GetButton(Inputs.leftShoulder);
+            bool rightShoulder = getReal3D.Input.GetButton(Inputs.rightShoulder);
 
-            controls.localScale = Vector3.zero;
+            if (!editMode)
+            {
+                ToggleEditMode();
+            }
+            else if (!leftShoulder && !rightShoulder)
+            {
+                ToggleEditMode();
+            }
         }
     }
 
     void LateUpdate()
     {
-        bool leftShoulder = getReal3D.Input.GetButton(Inputs.leftShoulder);
-        bool rightShoulder = getReal3D.Input.GetButton(Inputs.rightShoulder);
-
-        if (!radialMenu.InMenu && !keyboardInput.InMenu && SelectedObject == null && (leftShoulder || rightShoulder))
+        if (editMode)
         {
-            Active = true;
+            bool leftShoulder = getReal3D.Input.GetButton(Inputs.leftShoulder);
+            bool rightShoulder = getReal3D.Input.GetButton(Inputs.rightShoulder);
 
-            lineRenderer.enabled = true;
-            lineRenderer.SetPosition(0, wand.position);
-
-            if (leftShoulder)
+            if (!radialMenu.InMenu && !keyboardInput.InMenu && SelectedObject == null && (leftShoulder || rightShoulder))
             {
-                lineRenderer.material = quickPlaceMaterial;
-                cursorRenderer.material = quickPlaceMaterial;
+                Active = true;
 
-                if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 15))
+                lineRenderer.enabled = true;
+                lineRenderer.SetPosition(0, wand.position);
+
+                if (leftShoulder)
                 {
-                    ShowCursorAtHit(hit);
+                    lineRenderer.material = quickPlaceMaterial;
+                    cursorRenderer.material = quickPlaceMaterial;
 
-                    if (getReal3D.Input.GetButtonDown(Inputs.y))
+                    if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 15))
                     {
-                        OnCopy?.Invoke(hit.transform);
+                        ShowCursorAtHit(hit);
+
+                        if (getReal3D.Input.GetButtonDown(Inputs.y))
+                        {
+                            OnCopy?.Invoke(hit.transform);
+                        }
                     }
+                    else
+                    {
+                        Vector3 placementPosition = wand.position + (wand.forward * 15);
+
+                        cursor.forward = wand.forward;
+                        cursor.position = placementPosition;
+
+                        lineRenderer.SetPosition(1, placementPosition);
+                    }
+
+                    if (getReal3D.Input.GetButtonDown(Inputs.x))
+                    {
+                        modelCache.Paste(GetCursorPosition());
+                    }
+
+                    cursor.gameObject.SetActive(true);
                 }
                 else
                 {
-                    Vector3 placementPosition = wand.position + (wand.forward * 15);
+                    if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(Layer.model), QueryTriggerInteraction.Collide))
+                    {
+                        ShowCursorAtHit(hit);
+                        cursorRenderer.material = foundModelMaterial;
+                        cursor.gameObject.SetActive(true);
 
-                    cursor.forward = wand.forward;
-                    cursor.position = placementPosition;
+                        lineRenderer.material = foundModelMaterial;
 
-                    lineRenderer.SetPosition(1, placementPosition);
+                        if (getReal3D.Input.GetButtonDown(Inputs.a))
+                        {
+                            OnSelect?.Invoke(hit.transform, hit.point);
+                        }
+                    }
+                    else
+                    {
+                        cursor.gameObject.SetActive(false);
+
+                        lineRenderer.SetPosition(1, wand.position + (wand.forward * 1000));
+                        lineRenderer.material = didNotFindModelMaterial;
+                    }
                 }
-
-                if (getReal3D.Input.GetButtonDown(Inputs.x))
-                {
-                    modelCache.Paste(GetCursorPosition());
-                }
-
-                cursor.gameObject.SetActive(true);
             }
             else
             {
-                if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(Layer.model), QueryTriggerInteraction.Collide))
+                Active = false;
+
+                lineRenderer.enabled = false;
+                cursor.gameObject.SetActive(false);
+
+                if (!radialMenu.InMenu && SelectedObject != null)
                 {
-                    ShowCursorAtHit(hit);
-                    cursorRenderer.material = foundModelMaterial;
-                    cursor.gameObject.SetActive(true);
-
-                    lineRenderer.material = foundModelMaterial;
-
                     if (getReal3D.Input.GetButtonDown(Inputs.a))
                     {
-                        OnSelect?.Invoke(hit.transform, hit.point);
-                    }
-                }
-                else
-                {
-                    cursor.gameObject.SetActive(false);
+                        transformModeIndex++;
+                        if (transformModeIndex >= transformModes.Length)
+                        {
+                            transformModeIndex = 0;
+                        }
 
-                    lineRenderer.SetPosition(1, wand.position + (wand.forward * 1000));
-                    lineRenderer.material = didNotFindModelMaterial;
+                        CursorTransformMode = transformModes[transformModeIndex].transformMode;
+                    }
+                    else if (getReal3D.Input.GetButtonDown(Inputs.x))
+                    {
+                        if (CursorTransformMode == TransformMode.None)
+                        {
+                            CursorTransformMode = transformModes[transformModeIndex].transformMode;
+                        }
+                        else
+                        {
+                            CursorTransformMode = TransformMode.None;
+                        }
+                    }
+                    else if (getReal3D.Input.GetButtonDown(Inputs.b))
+                    {
+                        SelectedObject = null;
+                    }
+                    else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject.parent == SceneDescriptionManager.Scene)
+                    {
+                        Destroy(SelectedObject.gameObject);
+                        SelectedObject = null;
+                    }
                 }
             }
         }
         else
         {
-            Active = false;
-
             lineRenderer.enabled = false;
             cursor.gameObject.SetActive(false);
-
-            if (!radialMenu.InMenu && SelectedObject != null)
-            {
-                if (getReal3D.Input.GetButtonDown(Inputs.a))
-                {
-                    transformModeIndex++;
-                    if (transformModeIndex >= transformModes.Length)
-                    {
-                        transformModeIndex = 0;
-                    }
-
-                    CursorTransformMode = transformModes[transformModeIndex].transformMode;
-                }
-                else if (getReal3D.Input.GetButtonDown(Inputs.x))
-                {
-                    if (CursorTransformMode == TransformMode.None)
-                    {
-                        CursorTransformMode = transformModes[transformModeIndex].transformMode;
-                    }
-                    else
-                    {
-                        CursorTransformMode = TransformMode.None;
-                    }
-                }
-                else if (getReal3D.Input.GetButtonDown(Inputs.b))
-                {
-                    SelectedObject = null;
-                }
-                else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject.parent == SceneDescriptionManager.Scene)
-                {
-                    Destroy(SelectedObject.gameObject);
-                    SelectedObject = null;
-                }
-            }
         }
     }
 
@@ -324,5 +359,12 @@ public class ObjectCursor : MonoBehaviour
     public Vector3 GetCursorPosition()
     {
         return cursor.position;
+    }
+
+    public void ToggleEditMode()
+    {
+        editMode = !editMode;
+
+        SelectedObject = null;
     }
 }

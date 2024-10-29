@@ -11,6 +11,7 @@ public class LightObject : MonoBehaviour
     [SerializeField] private Transform rangeVisualizer;
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Color[] colors;
+    [SerializeField] private MeshRenderer editorRenderer;
 
     private ObjectCursor cursor;
     private KeyboardInput keyboardInput;
@@ -61,12 +62,14 @@ public class LightObject : MonoBehaviour
     {
         if (selection == transform)
         {
-            ModelCache.Instance.Copy(transform);
+            ModelCache.Instance.Copy(gameObject);
         }
     }
 
     void Update()
     {
+        editorRenderer.enabled = cursor.EditMode;
+
         if (cursor.SelectedObject == transform && !keyboardInput.InMenu)
         {
             rangeVisualizer.gameObject.SetActive(cursor.CursorTransformMode == TransformMode.Scale);

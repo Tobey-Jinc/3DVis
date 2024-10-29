@@ -36,7 +36,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
     private string instantiateModelSyncedMethod = "InstantiateModelSynced";
 
-    private Transform copiedObject;
+    private GameObject copiedObject;
 
     private void Awake()
     {
@@ -56,7 +56,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
     {
         if (cursor.Active && getReal3D.Input.GetButton(Inputs.leftShoulder) && copiedObject != null)
         {
-            copyCursor.position = copiedObject.position;
+            copyCursor.position = copiedObject.transform.position;
             copyCursor.LookAt(wand);
 
             copyCursor.gameObject.SetActive(true);
@@ -167,7 +167,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
             if (copy)
             {
-                copiedObject = model.transform;
+                copiedObject = model.gameObject;
             }
 
             return model.transform;
@@ -183,7 +183,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
         if (copy)
         {
-            copiedObject = modelParent.transform;
+            copiedObject = modelParent.gameObject;
         }
     }
 
@@ -198,7 +198,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
         if (copy)
         {
-            copiedObject = textObject.transform;
+            copiedObject = textObject.gameObject;
         }
     }
 
@@ -210,7 +210,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
         if (copy)
         {
-            copiedObject = lightObject.transform;
+            copiedObject = lightObject.gameObject;
         }
     }
 
@@ -224,11 +224,11 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
 
         if (copy)
         {
-            copiedObject = audioObject.transform;
+            copiedObject = audioObject.gameObject;
         }
     }
 
-    public void Copy(Transform copiedObject)
+    public void Copy(GameObject copiedObject)
     {
         this.copiedObject = copiedObject;
     }
@@ -237,8 +237,8 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
     {
         if (copiedObject != null)
         {
-            Transform pastedObject = Instantiate(copiedObject, SceneDescriptionManager.Scene);
-            pastedObject.position = GetSpawnPosition(position);
+            GameObject pastedObject = Instantiate(copiedObject, SceneDescriptionManager.Scene);
+            pastedObject.transform.position = GetSpawnPosition(position);
         }
     }
 

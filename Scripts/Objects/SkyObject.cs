@@ -10,6 +10,7 @@ public class SkyObject : MonoBehaviour
     [SerializeField] private Material[] skyboxes;
     [SerializeField] private Color[] colors;
     [SerializeField] private Quaternion resetRotation;
+    [SerializeField] private MeshRenderer editorRenderer;
 
     private ObjectCursor cursor;
 
@@ -30,13 +31,15 @@ public class SkyObject : MonoBehaviour
 
         transformModes = new TransformModeAndControls[] {
             new(TransformMode.Rotation, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
-            new(TransformMode.Brightness, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Colour <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>"),
+            new(TransformMode.Brightness, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>"),
             new(TransformMode.Position, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=5>"),
         };
     }
 
     void Update()
     {
+        editorRenderer.enabled = cursor.EditMode;
+
         if (cursor.SelectedObject == transform)
         {
             switch (cursor.CursorTransformMode)

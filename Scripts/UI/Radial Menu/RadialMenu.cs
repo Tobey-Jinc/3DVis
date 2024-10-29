@@ -110,6 +110,7 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private FileSelection fileSelection;
     [SerializeField] private KeyboardInput keyboardInput;
     [SerializeField] private Viewpoint viewpoint;
+    [SerializeField] private OptionsController optionsController;
     [SerializeField] private RectTransform container;
     [SerializeField] private TMP_Text t_Title;
     [SerializeField] private TMP_Text t_Label;
@@ -133,6 +134,8 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private Sprite modelLibraryIcon;
     [SerializeField] private Sprite syncIcon;
     [SerializeField] private Sprite refreshIcon;
+    [SerializeField] private Sprite showcaseIcon;
+    [SerializeField] private Sprite deleteIcon;
 
     private Menu currentMenu = Menu.Main;
     private Dictionary<Menu, RadialMenuData> menus = new Dictionary<Menu, RadialMenuData>(); // Contains all menus and their data
@@ -170,8 +173,11 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Text", textIcon, () => { modelCache.InstantiateTextObject(); }),
                 new RadialQuadrantData("Audio", audioIcon, () => { CreateAudioLibraryExplorer(false); }),
                 new RadialQuadrantData("Model Library", modelLibraryIcon, () => { CreateModelLibraryExplorer(false); }),
+                new RadialQuadrantData("Show Case", showcaseIcon, () => { cursor.ToggleEditMode(); }),
                 new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
+                new RadialQuadrantData("Reload Options", syncIcon, () => { optionsController.LoadOptions(); }),
                 new RadialQuadrantData("Reload App", refreshIcon, () => { sceneDescriptionManager.ReloadApp(); }),
+                new RadialQuadrantData("Clear Scene", deleteIcon, () => { sceneDescriptionManager.ClearScene(); }),
             }
         );
 

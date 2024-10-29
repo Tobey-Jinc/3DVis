@@ -67,7 +67,7 @@ public class TextObject : MonoBehaviour
     {
         if (selection == transform)
         {
-            ModelCache.Instance.Copy(transform);
+            ModelCache.Instance.Copy(gameObject);
         }
     }
 

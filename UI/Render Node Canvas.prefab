@@ -753,7 +753,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 18
+  m_fontSizeMin: 0
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 2
@@ -1148,7 +1148,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &6240459841559022257
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1799,7 +1799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -58074.875, y: -59349.875}
+  m_AnchoredPosition: {x: -75760.43, y: -78735.42}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &6240459841805494922
@@ -3139,6 +3139,7 @@ MonoBehaviour:
   fileSelection: {fileID: 8833300253014550361}
   keyboardInput: {fileID: 0}
   viewpoint: {fileID: 0}
+  optionsController: {fileID: 0}
   container: {fileID: 6240459843221378953}
   t_Title: {fileID: 6240459842104842091}
   t_Label: {fileID: 6240459842038841648}
@@ -3166,6 +3167,8 @@ MonoBehaviour:
   modelLibraryIcon: {fileID: 21300000, guid: 86f1d7146ba8d184d93ca76448d91468, type: 3}
   syncIcon: {fileID: 21300000, guid: 38d48aea5671a01499d318d87767597f, type: 3}
   refreshIcon: {fileID: 21300000, guid: f70af8d6f8477f440ad66eedad017274, type: 3}
+  showcaseIcon: {fileID: 21300000, guid: 36da07e5759d4fe4bbd295de31d6e33e, type: 3}
+  deleteIcon: {fileID: 21300000, guid: 5df55ff0de06c5f44975e9ef062bad26, type: 3}
 --- !u!1 &7000892493225620303
 GameObject:
   m_ObjectHideFlags: 0

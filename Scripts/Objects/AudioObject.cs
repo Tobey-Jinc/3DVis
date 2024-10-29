@@ -11,6 +11,7 @@ public class AudioObject : MonoBehaviour
     [SerializeField] private Transform minDistanceVisualizer;
     [SerializeField] private Transform maxDistanceVisualizer;
     [SerializeField] private Transform volumeVisualizer;
+    [SerializeField] private MeshRenderer editorRenderer;
 
     private ObjectCursor cursor;
     private KeyboardInput keyboardInput;
@@ -71,12 +72,14 @@ public class AudioObject : MonoBehaviour
     {
         if (selection == transform)
         {
-            ModelCache.Instance.Copy(transform);
+            ModelCache.Instance.Copy(gameObject);
         }
     }
 
     void Update()
     {
+        editorRenderer.enabled = cursor.EditMode;
+
         if (cursor.SelectedObject == transform && !keyboardInput.InMenu)
         {
             bool showDistanceVisualizers = cursor.CursorTransformMode == TransformMode.Scale && audioSource.spatialBlend == 1;
