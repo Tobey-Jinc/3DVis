@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Describes an entire scene
 [System.Serializable]
 public class SceneDescription
 {
@@ -21,6 +22,7 @@ public class SceneDescription
     public SDAudio[] audio;
 }
 
+// Describes the sky
 [System.Serializable]
 public struct SDSky
 {
@@ -35,6 +37,7 @@ public struct SDSky
     public LightShadows shadows;
 }
 
+// Describes a model
 [System.Serializable]
 public struct SDModel
 {
@@ -46,6 +49,7 @@ public struct SDModel
     public Vector3 scale;
 }
 
+// Describes text
 [System.Serializable]
 public struct SDText
 {
@@ -59,6 +63,7 @@ public struct SDText
     public TMPro.TextAlignmentOptions textAlignment;
 }
 
+// Describes a light
 [System.Serializable]
 public struct SDLight
 {
@@ -69,6 +74,7 @@ public struct SDLight
     public LightShadows shadows;
 }
 
+// Describes an audio source
 [System.Serializable]
 public struct SDAudio
 {

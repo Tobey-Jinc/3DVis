@@ -27,8 +27,10 @@ public class SkyObject : MonoBehaviour
     {
         cursor = ObjectCursor.Instance;
 
+        // Subscribe to event
         cursor.OnSelect += Cursor_OnSelect;
 
+        // Define transform modes
         transformModes = new TransformModeAndControls[] {
             new(TransformMode.Rotation, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
             new(TransformMode.Brightness, $"{Data.switchControlNoDelete}Swap Sky <sprite=3>    Brightness <sprite=8>    Shadows <sprite=5>"),
@@ -38,6 +40,7 @@ public class SkyObject : MonoBehaviour
 
     void Update()
     {
+        // Hide when not in edit mode
         editorRenderer.enabled = cursor.EditMode;
 
         if (cursor.SelectedObject == transform)
@@ -50,12 +53,14 @@ public class SkyObject : MonoBehaviour
                     break;
 
                 case TransformMode.Brightness:
+                    // Change brightness
                     float brightnessInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
                     float brightnessSpeed = 12 * CurrentOptions.options.scaleSpeed;
 
                     sun.intensity += brightnessInput * brightnessSpeed * getReal3D.Cluster.deltaTime;
 
+                    // Toggle shadows
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {
                         if (sun.shadows == LightShadows.None)
@@ -73,6 +78,7 @@ public class SkyObject : MonoBehaviour
                 case TransformMode.Position:
                     cursor.Position(transform);
 
+                    // Change colour
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {
                         colorIndex++;
@@ -87,6 +93,7 @@ public class SkyObject : MonoBehaviour
                     break;
             }
 
+            // Change skybox
             if (getReal3D.Input.GetButtonDown(Inputs.y))
             {
                 skyboxIndex++;
@@ -100,6 +107,9 @@ public class SkyObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Executed when this object is selected. Selects the object
+    /// </summary>
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
         if (selection == transform)
@@ -108,12 +118,20 @@ public class SkyObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set the skybox to the given index
+    /// </summary>
+    /// <param name="index">The skyboxes index</param>
     private void SetSkybox(int index)
     {
         RenderSettings.skybox = skyboxes[index];
         DynamicGI.UpdateEnvironment();
     }
 
+    /// <summary>
+    /// Set the colour to the given index
+    /// </summary>
+    /// <param name="index">The colours index</param>
     private void SetColor(int index)
     {
         Color color = colors[index];
@@ -121,6 +139,10 @@ public class SkyObject : MonoBehaviour
         sun.color = color;
     }
 
+    /// <summary>
+    /// Set up the object from a Scene Description Sky
+    /// </summary>
+    /// <param name="sky">The SDSky to derive from</param>
     public void Setup(SDSky sky)
     {
         transform.position = sky.position;

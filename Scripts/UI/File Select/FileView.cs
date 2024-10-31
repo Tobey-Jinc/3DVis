@@ -16,6 +16,11 @@ public class FileView : MonoBehaviour
     private FileSelection fileSelection;
     private int index;
 
+    /// <summary>
+    /// Sets up the view. Used for a pooled view
+    /// </summary>
+    /// <param name="index">The views index in the list</param>
+    /// <param name="fileName">The name of the file</param>
     public void Setup(int index, string fileName)
     {
         gameObject.SetActive(true);
@@ -24,6 +29,12 @@ public class FileView : MonoBehaviour
         t_File.SetText(fileName);
     }
 
+    /// <summary>
+    /// Sets up the view. Used for a newly created view
+    /// </summary>
+    /// <param name="fileSelection">Stored reference to the File Selection menu</param>
+    /// <param name="index">The views index in the list</param>
+    /// <param name="fileName">The name of the file</param>
     public void Setup(FileSelection fileSelection, int index, string fileName)
     {
         this.fileSelection = fileSelection;
@@ -32,6 +43,9 @@ public class FileView : MonoBehaviour
         t_File.SetText(fileName);
     }
 
+    /// <summary>
+    /// Resets the view
+    /// </summary>
     public void ResetSelection()
     {
         background.color = Palette.darkGrey;
@@ -46,6 +60,7 @@ public class FileView : MonoBehaviour
     {
         if (fileSelection != null)
         {
+            // Selected
             if (index == fileSelection.SelectionIndex)
             {
                 background.color = Palette.white;
@@ -53,7 +68,7 @@ public class FileView : MonoBehaviour
 
                 rectTransform.localScale = Vector3.Lerp(rectTransform.localScale, new Vector3(selectedScale, selectedScale, selectedScale), selectedScaleSpeed * getReal3D.Cluster.deltaTime);
             }
-            else
+            else // Unselected
             {
                 background.color = Palette.darkGrey;
                 t_File.color = Palette.white;

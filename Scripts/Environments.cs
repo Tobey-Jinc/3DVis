@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Vertex;
 
+/// <summary>
+/// Defines the data of an environment
+/// </summary>
 [System.Serializable]
 public struct EnvironmentPreset
 {
@@ -25,6 +28,7 @@ public class Environments : MonoBehaviour
 
     private void Start()
     {
+        // Create the file structure
         Dictionary<string, List<string[]>> files = new();
 
         for (int i = 0; i < environments.Length; i++)
@@ -42,14 +46,20 @@ public class Environments : MonoBehaviour
         SetEnvironment(environments[0].id);
     }
 
+    /// <summary>
+    /// Sets the environment to the given ID
+    /// </summary>
+    /// <param name="id">The ID of the environment to set to</param>
     public void SetEnvironment(string id)
     {
+        // Destroy the current environment if necessary
         if (currentEnvironment != null)
         {
             Destroy(currentEnvironment.gameObject);
             currentEnvironment = null;
         }
 
+        // Find and create the environemnt from the given ID
         foreach (EnvironmentPreset environment in environments)
         {
             if (environment.id == id)
@@ -61,6 +71,10 @@ public class Environments : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Gets the environment file structure
+    /// </summary>
+    /// <returns>The file structure</returns>
     public FileStructure GetFileStructure()
     {
         return fileStructure;

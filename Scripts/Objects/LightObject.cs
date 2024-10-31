@@ -28,9 +28,11 @@ public class LightObject : MonoBehaviour
         cursor = ObjectCursor.Instance;
         keyboardInput = KeyboardInput.Instance;
 
+        // Subscribe to events
         cursor.OnSelect += Cursor_OnSelect;
         cursor.OnCopy += Cursor_OnCopy;
 
+        // Define transform modes
         transformModes = new TransformModeAndControls[] {
             new(TransformMode.Position, $"{Data.switchControl}Colour <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>"),
             new(TransformMode.Scale, $"{Data.switchControl}Colour <sprite=3>    Range <sprite=8>"),
@@ -38,6 +40,10 @@ public class LightObject : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Set up the light from a Scene Description Light
+    /// </summary>
+    /// <param name="sdLight">The SDLight to derive from</param>
     public void Setup(SDLight sdLight)
     {
         transform.position = sdLight.position;
@@ -50,6 +56,9 @@ public class LightObject : MonoBehaviour
         lightSource.shadows = sdLight.shadows;
     }
 
+    /// <summary>
+    /// Executed when this object is selected. Selects the object
+    /// </summary>
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
         if (selection == transform)
@@ -58,6 +67,9 @@ public class LightObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Copies this object
+    /// </summary>
     private void Cursor_OnCopy(Transform selection)
     {
         if (selection == transform)
@@ -68,12 +80,15 @@ public class LightObject : MonoBehaviour
 
     void Update()
     {
+        // Hide if not in edit mode
         editorRenderer.enabled = cursor.EditMode;
 
         if (cursor.SelectedObject == transform && !keyboardInput.InMenu)
         {
+            // Show range visualizer
             rangeVisualizer.gameObject.SetActive(cursor.CursorTransformMode == TransformMode.Scale);
 
+            // Handle transform modes
             switch (cursor.CursorTransformMode)
             {
                 case TransformMode.Position:
@@ -82,23 +97,27 @@ public class LightObject : MonoBehaviour
                     break;
 
                 case TransformMode.Scale:
+                    // Change light range
                     float scaleInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
                     float scaleSpeed = 12 * CurrentOptions.options.scaleSpeed;
 
                     lightSource.range += scaleInput * scaleSpeed * getReal3D.Cluster.deltaTime;
 
+                    // Visualize light reach
                     rangeVisualizer.localScale = Vector3.one * lightSource.range * 2;
 
                     break;
 
                 case TransformMode.Brightness:
+                    // Change brightness
                     float brightnessInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
 
                     float brightnessSpeed = 12 * CurrentOptions.options.scaleSpeed;
 
                     lightSource.intensity += brightnessInput * brightnessSpeed * getReal3D.Cluster.deltaTime;
-
+                    
+                    // Toggle shadows
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {
                         if (lightSource.shadows == LightShadows.None)
@@ -114,6 +133,7 @@ public class LightObject : MonoBehaviour
                     break;
             }
 
+            // Change light colour
             if (getReal3D.Input.GetButtonDown(Inputs.y))
             {
                 colorIndex++;
@@ -131,6 +151,10 @@ public class LightObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Set the colour to the given index
+    /// </summary>
+    /// <param name="index">The colours index</param>
     private void SetColor(int index)
     {
         Color color = colors[index];
@@ -144,6 +168,7 @@ public class LightObject : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Unsubscribe from events
         cursor.OnSelect -= Cursor_OnSelect;
         cursor.OnCopy -= Cursor_OnCopy;
     }

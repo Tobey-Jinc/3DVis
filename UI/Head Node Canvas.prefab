@@ -1161,3 +1161,4 @@ MonoBehaviour:
   dots: {fileID: 1455082011363618908}
   attention: {fileID: 0}
   windowNotFocusedWarning: {fileID: 4926995924959662169}
+  deleteInterval: 0.1

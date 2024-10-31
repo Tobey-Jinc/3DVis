@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Vertex;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class FileSelection : MonoBehaviour
 {
@@ -54,10 +55,12 @@ public class FileSelection : MonoBehaviour
             {
                 noFilesFoundWarning.SetActive(false);
 
+                // Get navigation input
                 int dpadInput = Inputs.Composite(Inputs.dpadDown, Inputs.dpadUp);
                 int stickInput = Inputs.AxisToInt(Inputs.leftStickY) * -1;
                 int input = Mathf.Clamp(dpadInput + stickInput, -1, 1);
 
+                // Do navigation
                 if (input != 0)
                 {
                     if (!prolongingInput)
@@ -78,6 +81,7 @@ public class FileSelection : MonoBehaviour
                     StopAllCoroutines();
                 }
 
+                // Set content pivot
                 if (scrollRect.verticalScrollbar.gameObject.activeInHierarchy)
                 {
                     scrollRect.content.pivot = new Vector2(0, 0);
@@ -89,6 +93,7 @@ public class FileSelection : MonoBehaviour
 
                 Canvas.ForceUpdateCanvases();
 
+                // Handle scroll focus
                 Vector2 pos = (Vector2)scrollRect.transform.InverseTransformPoint(scrollRect.content.position)
                                - (Vector2)scrollRect.transform.InverseTransformPoint(fileViews[selectionIndex].transform.position);
 
@@ -98,9 +103,13 @@ public class FileSelection : MonoBehaviour
                 scrollRect.verticalNormalizedPosition = Mathf.Clamp(scrollRect.verticalNormalizedPosition, 0, 1);
                 scrollRect.horizontalNormalizedPosition = Mathf.Clamp(scrollRect.horizontalNormalizedPosition, 0, 1);
 
+                // Handle categories
                 if (fileStructure.categories.Length > 1)
                 {
+                    // Get input
                     int categoryScroll = Inputs.Composite(Inputs.leftShoulder, Inputs.rightShoulder, false);
+
+                    // Move through categories
                     if (categoryScroll != 0)
                     {
                         categoryIndex += categoryScroll;
@@ -113,6 +122,7 @@ public class FileSelection : MonoBehaviour
                             categoryIndex = 0;
                         }
 
+                        // Regenerate file structure with category
                         GenerateFileSelection(fileStructure, fileStructure.categories[categoryIndex]);
                     }
                 }
@@ -127,6 +137,9 @@ public class FileSelection : MonoBehaviour
         else
         {
             container.localScale = Vector3.Lerp(container.localScale, Vector3.zero, Data.menuScaleSpeed * getReal3D.Cluster.deltaTime);
+
+            // Ensures the scroll view is at the top upon opening
+            scrollRect.verticalNormalizedPosition = 1;
         }
     }
 
@@ -134,6 +147,7 @@ public class FileSelection : MonoBehaviour
     {
         if (inMenu)
         {
+            // Select a file
             if (acceptInput && getReal3D.Input.GetButtonDown(Inputs.a))
             {
                 fileStructure.action?.Invoke(fileStructure.files[category][selectionIndex][1]);
@@ -146,6 +160,7 @@ public class FileSelection : MonoBehaviour
 
             acceptInput = true;
 
+            // Close the menu
             if (getReal3D.Input.GetButtonDown(Inputs.b))
             {
                 Close();
@@ -157,12 +172,20 @@ public class FileSelection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Closes the menu
+    /// </summary>
     private void Close()
     {
         categoryIndex = 0;
         inMenu = false;
     }
 
+    /// <summary>
+    /// Generates the file structure
+    /// </summary>
+    /// <param name="fileStructure">The file structure to generate from</param>
+    /// <param name="category">The cetagory to generate with</param>
     public void GenerateFileSelection(FileStructure fileStructure, string category = Data.allCategory)
     {
         ClearFileViews();
@@ -188,7 +211,7 @@ public class FileSelection : MonoBehaviour
             string fileName = fileStructure.files[category][i][0];
 
             FileView fileView;
-            if (pooledFileViews.Count > 0)
+            if (pooledFileViews.Count > 0) //  Create file view from pool
             {
                 fileView = pooledFileViews[0];
 
@@ -196,14 +219,16 @@ public class FileSelection : MonoBehaviour
 
                 fileView.Setup(i, fileName);
             }
-            else
+            else // Create a new file view
             {
                 fileView = Instantiate(fileViewPrefab, scrollRect.content);
 
                 fileView.Setup(this, i, fileName);
             }
 
+            // Make sure the file view is last
             fileView.transform.SetAsLastSibling();
+
             fileViews.Add(fileView);
         }
 
@@ -214,6 +239,9 @@ public class FileSelection : MonoBehaviour
         inMenu = true;
     }
 
+    /// <summary>
+    /// Displays the categories
+    /// </summary>
     private void ShowCategories()
     {
         int categoryCount = fileStructure.categories.Length - 1;
@@ -221,6 +249,7 @@ public class FileSelection : MonoBehaviour
         {
             categoryBar.localScale = Vector3.one;
 
+            // Determine previous and next categories
             int previousCategory = categoryIndex - 1;
             int nextCategory = categoryIndex + 1;
 
@@ -234,6 +263,7 @@ public class FileSelection : MonoBehaviour
                 nextCategory = 0;
             }
 
+            // Show category names
             t_Category.SetText(category);
             t_PreviousCategory.SetText(fileStructure.categories[previousCategory]);
             t_NextCategory.SetText(fileStructure.categories[nextCategory]);
@@ -244,6 +274,9 @@ public class FileSelection : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Deletes all file views. Adds them to the pool
+    /// </summary>
     private void ClearFileViews()
     {
         foreach (FileView fileView in fileViews)
@@ -255,8 +288,13 @@ public class FileSelection : MonoBehaviour
         fileViews.Clear();
     }
 
+    /// <summary>
+    /// Allows navigation inputs to be held
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator ProlongInput()
     {
+        // Apply and wrap navigation
         selectionIndex += prolongedInput;
         if (selectionIndex > fileCount - 1)
         {
@@ -272,15 +310,22 @@ public class FileSelection : MonoBehaviour
         StartCoroutine(ProlongInput());
     }
 
+    /// <summary>
+    /// Helper method for adding a file to a file structure
+    /// </summary>
+    /// <param name="files">The files to add to</param>
+    /// <param name="category">The files' category</param>
+    /// <param name="file">The file to add</param>
     public static void AddFile(Dictionary<string, List<string[]>> files, string category, string[] file)
     {
         if (category != string.Empty)
         {
+            // Add the category if hasn't already
             if (!files.ContainsKey(category))
             {
                 files.Add(category, new List<string[]>() { file });
             }
-            else
+            else // Add to the existing category
             {
                 files[category].Add(file);
             }

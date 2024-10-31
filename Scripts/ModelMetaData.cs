@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The meta data included in each model folder
+/// </summary>
 public class ModelMetaData
 {
     public string originalModelName;

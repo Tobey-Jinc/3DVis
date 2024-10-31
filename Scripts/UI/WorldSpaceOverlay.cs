@@ -12,13 +12,15 @@ public class WorldSpaceOverlay : MonoBehaviour
     private const string shaderTestMode = "unity_GUIZTestMode"; //The magic property we need to set
     [SerializeField] UnityEngine.Rendering.CompareFunction desiredUIComparison = UnityEngine.Rendering.CompareFunction.Always; //If you want to try out other effects
 
-    //Allows us to reuse materials
+    //Allows materials to be reused
     private Dictionary<Material, Material> materialMappings = new Dictionary<Material, Material>();
 
     private int hierachyCount = 0;
 
     protected virtual void LateUpdate()
     {
+        // Converts all images to overlay images
+        // This is needed as the UI is a world space UI, so 3D objects could normally be drawn in front of it
         if (hierachyCount != transform.hierarchyCount)
         {
             Image[] images = gameObject.GetComponentsInChildren<Image>();

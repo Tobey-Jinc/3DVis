@@ -28,9 +28,11 @@ public class TextObject : MonoBehaviour
         cursor = ObjectCursor.Instance;
         keyboardInput = KeyboardInput.Instance;
 
+        // Subscribe to events
         cursor.OnSelect += Cursor_OnSelect;
         cursor.OnCopy += Cursor_OnCopy;
 
+        // Define transform modes
         transformModes = new TransformModeAndControls[] {
             new(TransformMode.Position, $"{Data.switchControl}Set Text <sprite=3>    Move <sprite=6>    Up / Down <sprite=9>    Colour <sprite=5>"),
             new(TransformMode.Rotation, $"{Data.switchControl}Set Text <sprite=3>    Rotate <sprite=6>    Reset <sprite=5>"),
@@ -40,6 +42,10 @@ public class TextObject : MonoBehaviour
         t_Text.alignment = TextAlignmentOptions.Left;
     }
 
+    /// <summary>
+    /// Setup with the given Scene Description Text
+    /// </summary>
+    /// <param name="sdText">The text data to set up from</param>
     public void Setup(SDText sdText)
     {
         t_Text.SetText(sdText.text);
@@ -55,6 +61,9 @@ public class TextObject : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(sdText.width, rectTransform.sizeDelta.y);
     }
 
+    /// <summary>
+    /// Executed when this object is selected. Selects the object
+    /// </summary>
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
         if (selection == boxCollider.transform)
@@ -63,6 +72,9 @@ public class TextObject : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Copies this object
+    /// </summary>
     private void Cursor_OnCopy(Transform selection)
     {
         if (selection == transform)
@@ -75,11 +87,13 @@ public class TextObject : MonoBehaviour
     {
         if (cursor.SelectedObject == transform && !keyboardInput.InMenu)
         {
+            // Handle transform modes
             switch (cursor.CursorTransformMode)
             {
                 case TransformMode.Position:
                     cursor.Position(transform);
 
+                    // Change colour
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {
                         colorIndex++;
@@ -99,19 +113,22 @@ public class TextObject : MonoBehaviour
                     break;
 
                 case TransformMode.TextSize:
+                    // Change font size
                     float fontSizeInput = getReal3D.Input.GetAxis(Inputs.leftStickY);
-
+                    
                     float fontSizeSpeed = 12 * CurrentOptions.options.scaleSpeed;
 
                     t_Text.fontSize += fontSizeSpeed * fontSizeInput * getReal3D.Cluster.deltaTime;
                     t_Text.fontSize = Mathf.Max(t_Text.fontSize, 0.1f);
 
+                    // Change container width
                     float widthSpeed = 12 * CurrentOptions.options.scaleSpeed;
 
                     float widthInput = widthSpeed * getReal3D.Input.GetAxis(Inputs.rightStickY) * getReal3D.Cluster.deltaTime;
                     float width = Mathf.Max(rectTransform.sizeDelta.x + widthInput, 0.1f);
                     rectTransform.sizeDelta = new Vector2(width, rectTransform.sizeDelta.y);
 
+                    // Change text alignment
                     if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
                     {
                         if (t_Text.alignment == TextAlignmentOptions.Left)
@@ -131,6 +148,7 @@ public class TextObject : MonoBehaviour
                     break;
             }
 
+            // Set text
             if (getReal3D.Input.GetButtonDown(Inputs.y))
             {
                 keyboardInput.Open("Set Text", (string text) => { t_Text.SetText(text); }, startText: t_Text.text);
@@ -140,12 +158,19 @@ public class TextObject : MonoBehaviour
         UpdateCollider();
     }
 
+    /// <summary>
+    /// Make the collider the size of the text
+    /// </summary>
     private void UpdateCollider()
     {
         boxCollider.size = t_Text.bounds.size;
         boxCollider.center = t_Text.bounds.center;
     }
 
+    /// <summary>
+    /// Sets the text colour
+    /// </summary>
+    /// <param name="index">Colour index</param>
     private void SetColor(int index)
     {
         Color color = colors[index];
@@ -155,6 +180,7 @@ public class TextObject : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Unsubscribe from events
         cursor.OnSelect -= Cursor_OnSelect;
         cursor.OnCopy -= Cursor_OnCopy;
     }

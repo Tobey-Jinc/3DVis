@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+/// <summary>
+/// Defines all options
+/// </summary>
 [System.Serializable]
 public class Options
 {
@@ -17,6 +20,9 @@ public class Options
     public bool hideControls = false;
 }
 
+/// <summary>
+/// Stores current options to be accessible across the whole app
+/// </summary>
 public static class CurrentOptions
 {
     public static Options options = new Options();
@@ -29,6 +35,11 @@ public class OptionsController : MonoBehaviour
         LoadOptions();
     }
 
+    /// <summary>
+    /// Tries to load options from the network folder.
+    /// If no options file exists, options will just use their default values.
+    /// No option file will be created here.
+    /// </summary>
     public void LoadOptions()
     {
         string path = "\\\\CAVE-HEADNODE\\data\\3dvis\\options.json";
@@ -37,6 +48,7 @@ public class OptionsController : MonoBehaviour
         {
             try
             {
+                // Read options
                 string json = File.ReadAllText(path);
                 CurrentOptions.options = JsonUtility.FromJson<Options>(json);
 
@@ -55,8 +67,12 @@ public class OptionsController : MonoBehaviour
         ApplyOptions();
     }
 
+    /// <summary>
+    /// Applies options that only need to be applied once
+    /// </summary>
     private void ApplyOptions()
     {
+        // Set the graphics quality
         QualitySettings.SetQualityLevel(CurrentOptions.options.graphicsQuality);
     }
 }

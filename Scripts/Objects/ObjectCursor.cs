@@ -16,6 +16,9 @@ public enum TransformMode
     Brightness
 }
 
+/// <summary>
+/// Stores a transform mode and its controls
+/// </summary>
 public struct TransformModeAndControls
 {
     public TransformMode transformMode;
@@ -88,15 +91,18 @@ public class ObjectCursor : MonoBehaviour
         {
             if (!radialMenu.InMenu && SelectedObject != null)
             {
+                // Make tranform icon face the camera
                 transformIcon.LookAt(cameraTransform);
                 transformIcon.position = selectionAnchor.position;
                 transformIcon.gameObject.SetActive(true);
 
+                // Scale the icon
                 float distanceFromCamera = Vector3.Distance(transformIcon.position, cameraTransform.position);
                 float transformIconScale = distanceFromCamera / transformIconSizeDampening;
                 transformIconScale = Mathf.Clamp(transformIconScale, 0, 0.5f);
                 transformIcon.localScale = Vector3.one * transformIconScale;
 
+                // Set the icons colour and sprite
                 switch (CursorTransformMode)
                 {
                     case TransformMode.None:
@@ -133,6 +139,7 @@ public class ObjectCursor : MonoBehaviour
                         break;
                 }
 
+                // Show the controls for the current transform mode
                 if (!CurrentOptions.options.hideControls)
                 {
                     t_Controls.SetText(transformModes[transformModeIndex].controls);
@@ -145,6 +152,7 @@ public class ObjectCursor : MonoBehaviour
             }
             else if (!radialMenu.InMenu && Active && !CurrentOptions.options.hideControls)
             {
+                // Show the controls for paint (quick place) mode
                 if (getReal3D.Input.GetButton(Inputs.leftShoulder))
                 {
                     t_Controls.SetText(paintControls);
@@ -164,6 +172,8 @@ public class ObjectCursor : MonoBehaviour
             }
         }
 
+        // Toggle edit mode
+        // If edit mode is off, you can't select objects, use quick place, and certain models will be hidden like audio speakers
         if (SelectedObject == null && getReal3D.Input.GetButtonDown(Inputs.y))
         {
             bool leftShoulder = getReal3D.Input.GetButton(Inputs.leftShoulder);
@@ -194,15 +204,17 @@ public class ObjectCursor : MonoBehaviour
                 lineRenderer.enabled = true;
                 lineRenderer.SetPosition(0, wand.position);
 
-                if (leftShoulder)
+                if (leftShoulder) // Quick place mode
                 {
                     lineRenderer.material = quickPlaceMaterial;
                     cursorRenderer.material = quickPlaceMaterial;
 
+                    // Make cursor conform to geometry
                     if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, 15))
                     {
                         ShowCursorAtHit(hit);
 
+                        // Copy hovered object
                         if (getReal3D.Input.GetButtonDown(Inputs.y))
                         {
                             OnCopy?.Invoke(hit.transform);
@@ -218,6 +230,7 @@ public class ObjectCursor : MonoBehaviour
                         lineRenderer.SetPosition(1, placementPosition);
                     }
 
+                    // Paste
                     if (getReal3D.Input.GetButtonDown(Inputs.x))
                     {
                         modelCache.Paste(GetCursorPosition());
@@ -225,8 +238,9 @@ public class ObjectCursor : MonoBehaviour
 
                     cursor.gameObject.SetActive(true);
                 }
-                else
+                else // Select mode
                 {
+                    // Make cursor conform to geometry
                     if (Physics.Raycast(wand.position, wand.forward, out RaycastHit hit, Mathf.Infinity, 1 << LayerMask.NameToLayer(Layer.model), QueryTriggerInteraction.Collide))
                     {
                         ShowCursorAtHit(hit);
@@ -235,6 +249,7 @@ public class ObjectCursor : MonoBehaviour
 
                         lineRenderer.material = foundModelMaterial;
 
+                        // Try select hovered object
                         if (getReal3D.Input.GetButtonDown(Inputs.a))
                         {
                             OnSelect?.Invoke(hit.transform, hit.point);
@@ -249,7 +264,7 @@ public class ObjectCursor : MonoBehaviour
                     }
                 }
             }
-            else
+            else // Object is selected
             {
                 Active = false;
 
@@ -258,6 +273,7 @@ public class ObjectCursor : MonoBehaviour
 
                 if (!radialMenu.InMenu && SelectedObject != null)
                 {
+                    // Switch transform mode
                     if (getReal3D.Input.GetButtonDown(Inputs.a))
                     {
                         transformModeIndex++;
@@ -268,7 +284,7 @@ public class ObjectCursor : MonoBehaviour
 
                         CursorTransformMode = transformModes[transformModeIndex].transformMode;
                     }
-                    else if (getReal3D.Input.GetButtonDown(Inputs.x))
+                    else if (getReal3D.Input.GetButtonDown(Inputs.x)) // Toggle transform
                     {
                         if (CursorTransformMode == TransformMode.None)
                         {
@@ -279,11 +295,11 @@ public class ObjectCursor : MonoBehaviour
                             CursorTransformMode = TransformMode.None;
                         }
                     }
-                    else if (getReal3D.Input.GetButtonDown(Inputs.b))
+                    else if (getReal3D.Input.GetButtonDown(Inputs.b)) // Deselect
                     {
                         SelectedObject = null;
                     }
-                    else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject.parent == SceneDescriptionManager.Scene)
+                    else if (getReal3D.Input.GetButtonDown(Inputs.leftShoulder) && SelectedObject.parent == SceneDescriptionManager.Scene) // Delete
                     {
                         Destroy(SelectedObject.gameObject);
                         SelectedObject = null;
@@ -298,14 +314,25 @@ public class ObjectCursor : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Places the cursor at the given hit
+    /// </summary>
+    /// <param name="hit">The hit to place at</param>
     private void ShowCursorAtHit(RaycastHit hit)
     {
-        cursor.position = hit.point + (hit.normal * 0.1f);
-        cursor.forward = -hit.normal;
+        cursor.position = hit.point + (hit.normal * 0.1f); // Position
+        cursor.forward = -hit.normal; // Rotation
 
+        // Draw line to point
         lineRenderer.SetPosition(1, hit.point + (hit.normal * 0.1f));
     }
 
+    /// <summary>
+    /// Selects the given object
+    /// </summary>
+    /// <param name="selection">Object to select</param>
+    /// <param name="transformModes">Objects' transform modes</param>
+    /// <param name="selectionAnchor">Objects' selection anchor</param>
     public void SelectObject(Transform selection, TransformModeAndControls[] transformModes, Transform selectionAnchor)
     {
         this.transformModes = transformModes;
@@ -318,49 +345,78 @@ public class ObjectCursor : MonoBehaviour
         SelectedObject = selection;
     }
 
+    /// <summary>
+    /// Deselects the object
+    /// </summary>
     public void DeselectObject()
     {
         SelectedObject = null;
     }
 
+    /// <summary>
+    /// Generic position transform control
+    /// </summary>
+    /// <param name="transform">The object to move</param>
     public void Position(Transform transform)
     {
+        // Get inputs
         Vector2 movementInput = new Vector2(getReal3D.Input.GetAxis(Inputs.leftStickY), getReal3D.Input.GetAxis(Inputs.leftStickX));
         float upDownInput = getReal3D.Input.GetAxis(Inputs.rightStickY);
 
+        // Determine speed
         float speed = 10 * CurrentOptions.options.positionSpeed;
 
+        // Apply movement
         transform.Translate((wand.right * movementInput.y + wand.forward * movementInput.x + Vector3.up * upDownInput) * speed * getReal3D.Cluster.deltaTime, Space.World);
     }
 
+    /// <summary>
+    /// Generic rotation transform control
+    /// </summary>
+    /// <param name="transform">The object to rotate</param>
+    /// <param name="resetRotation">The default rotation</param>
+    /// <param name="inverted">Should input be inverted?</param>
     public void Rotate(Transform transform, Quaternion resetRotation, bool inverted = false)
     {
+        // Get input
         float rotateX = getReal3D.Input.GetAxis(Inputs.leftStickY);
         float rotateY = getReal3D.Input.GetAxis(Inputs.leftStickX);
 
+        // Invert input if necessary
         if (inverted)
         {
             rotateX *= -1;
             rotateY *= -1;
         }
 
+        // Determine speed
         float speed = 100 * CurrentOptions.options.rotationSpeed;
 
+        // Rotate y axis
         transform.Rotate(new Vector3(0, -rotateY, 0) * speed * getReal3D.Cluster.deltaTime, Space.World);
 
+        // Rotate x axis relative to the wand
         transform.RotateAround(transform.position, wand.right, rotateX * speed * getReal3D.Cluster.deltaTime);
 
+        // Reset the rotation
         if (getReal3D.Input.GetButtonDown(Inputs.rightShoulder))
         {
             transform.rotation = resetRotation;
         }
     }
 
+    /// <summary>
+    /// Gets the cursors current position
+    /// </summary>
+    /// <returns>The cursors position</returns>
     public Vector3 GetCursorPosition()
     {
         return cursor.position;
     }
 
+    /// <summary>
+    /// Toggles edit mode
+    /// </summary>
     public void ToggleEditMode()
     {
         editMode = !editMode;

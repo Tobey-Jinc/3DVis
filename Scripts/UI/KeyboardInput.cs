@@ -19,12 +19,15 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
     [SerializeField] private GameObject dots;
     [SerializeField] private RectTransform attention;
     [SerializeField] private GameObject windowNotFocusedWarning;
+    [SerializeField] private float deleteInterval = 0.2f;
 
     private string text;
     private string previousText;
     private UnityAction<string> action;
     private System.Func<string, bool> validationMethod;
     private string validationFailedText;
+
+    private float deleteCooldown = 0;
 
     private string setTextMethod = "SetText";
     private string submitMethod = "Submit";
@@ -43,21 +46,28 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         {
             if (getReal3D.Cluster.isMaster)
             {
-                windowNotFocusedWarning.SetActive(!Application.isFocused);
+                windowNotFocusedWarning.SetActive(!Application.isFocused); // Warn that the window isn't focused
                 dots.SetActive(text.Length == 0);
 
-                if (Input.GetKeyDown(KeyCode.Backspace))
+                if (Input.GetKey(KeyCode.Backspace)) // Delete characters
                 {
-                    if (text.Length > 0)
+                    // Only delete if there are characters to delete and not in a cooldown
+                    if (text.Length > 0 && deleteCooldown <= 0)
                     {
                         text = text.Remove(text.Length - 1);
+
+                        deleteCooldown = deleteInterval;
                     }
+
+                    deleteCooldown -= Time.deltaTime;
                 }
-                else if (Input.GetKeyDown(KeyCode.Return) && text.Length > 0)
+                else if (Input.GetKeyDown(KeyCode.Return) && text.Length > 0) // Send text
                 {
-                    if (validationMethod == null || validationMethod.Invoke(text))
+                    if (validationMethod == null || validationMethod.Invoke(text)) // Validate
                     {
                         action?.Invoke(text);
+
+                        // Send to child nodes
                         CallRpc(submitMethod, text);
 
                         inMenu = false;
@@ -67,10 +77,11 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
                         t_ValidationFailed.SetText(validationFailedText);
                     }
                 }
-                else
+                else // Input text
                 {
                     string inputString = Input.inputString;
 
+                    // Only allow valid windows file characters, and only allow input on the master node
                     if (getReal3D.Cluster.isMaster &&
                         inputString.Length > 0 && inputString.IndexOfAny(Path.GetInvalidFileNameChars()) == -1)
                     {
@@ -78,6 +89,13 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
                     }
                 }
 
+                // Clear delete cooldown
+                if (!Input.GetKey(KeyCode.Backspace))
+                {
+                    deleteCooldown = 0;
+                }
+
+                // Set text on child nodes
                 if (text != previousText)
                 {
                     CallRpc(setTextMethod, text);
@@ -105,6 +123,7 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
     {
         if (inMenu)
         {
+            // Cancel input
             if (Input.GetKeyDown(KeyCode.Escape) || getReal3D.Input.GetButtonDown(Inputs.b))
             {
                 CallRpc(cancelMethod);
@@ -113,6 +132,10 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         }
     }
 
+    /// <summary>
+    /// Updates the text in real on the child nodes
+    /// </summary>
+    /// <param name="text">The current text</param>
     [getReal3D.RPC]
     void SetText(string text)
     {
@@ -122,6 +145,10 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         }
     }
 
+    /// <summary>
+    /// Submits the text on the child nodes
+    /// </summary>
+    /// <param name="text">The text to submit</param>
     [getReal3D.RPC]
     void Submit(string text)
     {
@@ -132,6 +159,9 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         }
     }
 
+    /// <summary>
+    /// Cancels input on the child nodes
+    /// </summary>
     [getReal3D.RPC]
     void Cancel()
     {
@@ -141,6 +171,14 @@ public class KeyboardInput : getReal3D.MonoBehaviourWithRpc
         }
     }
 
+    /// <summary>
+    /// Opens the keyboard input menu
+    /// </summary>
+    /// <param name="title">Menu title</param>
+    /// <param name="action">Submit action</param>
+    /// <param name="validationMethod">How should text be validated (null if no validation is needed)</param>
+    /// <param name="validationFailedText">Text to be displayed if validation fails</param>
+    /// <param name="startText">The initial text to show</param>
     public void Open(string title, UnityAction<string> action, System.Func<string, bool> validationMethod = null, string validationFailedText = "", string startText = "") 
     {
         this.action = action;

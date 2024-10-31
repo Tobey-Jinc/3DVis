@@ -10,10 +10,14 @@ public class ModelChild : MonoBehaviour
 
     void Start()
     {
+        // Subscribe to events
         ObjectCursor.Instance.OnSelect += Cursor_OnSelect;
         ObjectCursor.Instance.OnCopy += Cursor_OnCopy;
     }
 
+    /// <summary>
+    /// Executed when this child is selected. Selects the parent
+    /// </summary>
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
     {
         if (selection == transform)
@@ -22,6 +26,9 @@ public class ModelChild : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Copies the parent
+    /// </summary>
     private void Cursor_OnCopy(Transform selection)
     {
         if (selection == transform)
@@ -32,6 +39,7 @@ public class ModelChild : MonoBehaviour
 
     private void OnDestroy()
     {
+        // Unsubscribe from events
         ObjectCursor.Instance.OnSelect -= Cursor_OnSelect;
         ObjectCursor.Instance.OnCopy -= Cursor_OnCopy;
     }

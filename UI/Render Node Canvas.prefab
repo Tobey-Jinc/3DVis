@@ -1799,7 +1799,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -80661.95, y: -84061.945}
+  m_AnchoredPosition: {x: -91768.836, y: -96370.18}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &6240459841805494922
@@ -3167,6 +3167,7 @@ MonoBehaviour:
   modelLibraryIcon: {fileID: 21300000, guid: 86f1d7146ba8d184d93ca76448d91468, type: 3}
   syncIcon: {fileID: 21300000, guid: 38d48aea5671a01499d318d87767597f, type: 3}
   refreshIcon: {fileID: 21300000, guid: f70af8d6f8477f440ad66eedad017274, type: 3}
+  refreshOptionsIcon: {fileID: 21300000, guid: d5887abbe2193d349b3fe70e5475620d, type: 3}
   showcaseIcon: {fileID: 21300000, guid: 36da07e5759d4fe4bbd295de31d6e33e, type: 3}
   deleteIcon: {fileID: 21300000, guid: 5df55ff0de06c5f44975e9ef062bad26, type: 3}
 --- !u!1 &7000892493225620303

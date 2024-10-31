@@ -6,6 +6,9 @@ using UnityEditor;
 
 class CreateLibraryModel : EditorWindow
 {
+    /// <summary>
+    /// Converts the selected object to a model
+    /// </summary>
     [MenuItem("Scripts/Convert To Library Model")]
     static void ConvertToLibraryModel()
     {
@@ -33,12 +36,18 @@ class CreateLibraryModel : EditorWindow
         Undo.CollapseUndoOperations(undoGroupIndex);
     }
 
+    /// <summary>
+    /// Prepares children of a model
+    /// </summary>
+    /// <param name="parent">The childs immediate parent</param>
+    /// <param name="modelParent">The ModelParent that all children fall under</param>
     static void PrepareChildren(Transform parent, ModelParent modelParent)
     {
         for (int i = 0; i < parent.childCount; i++)
         {
             Transform child = parent.GetChild(i);
 
+            // Add components
             if (child.GetComponent<MeshRenderer>() != null)
             {
                 Undo.RegisterCompleteObjectUndo(child.gameObject, "Prepared model child");
@@ -58,6 +67,7 @@ class CreateLibraryModel : EditorWindow
                 }
             }
 
+            // Execute recursively
             if (child.childCount > 0)
             {
                 PrepareChildren(child, modelParent);

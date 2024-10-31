@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Vertex
 {
+    /// <summary>
+    /// Defines commonly used paths
+    /// </summary>
     public class Paths
     {
         public static string GetModelFolder()
@@ -67,6 +70,13 @@ namespace Vertex
         public static string rightStickX = "Strafe";
         public static string rightStickY = "Pitch";
 
+        /// <summary>
+        /// Converts to bool inputs into a single integer input.
+        /// </summary>
+        /// <param name="positiveInput">Positive input string</param>
+        /// <param name="negativeInput">Negative input string</param>
+        /// <param name="hold">True if the inputs are to be held down</param>
+        /// <returns>0 if no input or both inputs are pressed, 1 if positive input, and -1 if negative input.</returns>
         public static int Composite(string positiveInput, string negativeInput, bool hold = true)
         {
             bool positive, negative;
@@ -94,6 +104,12 @@ namespace Vertex
             return 0;
         }
 
+        /// <summary>
+        /// Converts an axis (float) to an int, using the provided dead zone
+        /// </summary>
+        /// <param name="axis">Input axis string</param>
+        /// <param name="deadZone">0 will be returned if the input doesn't pass the dead zone</param>
+        /// <returns></returns>
         public static int AxisToInt(string axis, float deadZone = 0.2f)
         {
             float input = getReal3D.Input.GetAxis(axis);
@@ -111,6 +127,9 @@ namespace Vertex
         }
     }
 
+    /// <summary>
+    /// Misc, commonly used variables
+    /// </summary>
     public class Data
     {
         public static float menuScaleSpeed = 30f;

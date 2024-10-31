@@ -134,6 +134,7 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] private Sprite modelLibraryIcon;
     [SerializeField] private Sprite syncIcon;
     [SerializeField] private Sprite refreshIcon;
+    [SerializeField] private Sprite refreshOptionsIcon;
     [SerializeField] private Sprite showcaseIcon;
     [SerializeField] private Sprite deleteIcon;
 
@@ -174,8 +175,8 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Audio", audioIcon, () => { CreateAudioLibraryExplorer(false); }),
                 new RadialQuadrantData("Model Library", modelLibraryIcon, () => { CreateModelLibraryExplorer(false); }),
                 new RadialQuadrantData("Show Case", showcaseIcon, () => { cursor.ToggleEditMode(); }),
-                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); }),
-                new RadialQuadrantData("Reload Options", syncIcon, () => { optionsController.LoadOptions(); }),
+                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithMasterNode(); }),
+                new RadialQuadrantData("Reload Options", refreshOptionsIcon, () => { optionsController.LoadOptions(); }),
                 new RadialQuadrantData("Reload App", refreshIcon, () => { sceneDescriptionManager.ReloadApp(); }),
                 new RadialQuadrantData("Clear Scene", deleteIcon, () => { sceneDescriptionManager.ClearScene(); }),
             }
@@ -191,7 +192,7 @@ public class RadialMenu : MonoBehaviour
                 new RadialQuadrantData("Text", textIcon, () => { modelCache.InstantiateTextObject(cursor.GetCursorPosition(), true); Close(); }),
                 new RadialQuadrantData("Audio", audioIcon, () => { CreateAudioLibraryExplorer(true); }),
                 new RadialQuadrantData("Model Library", modelLibraryIcon, () => { CreateModelLibraryExplorer(true); }),
-                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithHeadnode(); })
+                new RadialQuadrantData("Sync", syncIcon, () => { viewpoint.SyncTransformWithMasterNode(); })
             }
         );
 
@@ -439,6 +440,17 @@ public class RadialMenu : MonoBehaviour
         bottomLeft.TryToSelect(false);
     }
 
+    /// <summary>
+    /// Closes the menu
+    /// </summary>
+    public void Close()
+    {
+        inMenu = false;
+    }
+
+    // ===================================================================================================
+    // ACTIONS ===========================================================================================
+
     private void CreateModelExplorer(bool quickPlace)
     {
         if (ModelCache.Loaded)
@@ -468,10 +480,5 @@ public class RadialMenu : MonoBehaviour
     private void CreateModelLibraryExplorer(bool quickPlace)
     {
         fileSelection.GenerateFileSelection(modelLibrary.GetFileStructure(quickPlace));
-    }
-
-    public void Close()
-    {
-        inMenu = false;
     }
 }

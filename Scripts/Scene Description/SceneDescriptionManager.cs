@@ -31,6 +31,7 @@ public class SceneDescriptionManager : MonoBehaviour
 
     private void Start()
     {
+        // Create file structure
         fileStructure = new FileStructure();
         fileStructure.title = "Select a scene";
         fileStructure.action = (string sceneName) => 
@@ -43,9 +44,13 @@ public class SceneDescriptionManager : MonoBehaviour
             Directory.CreateDirectory(Paths.GetSceneFolder());
         }
 
+        // Download scenes
         networkFolderDownloader.Download("scenes", () => { StoreTakenNames(); });
     }
 
+    /// <summary>
+    /// Store taken names so you can't overwrite scenes
+    /// </summary>
     public void StoreTakenNames()
     {
         string[] scenes = Directory.GetFiles(Paths.GetSceneFolder());
@@ -55,6 +60,11 @@ public class SceneDescriptionManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Saves the scene
+    /// </summary>
+    /// <param name="sceneName">The name of the scene</param>
+    /// <param name="saveAsTempScene">Whether or not this scene is a temp scene for app reloading</param>
     public void SaveScene(string sceneName, bool saveAsTempScene = false)
     {
         try
@@ -65,6 +75,7 @@ public class SceneDescriptionManager : MonoBehaviour
 
             sd.environmentPresetID = environments.CurrentEnvironmentID;
 
+            // Store all object types
             sd.sky = GetSky();
 
             sd.models = GetModels();
@@ -75,8 +86,10 @@ public class SceneDescriptionManager : MonoBehaviour
 
             sd.audio = GetAudio();
 
+            // Conver to JSON
             string sceneJSON = JsonUtility.ToJson(sd, true);
 
+            // Save the scene
             if (!saveAsTempScene)
             {
                 File.WriteAllText(Paths.GetSceneFolder() + sceneName + ".json", sceneJSON);
@@ -123,6 +136,7 @@ public class SceneDescriptionManager : MonoBehaviour
         ModelParent[] modelParents = FindObjectsOfType<ModelParent>();
         SDModel[] models = new SDModel[modelParents.Length];
 
+        // Get each model
         for (int i = 0; i < modelParents.Length; i++)
         {
             ModelParent modelParent = modelParents[i];
@@ -146,6 +160,7 @@ public class SceneDescriptionManager : MonoBehaviour
         TextObject[] textObjects = FindObjectsOfType<TextObject>();
         SDText[] text = new SDText[textObjects.Length];
 
+        // Get all text
         for (int i = 0; i < textObjects.Length; i++)
         {
             TextObject textObject = textObjects[i];
@@ -171,6 +186,7 @@ public class SceneDescriptionManager : MonoBehaviour
         LightObject[] lightObjects = FindObjectsOfType<LightObject>();
         SDLight[] lights = new SDLight[lightObjects.Length];
 
+        // Get all lights
         for (int i = 0; i < lightObjects.Length; i++)
         {
             LightObject lightObject = lightObjects[i];
@@ -193,6 +209,7 @@ public class SceneDescriptionManager : MonoBehaviour
         AudioObject[] audioObjects = FindObjectsOfType<AudioObject>();
         SDAudio[] audio = new SDAudio[audioObjects.Length];
 
+        // Get all audio
         for (int i = 0; i < audioObjects.Length; i++)
         {
             AudioObject audioObject = audioObjects[i];
@@ -212,10 +229,16 @@ public class SceneDescriptionManager : MonoBehaviour
         return audio;
     }
 
+    /// <summary>
+    /// Loads the given scene
+    /// </summary>
+    /// <param name="sceneName">The scene to load</param>
+    /// <param name="tempScene">Whether or not the scene being loaded is a temp scene</param>
     private async void LoadScene(string sceneName, bool tempScene = false)
     {
         ClearScene();
 
+        // Get scene JSON
         string sceneJSON;
         if (!tempScene)
         {
@@ -223,6 +246,7 @@ public class SceneDescriptionManager : MonoBehaviour
         }
         else
         {
+            // Load the temp scene
             string tempFilePath = Application.persistentDataPath + "/Temp Scene.json";
             if (!File.Exists(tempFilePath))
             {
@@ -232,9 +256,13 @@ public class SceneDescriptionManager : MonoBehaviour
             sceneJSON = File.ReadAllText(Application.persistentDataPath + "/Temp Scene.json");
         }
 
+        // Setup the scene
+
         SceneDescription sceneDescription = JsonUtility.FromJson<SceneDescription>(sceneJSON);
 
         environments.SetEnvironment(sceneDescription.environmentPresetID);
+
+        // Load each object type
 
         skyObject.Setup(sceneDescription.sky);
 
@@ -259,6 +287,9 @@ public class SceneDescriptionManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    ///Generate and get the file structure
+    /// </summary>
     public FileStructure GetFileStructure()
     {
         string[] sceneFiles = Directory.GetFiles(Paths.GetSceneFolder());
@@ -286,11 +317,19 @@ public class SceneDescriptionManager : MonoBehaviour
         return fileStructure;
     }
 
+    /// <summary>
+    /// Check if the given scene name is taken
+    /// </summary>
+    /// <param name="sceneName">The name to check</param>
+    /// <returns>True if valid</returns>
     public bool ValidateSceneName(string sceneName)
     {
         return !takenNames.Contains(sceneName);
     }
 
+    /// <summary>
+    /// Reloads the app, saving a temp scene to be loaded after the reload
+    /// </summary>
     public void ReloadApp()
     {
         SaveScene(string.Empty, true);
@@ -301,6 +340,9 @@ public class SceneDescriptionManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    /// <summary>
+    /// Loads the temp scene after a reload
+    /// </summary>
     public void LoadTempScene()
     {
         if (LoadTempSceneOnLoad)
@@ -311,6 +353,9 @@ public class SceneDescriptionManager : MonoBehaviour
         LoadTempSceneOnLoad = false;
     }
 
+    /// <summary>
+    /// Clears all objects in the scene, excluding the sky, and set environment
+    /// </summary>
     public void ClearScene()
     {
         modelCursor.DeselectObject();
