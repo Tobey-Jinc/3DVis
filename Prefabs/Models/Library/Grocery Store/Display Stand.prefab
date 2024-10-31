@@ -192,5 +192,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionAnchor: {fileID: 6880917036183713757}
-  libraryModel: 0
+  libraryModel: 1
   errorModel: {fileID: 0}
+  folderName: 

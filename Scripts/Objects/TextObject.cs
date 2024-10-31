@@ -17,7 +17,7 @@ public class TextObject : MonoBehaviour
 
     private TransformModeAndControls[] transformModes;
 
-    private int colorIndex;
+    [HideInInspector] [SerializeField] private int colorIndex;
 
     public TMP_Text Text { get => t_Text; }
     public RectTransform RectTransform { get => rectTransform; }

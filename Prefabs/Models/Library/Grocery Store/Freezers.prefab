@@ -162,8 +162,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectionAnchor: {fileID: 4760549029846796295}
-  libraryModel: 0
+  libraryModel: 1
   errorModel: {fileID: 0}
+  folderName: 
 --- !u!1 &4367462695947748468
 GameObject:
   m_ObjectHideFlags: 0

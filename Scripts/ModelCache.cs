@@ -177,7 +177,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
     public void InstantiateModelFromLibrary(Model model, Vector3? position = null, bool copy = false)
     {
         ModelParent modelParent = Instantiate(model.prefab, SceneDescriptionManager.Scene);
-        modelParent.FolderName = model.id;
+        modelParent.folderName = model.id;
 
         modelParent.transform.position = GetSpawnPosition(position);
 
@@ -255,7 +255,7 @@ public class ModelCache : getReal3D.MonoBehaviourWithRpc
         {
             Model lModel = modelLibrary.GetModel(sdModel.id);
             ModelParent modelParent = Instantiate(lModel.prefab, SceneDescriptionManager.Scene);
-            modelParent.FolderName = lModel.id;
+            modelParent.folderName = lModel.id;
 
             model = modelParent.transform;
             model.position = sdModel.position;

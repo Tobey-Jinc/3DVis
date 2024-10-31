@@ -8,14 +8,15 @@ using System.Threading.Tasks;
 public class ModelParent : MonoBehaviour
 {
     [SerializeField] private Transform selectionAnchor;
-    [SerializeField] private bool libraryModel;
+    [SerializeField] public bool libraryModel;
     [SerializeField] private GameObject errorModel;
 
     private ObjectCursor cursor;
 
     private TransformModeAndControls[] transformModes;
 
-    public string FolderName { get; set; }
+    [HideInInspector][SerializeField] public string folderName;
+
     public bool LibraryModel { get => libraryModel; }
 
     private void Start()
@@ -60,7 +61,7 @@ public class ModelParent : MonoBehaviour
 
     public void CachedSetup(string folderName)
     {
-        FolderName = folderName;
+        this.folderName = folderName;
 
         PrepareChildren(transform);
     }

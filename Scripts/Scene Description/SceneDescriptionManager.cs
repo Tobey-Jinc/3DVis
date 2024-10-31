@@ -128,7 +128,7 @@ public class SceneDescriptionManager : MonoBehaviour
             ModelParent modelParent = modelParents[i];
             SDModel sdModel = new SDModel();
 
-            sdModel.id = modelParent.FolderName;
+            sdModel.id = modelParent.folderName;
             sdModel.libraryModel = modelParent.LibraryModel;
 
             sdModel.position = modelParent.transform.position;
@@ -198,7 +198,7 @@ public class SceneDescriptionManager : MonoBehaviour
             AudioObject audioObject = audioObjects[i];
             SDAudio sdAudio = new SDAudio();
 
-            sdAudio.id = audioObject.MyAudio.id;
+            sdAudio.id = audioObject.myAudio.id;
 
             sdAudio.position = audioObject.transform.position;
             sdAudio.volume = audioObject.AudioSource.volume;

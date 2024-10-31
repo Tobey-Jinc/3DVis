@@ -18,7 +18,7 @@ public class AudioObject : MonoBehaviour
 
     private TransformModeAndControls[] transformModes;
 
-    public Audio MyAudio { get; private set; }
+    [SerializeField] public Audio myAudio;
 
     public AudioSource AudioSource { get => audioSource; }
 
@@ -39,15 +39,15 @@ public class AudioObject : MonoBehaviour
 
     public void Setup(Audio audio)
     {
-        MyAudio = audio;
+        myAudio = audio;
 
         audioSource.clip = audio.audioClip;
-        audioSource.Play();
+        Play();
     }
 
     public void Setup(Audio audio, SDAudio sdAudio)
     {
-        MyAudio = audio;
+        myAudio = audio;
 
         transform.position = sdAudio.position;
 
@@ -57,7 +57,7 @@ public class AudioObject : MonoBehaviour
         audioSource.maxDistance = sdAudio.maxDistance;
 
         audioSource.clip = audio.audioClip;
-        audioSource.Play();
+        Play();
     }
 
     private void Cursor_OnSelect(Transform selection, Vector3 selectionPoint)
@@ -133,6 +133,17 @@ public class AudioObject : MonoBehaviour
             maxDistanceVisualizer.gameObject.SetActive(false);
             volumeVisualizer.gameObject.SetActive(false);
         }
+    }
+
+    private void OnEnable()
+    {
+        Play();
+    }
+
+    private void Play()
+    {
+        audioSource.Play();
+        audioSource.time = Random.Range(0, audioSource.clip.length - 0.1f);
     }
 
     private void OnDestroy()

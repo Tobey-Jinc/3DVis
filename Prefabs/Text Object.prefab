@@ -63,6 +63,7 @@ MonoBehaviour:
   - {r: 0, g: 0.47085714, b: 1, a: 1}
   - {r: 0, g: 1, b: 0.88280344, a: 1}
   - {r: 0, g: 1, b: 0.44686317, a: 1}
+  colorIndex: 0
 --- !u!1 &5207593557693297838
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,7 +199,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

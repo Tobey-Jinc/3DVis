@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 4f8fd6e023f31a04a9d348221e3f8ab1, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 0590747bbb3df2a4da9bc953f165a294, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.60818326, g: 0.6197422, b: 0.6020464, a: 1}
+  m_IndirectSpecularColor: {r: 0.39066628, g: 0.4477811, b: 0.5009164, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,42 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!21 &82769050
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default UI Material
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &129981200
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,17 +266,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sun: {fileID: 705507994}
   skyboxes:
-  - {fileID: 2100000, guid: 4f8fd6e023f31a04a9d348221e3f8ab1, type: 2}
   - {fileID: 2100000, guid: 0590747bbb3df2a4da9bc953f165a294, type: 2}
   - {fileID: 2100000, guid: 268a7f8e642dbdb4aae99a22d6ec38f6, type: 2}
   - {fileID: 2100000, guid: 0faaad81e1ba46e46803b4bd9a1774d6, type: 2}
   - {fileID: 2100000, guid: 506ee1ad7742e25408a4aa96ffc17bbc, type: 2}
   - {fileID: 2100000, guid: 5e41f3701b4bd2140b0f7d7cd3df0ac3, type: 2}
-  - {fileID: 2100000, guid: 3e0620bb0c3b2a04995b75d68a46275f, type: 2}
-  - {fileID: 2100000, guid: a41ff143ecbfb7946af66ae193f96a30, type: 2}
-  - {fileID: 2100000, guid: cac7131f0874c04408dbac3de695c200, type: 2}
-  - {fileID: 2100000, guid: 91aeaa6903a8b6f43aa3882c1fc2de82, type: 2}
-  - {fileID: 2100000, guid: f6284c29bebbd1c4788275625bbcd9e4, type: 2}
+  - {fileID: 2100000, guid: 4f8fd6e023f31a04a9d348221e3f8ab1, type: 2}
   colors:
   - {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   - {r: 1, g: 0.793861, b: 0.41037738, a: 1}
@@ -953,42 +984,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!21 &1276961056
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Default UI Material
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1310242931
 GameObject:
   m_ObjectHideFlags: 0
@@ -1489,10 +1484,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   models:
-  - id: Arrow
-    displayName: Arrow
-    category: Test
-    prefab: {fileID: 4349961232569173657, guid: 6f2c840d2b1a4564b9e8fb5fbdd3b30f, type: 3}
   - id: Basketball
     displayName: Basketball
     category: Sports
@@ -1501,10 +1492,6 @@ MonoBehaviour:
     displayName: Cricket Ball
     category: Sports
     prefab: {fileID: 4349961232569173657, guid: e330cdd3f22c7a444ad83f4da1809c6a, type: 3}
-  - id: ERROR
-    displayName: ERROR
-    category: Test
-    prefab: {fileID: 4349961232569173657, guid: 03e1aff131f337e46bc6d676a4baffd3, type: 3}
   - id: Soccer Ball
     displayName: Soccer Ball
     category: Sports
@@ -1545,6 +1532,42 @@ MonoBehaviour:
     displayName: Shelf 4
     category: Super Market
     prefab: {fileID: 5075205494543974304, guid: 7ddf5ded9c2427140a4ca33c6632c4f0, type: 3}
+  - id: Arrow
+    displayName: Arrow
+    category: Test
+    prefab: {fileID: 4349961232569173657, guid: 6f2c840d2b1a4564b9e8fb5fbdd3b30f, type: 3}
+  - id: Building 1
+    displayName: Building 1
+    category: Building
+    prefab: {fileID: 7808009662038233562, guid: d8718ce6eed570a469e30b7d7b371489, type: 3}
+  - id: Building 2
+    displayName: Building 2
+    category: Building
+    prefab: {fileID: 1844780206056127965, guid: 794e3443af608db42904bd73c1f11905, type: 3}
+  - id: Building 3
+    displayName: Building 3
+    category: Building
+    prefab: {fileID: 2055279475525587652, guid: fdebe936fbebd204b8bc769650ecf4e3, type: 3}
+  - id: Building 4
+    displayName: Building 4
+    category: Building
+    prefab: {fileID: 5798597734113516002, guid: f45c28d1cdab7be4d968a386a7d2b70b, type: 3}
+  - id: House
+    displayName: House
+    category: Building
+    prefab: {fileID: 914621625300835201, guid: e7be08b3fa4832f4b90c255f439d8ae9, type: 3}
+  - id: Warehouse
+    displayName: Warehouse
+    category: Building
+    prefab: {fileID: 6033315566232235319, guid: ab93ee24224366748862d59e02c934fa, type: 3}
+  - id: Grocery Store
+    displayName: Grocery Store
+    category: Building
+    prefab: {fileID: 8284946310919564802, guid: 1d9a8053436ee5d4299eb6171a51564c, type: 3}
+  - id: Tree
+    displayName: Tree
+    category: Nature
+    prefab: {fileID: 6483585478144586636, guid: 855a23ffd5223be4a9129c4166ddcc73, type: 3}
   modelCache: {fileID: 813393804}
   cursor: {fileID: 1332706886}
 --- !u!1 &1888028572
@@ -2621,11 +2644,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -3658287.8
+      value: -4527723.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3710988.5
+      value: -4584675.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841884914474, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_RootOrder

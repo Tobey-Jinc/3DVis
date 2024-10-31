@@ -18,7 +18,7 @@ public class LightObject : MonoBehaviour
 
     private TransformModeAndControls[] transformModes;
 
-    private int colorIndex;
+    [HideInInspector][SerializeField] private int colorIndex;
 
     public Light LightSource { get => lightSource; }
     public int ColorIndex { get => colorIndex; }

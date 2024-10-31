@@ -24,6 +24,7 @@ class CreateLibraryModel : EditorWindow
             parent.gameObject.AddComponent<ModelParent>();
 
             modelParent = parent.GetComponent<ModelParent>();
+            modelParent.libraryModel = true;
         }
 
         // Prepare children
