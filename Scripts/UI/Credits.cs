@@ -14,12 +14,16 @@ public class Credits : MonoBehaviour
 
     void Update()
     {
-        // Only open credits when not in Keyboard Input menu
-        if (!keyboardInput.InMenu)
+        // Only open credits when not in Keyboard Input menu, and only on the master node
+        if (getReal3D.Cluster.isMaster && !keyboardInput.InMenu)
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
                 canvas.enabled = !canvas.enabled;
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                canvas.enabled = false;
             }
         }
         else
