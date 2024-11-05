@@ -114,6 +114,10 @@ Water, Plumbing, Bathroom, Faucet, Turn On, Water Running, Turn Off 01 SND11580:
 wrestling-sports-hall-sound-7-min-rk-209122: https://pixabay.com/sound-effects/wrestling-sports-hall-sound-7-min-rk-209122/
 
 Icons:
+Controller Glyphs by Kenney from https://kenney.nl/assets/input-prompts
+License: (Creative Commons Zero, CC0)
+http://creativecommons.org/publicdomain/zero/1.0/
+
 Bin Cancel Close Delete Garbage Remove SVG Vector: https://www.svgrepo.com/svg/390421/bin-cancel-close-delete-garbage-remove (CC Attribution License, Author: Gokce Kurt)
 Clapper Board SVG Vector 3: https://www.svgrepo.com/svg/332943/clapper-board (MIT License)
 Cogwheel SVG Vector 23: https://www.svgrepo.com/svg/66083/cogwheel (CC0 License)
@@ -135,7 +139,6 @@ https://www.cgtrader.com/free-3d-models/sports/toy/free-cricket-sports-ball-game
 Tennis Racquet:
 https://www.cgtrader.com/free-3d-models/sports/equipment/tennis-racquet-d3a35a80-a64c-4134-8237-cf04669ddedc (Royalty Free, No AI License)
 
-Custom Models:
 Created using Blender https://www.blender.org/ 
 
 Created using Blender Sapling Tree Gen Add-on extension licensed under the GPU General Public License v2.0 https://projects.blender.org/extensions/add_curve_sapling 

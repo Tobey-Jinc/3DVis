@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.39066628, g: 0.4477811, b: 0.5009164, a: 1}
+  m_IndirectSpecularColor: {r: 0.39066604, g: 0.44777143, b: 0.5009255, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -154,32 +154,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   environments:
   - id: CityCarPark
-    displayName: CityCarPark
-    category: City
+    displayName: City
+    category: 
     prefab: {fileID: 4478463814949476315, guid: 30aec474a1ad705449634bdb0b758ad7, type: 3}
   - id: House
     displayName: House
-    category: 
+    category: Building
     prefab: {fileID: 3324608730402181599, guid: 04c9e5e1c6ed1e54697412b4aac084c7, type: 3}
   - id: Warehouse
     displayName: Warehouse
-    category: 
+    category: Building
     prefab: {fileID: 1747854626286860059, guid: 81640fcde882bed4dada3ef497b5ec20, type: 3}
   - id: Trees
     displayName: Trees
     category: 
     prefab: {fileID: 6145376986625317903, guid: 072d4b0bf3aa55c469adf698f062f72f, type: 3}
   - id: GroceryStore
-    displayName: GroceryStore
-    category: 
+    displayName: Grocery Store
+    category: Building
     prefab: {fileID: 5206743782920186741, guid: d97d9b95441c3c04db7f79c56aa7ea73, type: 3}
   - id: FlatGround
-    displayName: FlatGround
-    category: 
+    displayName: Flat Ground
+    category: Empty
     prefab: {fileID: 3516874605477847019, guid: 49e21808e4ef4d749903c8755db4e553, type: 3}
   - id: Empty
     displayName: Empty
-    category: 
+    category: Empty
     prefab: {fileID: 1132933274}
 --- !u!4 &129981202
 Transform:
@@ -325,42 +325,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &458449869
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Default UI Material
-  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats:
-    - _ColorMask: 15
-    - _Stencil: 0
-    - _StencilComp: 8
-    - _StencilOp: 0
-    - _StencilReadMask: 255
-    - _StencilWriteMask: 255
-    - _UseUIAlphaClip: 0
-    m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &688743433
 GameObject:
   m_ObjectHideFlags: 0
@@ -1439,6 +1403,42 @@ Material:
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_BuildTextureStacks: []
+--- !u!21 &1618588800
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Default UI Material
+  m_Shader: {fileID: 10770, guid: 0000000000000000f000000000000000, type: 0}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _ColorMask: 15
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
+    m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!1 &1681452661
 GameObject:
@@ -2650,11 +2650,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -5757069.5
+      value: -5817789.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841805494920, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -5821671.5
+      value: -5883241.5
       objectReference: {fileID: 0}
     - target: {fileID: 6240459841884914474, guid: a0fef0e68948c644598b6a974faba092, type: 3}
       propertyPath: m_RootOrder

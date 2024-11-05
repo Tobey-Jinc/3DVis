@@ -937,9 +937,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<u><i>Icons</i></u>\nBin Cancel Close Delete Garbage Remove SVG Vector:\n   
-    https://www.svgrepo.com/svg/390421/bin-cancel-close-delete-garbage-remove (CC
-    Attribution License, Author: Gokce Kurt)\r\nClapper Board SVG Vector 3: https://www.svgrepo.com/svg/332943/clapper-board
+  m_text: "<u><i>Icons</i></u>\nController Glyphs by Kenney from https://kenney.nl/assets/input-prompts\n   
+    License: (Creative Commons Zero, CC0)\r\n    http://creativecommons.org/publicdomain/zero/1.0/\nBin
+    Cancel Close Delete Garbage Remove SVG Vector:\n    https://www.svgrepo.com/svg/390421/bin-cancel-close-delete-garbage-remove
+    (CC Attribution License, Author: Gokce Kurt)\r\nClapper Board SVG Vector 3: https://www.svgrepo.com/svg/332943/clapper-board
     (MIT License)\r\nCogwheel SVG Vector 23: https://www.svgrepo.com/svg/66083/cogwheel
     (CC0 License)\r\nCube Alt 2 SVG Vector: https://www.svgrepo.com/svg/532258/cube-alt-2
     (CC Attribution License, Author: Dazzle UI)\r\nEye SVG Vector 368: https://www.svgrepo.com/svg/532493/eye
@@ -1088,9 +1089,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<u><i>Models</i></u>\nCricket Ball:\nhttps://www.cgtrader.com/free-3d-models/sports/toy/free-cricket-sports-ball-game-asset-model
     (Royalty Free, No AI License)\r\n\nTennis Racquet:\nhttps://www.cgtrader.com/free-3d-models/sports/equipment/tennis-racquet-d3a35a80-a64c-4134-8237-cf04669ddedc
-    (Royalty Free, No AI License)\n\n<u><i>Custom Models</i></u>\nCreated using Blender
-    https://www.blender.org/ \r\n\nCreated using Blender Sapling Tree Gen Add-on
-    extension licensed under the GPU General Public License v2.0 https://projects.blender.org/extensions/add_curve_sapling
+    (Royalty Free, No AI License)\n\nCreated using Blender https://www.blender.org/
+    \r\n\nCreated using Blender Sapling Tree Gen Add-on extension licensed under
+    the GPU General Public License v2.0 https://projects.blender.org/extensions/add_curve_sapling
     \r\n\nCreated using EasyRoads3D by AndaSoft, Unity Extension Asset License http://www.easyroads3d.com
     \r\n\nCreated using Free Double Sided Shaders by Ciconia Studio, Unity Extension
     Asset License http://ciconia-studio.com/ \r\n\nCreated using Trimble Inc SketchUp
