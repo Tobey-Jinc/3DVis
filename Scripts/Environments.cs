@@ -35,7 +35,7 @@ public class Environments : MonoBehaviour
         {
             EnvironmentPreset environment = environments[i];
 
-            string[] file = new string[] { environment.displayName, environment.displayName };
+            string[] file = new string[] { environment.displayName, environment.id };
 
             FileSelection.AddFile(files, Data.allCategory, file);
             FileSelection.AddFile(files, environment.category, file);
