@@ -1,0 +1,150 @@
+Created by Team Vertex
+
+3DVis:
+Programming by Tobey Gronow
+UI Design by Alexander Vezos
+Environments by Kaleb McKewen
+Some models by Kaleb McKewen and Alexander Vezos
+
+3DVis Companion App:
+Programming by Joseph Dickson
+UI Design and Programming by Alexander Vezos 
+
+Skyboxes:
+Created using Day Sky HDRI 027 B from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+https://ambientcg.com/view?id=DaySkyHDRI027B
+
+Created using Evening Sky HDRI 005 B from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+https://ambientcg.com/view?id=EveningSkyHDRI005B
+
+Created using Night Sky HDRI 008 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+https://ambientcg.com/view?id=NightSkyHDRI008
+
+Created using Evening Sky HDRI 031 B from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+https://ambientcg.com/view?id=EveningSkyHDRI031B
+
+Created using Night Sky HDRI 003 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+https://ambientcg.com/view?id=NightSkyHDRI003
+
+Textures:
+Created using Asphalt 015 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Asphalt015
+
+Created using Bark 001 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Bark001
+
+Created using Carpet 012 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Carpet012
+
+Created using Concrete 042 A from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Concrete042A
+
+Created using Corrugated Steel 007 A from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/CorrugatedSteel007A
+
+Created using Grass 004 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Grass004
+
+Created using Ground 079 L from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Ground079L
+
+Created using Metal 046 B from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Metal046B
+
+Created using Metal 050C from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Metal050C
+
+Created using Plastic 006 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Plastic006
+
+Created using Plastic 013 A from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Plastic013A
+
+Created using Road 007 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Road007
+
+Created using Rock 030 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Rock030
+
+Created using Roofing Tiles 013 A from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/RoofingTiles013A
+
+Created using Wallpaper 001 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/Wallpaper001A
+
+Created using Wood Siding 009 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License. 
+https://ambientCG.com/a/WoodSiding009
+
+Audio:
+Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees SND36908: https://getsoundly.com/(CC0 License)
+Ambience, Construction, Construction Site, Excavator Digs A Trench, Shovels SND12544: https://getsoundly.com/(CC0 License)
+Ambience, Traffic, City, Heavy Traffic, Car Passes SND0166: https://getsoundly.com/(CC0 License)
+Ambience, Urban, City, Park, Birds, Pedestrians, Car Music Pass, Wind SND0018: https://getsoundly.com/(CC0 License)
+crowd-yelling-49767: https://pixabay.com/sv/sound-effects/crowd-yelling-49767/
+Designed, Drone, Empty, Void, Static 04 SND12706: https://getsoundly.com/(CC0 License)
+Evil Whisper Sound Effect: https://www.youtube.com/watch?v=P5ADqo2DjUI
+football-practice-2-78523: https://pixabay.com/sv/sound-effects/football-practice-2-78523/
+Kitchen Sound Effect Pack: https://www.youtube.com/watch?v=IHBSCb1XNc8
+Sound Effects Warehouse Loading Dock: https://www.youtube.com/watch?v=df0ZRLzhNSA
+Sounds For The Supermarket 1 1975 Grocery Store Music: https://www.youtube.com/watch?v=U-WzMovyzUA
+Supermarket grocery store ambient sound in Budapest Royalty free sound effects: https://www.youtube.com/watch?v=KMbowfX6JPY
+Vacuum Cleaner Sound Effect Copyright Free: https://www.youtube.com/watch?v=46gGAkuMqX0
+Water, Plumbing, Bathroom, Faucet, Turn On, Water Running, Turn Off 01 SND11580: https://getsoundly.com/(CC0 License)
+wrestling-sports-hall-sound-7-min-rk-209122: https://pixabay.com/sound-effects/wrestling-sports-hall-sound-7-min-rk-209122/
+
+Icons:
+Bin Cancel Close Delete Garbage Remove SVG Vector: https://www.svgrepo.com/svg/390421/bin-cancel-close-delete-garbage-remove (CC Attribution License, Author: Gokce Kurt)
+Clapper Board SVG Vector 3: https://www.svgrepo.com/svg/332943/clapper-board (MIT License)
+Cogwheel SVG Vector 23: https://www.svgrepo.com/svg/66083/cogwheel (CC0 License)
+Cube Alt 2 SVG Vector: https://www.svgrepo.com/svg/532258/cube-alt-2 (CC Attribution License, Author: Dazzle UI)
+Eye SVG Vector 368: https://www.svgrepo.com/svg/532493/eye (CC Attribution License, Author: Dazzle UI)
+Library SVG Vector 54: https://www.svgrepo.com/svg/487517/library (MIT License)
+Lightbulb Alt SVG Vector 3: https://www.svgrepo.com/svg/532865/lightbulb-alt (CC Attribution License, Author: Dazzle UI)
+Music SVG Vector 186: https://www.svgrepo.com/svg/532708/music (CC Attribution License, Author: Dazzle UI)
+Save 197 SVG Vector: https://www.svgrepo.com/svg/521819/save (CC Attribution License, Author: Konstantin Filatov)
+Sync SVG Vector 45: https://www.svgrepo.com/svg/448641/sync (MLP License)
+Sync Alert SVG Vector: https://www.svgrepo.com/svg/448640/sync-alert (MLP License)
+Text SVG Vector 136: https://www.svgrepo.com/svg/532229/text (CC Attribution License, Author: Dazzle UI)
+Weather Symbol 6 SVG Vector: https://www.svgrepo.com/svg/479340/weather-symbol-6 (PD License) 
+
+Models:
+Cricket Ball:
+https://www.cgtrader.com/free-3d-models/sports/toy/free-cricket-sports-ball-game-asset-model (Royalty Free, No AI License)
+
+Tennis Racquet:
+https://www.cgtrader.com/free-3d-models/sports/equipment/tennis-racquet-d3a35a80-a64c-4134-8237-cf04669ddedc (Royalty Free, No AI License)
+
+Custom Models:
+Created using Blender https://www.blender.org/ 
+
+Created using Blender Sapling Tree Gen Add-on extension licensed under the GPU General Public License v2.0 https://projects.blender.org/extensions/add_curve_sapling 
+
+Created using EasyRoads3D by AndaSoft, Unity Extension Asset License http://www.easyroads3d.com 
+
+Created using Free Double Sided Shaders by Ciconia Studio, Unity Extension Asset License http://ciconia-studio.com/ 
+
+Created using Trimble Inc SketchUp https://www.sketchup.com/en 
+
+Created using plant_25, plant_46 from 60 CC0 Vegetation Textures by rubberduck, OpenGameArt.org,
+Licensed under the Creative Commons CC0 1.0 Universal License. https://opengameart.org/content/60-cc0-vegetation-textures
