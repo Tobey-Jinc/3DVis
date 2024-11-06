@@ -96,6 +96,9 @@ Created using Wood Siding 009 from ambientCG.com,
 licensed under the Creative Commons CC0 1.0 Universal License. 
 https://ambientCG.com/a/WoodSiding009
 
+Created using plant_25, plant_46 from 60 CC0 Vegetation Textures by rubberduck, OpenGameArt.org,
+Licensed under the Creative Commons CC0 1.0 Universal License. https://opengameart.org/content/60-cc0-vegetation-textures
+
 Audio:
 Ambience, Birdsong, Meadow, Summer, Birds Sing, Wind, Light Rustle In Trees SND36908: https://getsoundly.com/(CC0 License)
 Ambience, Construction, Construction Site, Excavator Digs A Trench, Shovels SND12544: https://getsoundly.com/(CC0 License)
@@ -119,7 +122,7 @@ License: (Creative Commons Zero, CC0)
 http://creativecommons.org/publicdomain/zero/1.0/
 
 Bin Cancel Close Delete Garbage Remove SVG Vector: https://www.svgrepo.com/svg/390421/bin-cancel-close-delete-garbage-remove (CC Attribution License, Author: Gokce Kurt)
-Clapper Board SVG Vector 3: https://www.svgrepo.com/svg/332943/clapper-board (MIT License)
+Clapper Board SVG Vector 3: https://www.svgrepo.com/svg/332943/clapper-board (MIT License, Author: css.gg)
 Cogwheel SVG Vector 23: https://www.svgrepo.com/svg/66083/cogwheel (CC0 License)
 Cube Alt 2 SVG Vector: https://www.svgrepo.com/svg/532258/cube-alt-2 (CC Attribution License, Author: Dazzle UI)
 Eye SVG Vector 368: https://www.svgrepo.com/svg/532493/eye (CC Attribution License, Author: Dazzle UI)
@@ -130,7 +133,8 @@ Save 197 SVG Vector: https://www.svgrepo.com/svg/521819/save (CC Attribution Lic
 Sync SVG Vector 45: https://www.svgrepo.com/svg/448641/sync (MLP License)
 Sync Alert SVG Vector: https://www.svgrepo.com/svg/448640/sync-alert (MLP License)
 Text SVG Vector 136: https://www.svgrepo.com/svg/532229/text (CC Attribution License, Author: Dazzle UI)
-Weather Symbol 6 SVG Vector: https://www.svgrepo.com/svg/479340/weather-symbol-6 (PD License) 
+Weather Symbol 6 SVG Vector: https://www.svgrepo.com/svg/479340/weather-symbol-6 (PD License)
+Computer Monitor SVG Vector: https://www.svgrepo.com/svg/456199/computer-monitor (MIT License, Author: Vectopus)
 
 Models:
 Cricket Ball:
@@ -149,5 +153,98 @@ Created using Free Double Sided Shaders by Ciconia Studio, Unity Extension Asset
 
 Created using Trimble Inc SketchUp https://www.sketchup.com/en 
 
-Created using plant_25, plant_46 from 60 CC0 Vegetation Textures by rubberduck, OpenGameArt.org,
-Licensed under the Creative Commons CC0 1.0 Universal License. https://opengameart.org/content/60-cc0-vegetation-textures
+Font:
+
+Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
