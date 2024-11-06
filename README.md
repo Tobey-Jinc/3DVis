@@ -24,4 +24,4 @@ https://github.com/Tobey-Jinc/3DVis/releases
 10.	When using the controller ensure the mode button is off (can be turned off by pressing the mode button on the controller).
 
 ## DISCLAIMER
-This repository contains assets such as audio, icons and models that were not created by Team Vertex. Please see the credits for more information about the licenses of each of these assets. If you ever take these assets outside of this program, YOU MUST respect each of the taken assets' license. It is strongly recommended that you DO NOT take assets from the repository and instead get them from their original sources.
+This repository contains assets such as audio, icons, models, textures, and fonts that were not created by Team Vertex. Please see the credits for more information about the licenses of each of these assets. If you ever take these assets outside of this project / repository, YOU MUST respect each of the taken assets' license. It is strongly recommended that you DO NOT take assets from the repository and instead get them from their original sources.
